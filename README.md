@@ -1,12 +1,10 @@
 # **CC03_Group05_CO3001**  
 ### **Software Engineering - HCMUT SPSS**
 
-<div align="center" style="display: flex; gap: 10px; justify-content: center;">
   [![Last Commit](https://img.shields.io/github/last-commit/phucnguyenlamp/HCMUT_SSPS)](https://github.com/phucnguyenlamp/HCMUT_SSPS/commits/main)
   [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/phucnguyenlamp/HCMUT_SSPS/actions)
   [![Contributors](https://img.shields.io/github/contributors/phucnguyenlamp/HCMUT_SSPS?color=blue)](https://github.com/phucnguyenlamp/HCMUT_SSPS/graphs/contributors)
   [![License](https://img.shields.io/github/license/phucnguyenlamp/HCMUT_SSPS?color=yellow)](https://github.com/phucnguyenlamp/HCMUT_SSPS/blob/main/LICENSE)
-</div>
 
 ---
 
