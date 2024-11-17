@@ -1,10 +1,10 @@
 # **CC03_Group05_CO3001**  
 ### **Software Engineering - HCMUT SPSS**
 
-[![Last Commit](https://img.shields.io/github/last-commit/phucnguyenlamp/HCMUT-SPSS)](https://github.com/phucnguyenlamp/HCMUT-SPSS/commits/main)  
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/phucnguyenlamp/HCMUT-SPSS/actions)  
-[![Contributors](https://img.shields.io/github/contributors/phucnguyenlamp/HCMUT-SPSS?color=blue)](https://github.com/phucnguyenlamp/HCMUT-SPSS/graphs/contributors)  
-[![License](https://img.shields.io/github/license/phucnguyenlamp/HCMUT-SPSS?color=yellow)](https://github.com/phucnguyenlamp/HCMUT-SPSS/blob/main/LICENSE)  
+[![Last Commit](https://img.shields.io/github/last-commit/phucnguyenlamp/HCMUT_SSPS)](https://github.com/phucnguyenlamp/HCMUT_SSPS/commits/main)  
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/phucnguyenlamp/HCMUT_SSPS/actions)  
+[![Contributors](https://img.shields.io/github/contributors/phucnguyenlamp/HCMUT_SSPS?color=blue)](https://github.com/phucnguyenlamp/HCMUT_SSPS/graphs/contributors)  
+[![License](https://img.shields.io/github/license/phucnguyenlamp/HCMUT_SSPS?color=yellow)](https://github.com/phucnguyenlamp/HCMUT_SSPS/blob/main/LICENSE)  
 
 ---
 
