@@ -1,5 +1,5 @@
 # **CC03_Group05_CO3001**  
-### **Software Engineering - HCMUT SPSS**
+### **🖨 Software Engineering - HCMUT SPSS**
 
   [![Last Commit](https://img.shields.io/github/last-commit/phucnguyenlamp/HCMUT_SSPS)](https://github.com/phucnguyenlamp/HCMUT_SSPS/commits/main)
   [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/phucnguyenlamp/HCMUT_SSPS/actions)
@@ -8,10 +8,10 @@
 
 ---
 
-## **Overview**  
+## **📝 Overview**  
 **HCMUT Smart Student Printing Service (HCMUT-SSPS)** is a system designed to streamline printing for students at **Ho Chi Minh University of Technology** by enabling digital file uploads, printer selection across campus, and customizable print settings through a web and mobile application. Integrated with the university’s **Single Sign-On (SSO)**, it enhances convenience and efficiency.  
 
-### **Key Features**  
+### **🔑 Key Features**  
 - **Digital File Upload**: Supports multiple formats.  
 - **Printer Selection**: Locate and select printers across campus.  
 - **Customizable Print Settings**: Page size, color options, etc.  
@@ -21,19 +21,19 @@
 ---
 
 ## **Contributors**  
-**Students**  
+**👨‍🎓 Students**  
 - Nguyễn Hồ Đức An - 2252009  
 - Nguyễn Đức Quốc Kỳ - 2252415  
 - Nguyễn Châu Hoàng Long - 2252444  
 - Nguyễn Gia Phúc - 2252637  
 - Nguyễn Anh Quân - 2252678  
 
-**Lecturer**  
+**👨‍🏫 Lecturer**  
 - Dr. Trương Tuấn Anh  
 
 ---
 
-## **Project Structure**  
+## **🦴 Project Structure**  
 ```plaintext
 ├── Diagrams/
 │   ├── Task1/
