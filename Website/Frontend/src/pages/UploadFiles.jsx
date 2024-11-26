@@ -27,7 +27,7 @@ export default function UploadFiles() {
         </Box>
 
         {/* Upload Button */}
-        <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button variant="contained" color="primary" sx={{ mt: 2 }} size="large">
           Tải File
         </Button>
 
