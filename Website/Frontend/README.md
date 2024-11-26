@@ -1,17 +1,93 @@
-# note routes cho backend
 
-`POST /login` để login, req = {username, password, role} <br>
-`POST /resgister` để đăng kí, req = {username, password, role, thông tin ngân hàng} <br>
-`GET /history-payment`, res = {username} kiểu dữ liệu như sau <br>
-![image](https://github.com/user-attachments/assets/c795dfdd-c288-442d-95b0-417798052964) <br>
+# Các API Backend
 
-`GET /history-print`, req = {username} kiểu dữ liệu như sau <br>
-![image](https://github.com/user-attachments/assets/0f8b5242-315f-4274-ba21-a39985b4af68) <br>
+## 1. Đăng nhập
+**`POST /login`**  
+- **Mô tả**: Dùng để đăng nhập.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "username": "<string>",
+    "password": "<string>",
+    "role": "<string>"
+  }
+  ```
 
-`POST /print`, dùng để gửi lệnh in, res như hình + payload file <br>
-![image](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1) <br>
+---
 
-`GET /user`, dùng để lấy thông tin người dùng
-res = {username, số trang còn lại, tài khoản ngân hàng} <br>
+## 2. Đăng ký
+**`POST /register`**  
+- **Mô tả**: Dùng để đăng ký tài khoản mới.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "username": "<string>",
+    "password": "<string>",
+    "role": "<string>",
+    "thông tin ngân hàng": "<object>"
+  }
+  ```
 
-`POST /buy`, mua thêm trang, req = {số tiền, số trang} <br>
+---
+
+## 3. Lịch sử thanh toán
+**`GET /history-payment`**  
+- **Mô tả**: Lấy lịch sử thanh toán.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "username": "<string>"
+  }
+  ```
+- **Phản hồi**:  
+  ![Lịch sử thanh toán](https://github.com/user-attachments/assets/c795dfdd-c288-442d-95b0-417798052964)
+
+---
+
+## 4. Lịch sử in
+**`GET /history-print`**  
+- **Mô tả**: Lấy lịch sử in.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "username": "<string>"
+  }
+  ```
+- **Phản hồi**:  
+  ![Lịch sử in](https://github.com/user-attachments/assets/0f8b5242-315f-4274-ba21-a39985b4af68)
+
+---
+
+## 5. Lệnh in
+**`POST /print`**  
+- **Mô tả**: Gửi lệnh in.  
+- **Yêu cầu**: Payload bao gồm file.  
+- **Phản hồi**:  
+  ![Phản hồi lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
+
+---
+
+## 6. Thông tin người dùng
+**`GET /user`**  
+- **Mô tả**: Lấy thông tin người dùng.  
+- **Phản hồi**:  
+  ```json
+  {
+    "username": "<string>",
+    "số trang còn lại": "<integer>",
+    "tài khoản ngân hàng": "<object>"
+  }
+  ```
+
+---
+
+## 7. Mua thêm trang
+**`POST /buy`**  
+- **Mô tả**: Mua thêm số lượng trang.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "số tiền": "<integer>",
+    "số trang": "<integer>"
+  }
+  ```
