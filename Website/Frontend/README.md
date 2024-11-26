@@ -24,7 +24,7 @@
     "username": "<string>",
     "password": "<string>",
     "role": "<string>",
-    "thông tin ngân hàng": "<object>"
+    "thông tin ngân hàng": "<string>"
   }
   ```
 
@@ -61,9 +61,8 @@
 ## 5. Lệnh in
 **`POST /print`**  
 - **Mô tả**: Gửi lệnh in.  
-- **Yêu cầu**: Payload bao gồm file.  
-- **Phản hồi**:  
-  ![Phản hồi lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
+- **Yêu cầu**:  Thông tin bên dưới và 1 file pdf/docx.
+  ![Yêu cầu lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
 
 ---
 
