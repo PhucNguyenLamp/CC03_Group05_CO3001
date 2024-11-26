@@ -2,46 +2,68 @@ import { Paper, Typography, Container, Tabs, Tab } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
 
 import React, { useState } from 'react'
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 90,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
-        valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    },
+
+const columns1 = [
+    { field: 'id', headerName: 'STT', type: 'number', width: 70 },
+    { field: 'transactionId', headerName: 'Mã giao dịch', width: 200 },
+    { field: 'time', headerName: 'Thời gian', width: 130 },
+    { field: 'paper', headerName: 'Loại giấy', width: 100 },
+    { field: 'pages', headerName: 'Số trang mua', type: 'number', width: 100 },
+    { field: 'price', headerName: 'Tổng cộng', width: 170 },
 ];
 
-const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+const rows1 = [
+    { id: 1, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
+    { id: 2, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
+    { id: 3, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
+    { id: 4, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
+    { id: 5, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
+    { id: 6, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
 ];
-const paginationModel = { page: 0, pageSize: 5 };
+
+const columns2 = [
+    { field: 'id', headerName: 'STT', type: 'number', width: 70 },
+    { field: 'time', headerName: 'Thời điểm in', width: 130 },
+    { field: 'printer', headerName: 'Máy in', width: 130 },
+    {
+        field: 'address',
+        headerName: 'Địa điểm',
+        width: 150,
+    },
+    {
+        field: 'document',
+        headerName: 'Tên tài liệu',
+        width: 190,
+    },
+    { field: 'pages', headerName: 'Số trang', type: 'number', width: 80 },
+];
+
+const rows2 = [
+    { id: 1, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+    { id: 2, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+    { id: 3, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+    { id: 4, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+    { id: 5, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+    { id: 6, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
+];
+
 
 export default function History() {
     const [value, setValue] = React.useState(0);
+    const [data, setData] = useState({ rows: rows1, columns: columns1 });
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        console.log(newValue);
+        // Switch data based on the tab index
+        if (newValue === 0) {
+            setData({ rows: rows1, columns: columns1 });
+        } else if (newValue === 1) {
+            setData({ rows: rows2, columns: columns2 });
+        }
     }
     return (
-        <Container maxWidth="md" sx={{ mt: 15 }} >
+        <Container maxWidth="md" sx={{}} >
             <Paper
                 elevation={5}
                 sx={{
@@ -49,7 +71,10 @@ export default function History() {
                     flexDirection: "column",
                     alignItems: "center",
                     p: 4,
+                    flexGrow: 1,
+                    width: '100%',
                     textAlign: "center",
+                    my: 2,
                 }}
             >
                 <Typography variant="h4" color="primary" gutterBottom>
@@ -59,16 +84,20 @@ export default function History() {
                     <Tab label="Thanh toán" />
                     <Tab label="In ấn" />
                 </Tabs>
-                <Paper>
+                <Paper sx={{ height: 400, width: '100%' }}>
                     <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        initialState={{ pagination: { paginationModel } }}
-                        pageSizeOptions={[5, 10]}
-                        checkboxSelection
-                        sx={{ border: 0 }}
+                        rows={data.rows}
+                        columns={data.columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 5,
+                                },
+                            },
+                        }}
+                        pageSizeOptions={[5]}
+                        disableRowSelectionOnClick
                     />
-                    
                 </Paper>
             </Paper>
         </Container>

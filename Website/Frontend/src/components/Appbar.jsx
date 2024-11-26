@@ -49,7 +49,7 @@ export default function Appbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" >
       <Toolbar className="flex justify-between items-center px-6">
         {/* Logo and Title */}
         <Box

@@ -3,7 +3,7 @@ import { Container, Paper, Typography, Button, Box } from "@mui/material";
 
 export default function UploadFiles() {
   return (
-    <Container maxWidth="md" sx={{ mt: 15}}>
+    <Container maxWidth="md" sx={{ }}>
       <Paper
         elevation={5}
         sx={{
@@ -12,6 +12,7 @@ export default function UploadFiles() {
           alignItems: "center",
           gap: 2,
           p: 4,
+          my: 2,
           textAlign: "center",
         }}
       >
