@@ -62,15 +62,15 @@ export default function History() {
         }
     }
     return (
-        <Container maxWidth="md" sx={{}} >
+        <Container maxWidth="md" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', }} >
             <Paper
                 elevation={5}
                 sx={{
+                    height: '70vh',
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     p: 4,
-                    flexGrow: 1,
                     width: '100%',
                     textAlign: "center",
                     my: 2,

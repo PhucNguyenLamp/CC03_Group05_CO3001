@@ -1,8 +1,11 @@
 import { Paper, Typography, Container, Box, Button } from '@mui/material'
 import { CheckBox } from '@mui/icons-material'
+import { useNavigate } from 'react-router';
+
 export default function Success() {
+    const navigate = useNavigate();
     return (
-        <Container maxWidth="md" sx={{}}>
+        <Container maxWidth="md" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
             <Paper
                 sx={{
                     display: "flex",
@@ -10,7 +13,6 @@ export default function Success() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     p: 4,
-                    flexGrow: 1,
                     width: '100%',
                     textAlign: "center",
                     my: 2,
@@ -26,10 +28,12 @@ export default function Success() {
                         Vui lòng chờ trong lúc máy in xử lý và thực hiện yêu cầu của bạn
                     </Typography>
                 </Box>
-                <Box>
-                    <Button>Trở về</Button>
-                    <Button>Tiếp tục in</Button>
-                    <Button variant='contained'>Mua trang</Button>
+                <Box sx={{display:'flex', justifyContent: 'space-around', width: '80%'}}>
+                    <Box>
+                        <Button onClick={() => navigate('/')}>Trở về</Button>
+                        <Button onClick={() => navigate('/print')}>Tiếp tục in</Button>
+                    </Box>
+                    <Button variant='contained' onClick={() => navigate('/buy')}>Mua trang</Button>
                 </Box>
             </Paper>
         </Container>

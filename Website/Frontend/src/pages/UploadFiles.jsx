@@ -16,16 +16,17 @@ export default function UploadFiles() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ }}>
+    <Container maxWidth="md" sx={{ flex: 1, display: 'flex', flexDirection:'column', justifyContent:'center',}}>
       <Paper
         elevation={5}
         sx={{
+          height: "70vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "space-between",
           gap: 2,
           p: 4,
-          my: 2,
           textAlign: "center",
         }}
       >
@@ -53,7 +54,7 @@ export default function UploadFiles() {
         </Dropzone>
 
         {/* Drag-and-Drop Section */}
-        <Box>
+        <Box sx={{flex:1, display: 'flex', flexDirection: 'column', width: '500px'}}>
           <Dropzone onDrop={handleDrop}>
             {({ getRootProps, getInputProps }) => (
               <Box
@@ -67,8 +68,10 @@ export default function UploadFiles() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: 1,
-                  cursor: "pointer", // Indicate the area is clickable
+                  cursor: "pointer", 
+                  flex:1,
                 }}
               >
                 <input {...getInputProps()} />
