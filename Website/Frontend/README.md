@@ -12,6 +12,7 @@
     "role": "<string>"
   }
   ```
+![image](https://github.com/user-attachments/assets/50070656-5dda-4a3f-b834-47f7661eff15)
 
 ---
 
@@ -30,7 +31,14 @@
 
 ---
 
-## 3. Lịch sử thanh toán
+## 3. Lệnh in
+**`POST /print`**  
+- **Mô tả**: Gửi lệnh in.  
+- **Yêu cầu**:  Thông tin bên dưới và 1 file pdf/docx.  
+  ![Yêu cầu lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
+
+---
+## 4. Lịch sử thanh toán
 **`GET /history-payment`**  
 - **Mô tả**: Lấy lịch sử thanh toán.  
 - **Yêu cầu**:  
@@ -44,7 +52,7 @@
 
 ---
 
-## 4. Lịch sử in
+## 5. Lịch sử in
 **`GET /history-print`**  
 - **Mô tả**: Lấy lịch sử in.  
 - **Yêu cầu**:  
@@ -58,13 +66,17 @@
 
 ---
 
-## 5. Lệnh in
-**`POST /print`**  
-- **Mô tả**: Gửi lệnh in.  
-- **Yêu cầu**:  Thông tin bên dưới và 1 file pdf/docx.  
-  ![Yêu cầu lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
-
----
+## 7. Mua thêm trang
+**`POST /buy`**  
+- **Mô tả**: Mua thêm số lượng trang.  
+- **Yêu cầu**:  
+  ```json
+  {
+    "số tiền": "<integer>",
+    "số trang": "<integer>"
+  }
+  ```
+Cho màn mua trang  
 
 ## 6. Thông tin người dùng
 **`GET /user`**  
@@ -77,16 +89,6 @@
     "tài khoản ngân hàng": "<object>"
   }
   ```
-
+Cho màn dashboard
 ---
 
-## 7. Mua thêm trang
-**`POST /buy`**  
-- **Mô tả**: Mua thêm số lượng trang.  
-- **Yêu cầu**:  
-  ```json
-  {
-    "số tiền": "<integer>",
-    "số trang": "<integer>"
-  }
-  ```
