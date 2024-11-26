@@ -66,7 +66,7 @@
 
 ---
 
-## 7. Mua thêm trang
+## 6. Mua thêm trang
 **`POST /buy`**  
 - **Mô tả**: Mua thêm số lượng trang.  
 - **Yêu cầu**:  
@@ -78,7 +78,7 @@
   ```
 Cho màn mua trang  
 
-## 6. Thông tin người dùng
+## 7. Thông tin người dùng
 **`GET /user`**  
 - **Mô tả**: Lấy thông tin người dùng.  
 - **Phản hồi**:  
