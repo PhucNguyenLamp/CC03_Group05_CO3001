@@ -6,6 +6,8 @@ import History from "../pages/History";
 import Buy from "../pages/Buy";
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
+import Preview from "../pages/Preview";
+import Success from "../pages/Success";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
                 path: '/dashboard',
                 element: <Dashboard />
             },
+            {
+                path: '/Preview',
+                element: <Preview />
+            },
+            {
+                path: '/success',
+                element: <Success />
+            }
         ]
     },
     {

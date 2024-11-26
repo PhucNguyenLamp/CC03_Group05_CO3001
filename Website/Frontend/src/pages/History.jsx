@@ -1,6 +1,5 @@
 import { Paper, Typography, Container, Tabs, Tab } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
-
 import React, { useState } from 'react'
 
 const columns1 = [
@@ -51,7 +50,7 @@ const rows2 = [
 export default function History() {
     const [value, setValue] = React.useState(0);
     const [data, setData] = useState({ rows: rows1, columns: columns1 });
-
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
         console.log(newValue);
