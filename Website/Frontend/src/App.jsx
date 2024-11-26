@@ -1,9 +1,8 @@
-import React from 'react'
-import Appbar from './components/Appbar';
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import Appbar from "./components/Appbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
-
   return (
     <div style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
       <Appbar/>
@@ -12,4 +11,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
