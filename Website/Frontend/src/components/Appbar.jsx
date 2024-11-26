@@ -54,8 +54,7 @@ export default function Appbar() {
         {/* Logo and Title */}
         <Box
           className="flex items-center space-x-3"
-          onClick={() => navigate("/")}
-        >
+          onClick={() => navigate("/")}>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <PrintTwoTone />
           </IconButton>
@@ -70,8 +69,7 @@ export default function Appbar() {
             <Button
               key={index}
               className="text-white py-2 px-4"
-              onClick={() => navigate(page.path)}
-            >
+              onClick={() => navigate(page.path)}>
               {page.name}
             </Button>
           ))}
@@ -98,16 +96,14 @@ export default function Appbar() {
               horizontal: "right",
             }}
             open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
+            onClose={handleCloseUserMenu}>
             {settings.map((setting) => (
               <MenuItem
                 key={setting.name}
                 onClick={() => {
                   handleCloseUserMenu();
                   navigate(setting.path);
-                }}
-              >
+                }}>
                 <Typography sx={{ textAlign: "center" }}>
                   {setting.name}
                 </Typography>
