@@ -52,21 +52,24 @@ export default function Appbar() {
     <AppBar position="static">
       <Toolbar className="flex justify-between items-center px-6">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-3" onClick={() => navigate('/')}>
+        <Box
+          className="flex items-center space-x-3"
+          onClick={() => navigate("/")}
+        >
           <IconButton edge="start" color="inherit" aria-label="menu">
             <PrintTwoTone />
           </IconButton>
           <Typography variant="h6" component="div">
             Bách Khoa Printing
           </Typography>
-        </div>
+        </Box>
 
         {/* Navigation Buttons */}
         <Box className="md:flex space-x-4">
           {pages.map((page, index) => (
             <Button
               key={index}
-              className="hover:bg-black hover:bg-opacity-10 text-white py-2 px-4"
+              className="text-white py-2 px-4"
               onClick={() => navigate(page.path)}
             >
               {page.name}
@@ -98,8 +101,16 @@ export default function Appbar() {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting.name} onClick={() => { handleCloseUserMenu(); navigate(setting.path); }}>
-                <Typography sx={{ textAlign: "center" }}>{setting.name}</Typography>
+              <MenuItem
+                key={setting.name}
+                onClick={() => {
+                  handleCloseUserMenu();
+                  navigate(setting.path);
+                }}
+              >
+                <Typography sx={{ textAlign: "center" }}>
+                  {setting.name}
+                </Typography>
               </MenuItem>
             ))}
           </Menu>
