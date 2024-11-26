@@ -61,7 +61,7 @@
 ## 5. Lệnh in
 **`POST /print`**  
 - **Mô tả**: Gửi lệnh in.  
-- **Yêu cầu**:  Thông tin bên dưới và 1 file pdf/docx.
+- **Yêu cầu**:  Thông tin bên dưới và 1 file pdf/docx.  
   ![Yêu cầu lệnh in](https://github.com/user-attachments/assets/9cfa1e50-ef0a-44ec-ae30-9968769e0bf1)
 
 ---
