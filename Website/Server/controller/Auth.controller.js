@@ -24,9 +24,7 @@ export class AuthController {
       if(!user || !await user.correctPassword(password,user.password)) {
         return next(new AppError("Incorrect username or password",401));
       }
-    }
-    user = user.plain
-    user.role=role;
+    };
     signToken(user,200,res);
   
   }
@@ -36,11 +34,37 @@ export class AuthController {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
+    console.log(req.headers.authorization);
     if(!token) {
-      return next(new AppError("You are not logged in !! Please log in again"));
+      return next(new AppError("You are not logged in !! Please log in again",401));
     }
-    const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-    
+    try{
+      const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+      console.log(decoded);
+      const {id,role} = decoded;
+      let user ={};
+      if(role==="SPSO") {
+        user = await SPSO.findById(id);
+      } else if (role==="Student") {
+        user = await Student.findById(id);
+      }
+      if(!user) {
+        return next( new AppError('The token belonging to this user no longer exist.'),401);
+      }
+      req.user=user;
+      req.role=role;
+      next();
+      // res.status(200).json({
+      //   status:"success"
+      // });
+      
+    } catch(err) {
+      if (err.name === 'TokenExpiredError') {
+        return next(new AppError("Your session has expired. Please log in again",401));
+      } else {
+        return next(new AppError("You are not logged in !! Please log in again", 401));
+      }
+    }
   }
 }
 

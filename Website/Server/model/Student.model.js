@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
-import validator from 'validator'
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
 
 const StudentSchema = mongoose.Schema ({
   ID: {
@@ -36,6 +36,10 @@ const StudentSchema = mongoose.Schema ({
   last_login: {
     type: Date,
     default: undefined
+  },
+  role: {
+    type:String,
+    default: "Student"
   }
 }, {
   timestamps:true

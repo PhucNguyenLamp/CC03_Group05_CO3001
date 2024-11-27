@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
-import validator from 'validator'
-import bcrypt from 'bcrypt'
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 const SPSOSchema = mongoose.Schema ({
   ID: {
@@ -36,10 +36,16 @@ const SPSOSchema = mongoose.Schema ({
   last_login: {
     type: Date,
     default: undefined
+  }, 
+  role: {
+    type:String,
+    default: "SPSO"
   }
 }, {
   timestamps:true
 }); 
+
+
 
 SPSOSchema.pre('save', async function(next) {
   if(this.password.length > 16) return next();

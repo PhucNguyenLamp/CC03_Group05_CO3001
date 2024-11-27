@@ -1,17 +1,17 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const PrinterSchema = mongoose.Schema({
-  code: {
+  model: {
     type:String,
-    required:[true],
-    uniqued:WebTransportDatagramDuplexStream
+    required:true,
+    uniqued:true
   }, 
   brand: {
     type:String
   },
   status: {
     type: Boolean,
-    require: [true]
+    require: true
   },
   description: {
     type:String
@@ -19,11 +19,11 @@ const PrinterSchema = mongoose.Schema({
   location: {
     room: {
       type:String,
-      required: [true]
+      required: true
     },
     building: {
       type: String,
-      required: [true]
+      required: true
     },
     campus: {
       type:String
