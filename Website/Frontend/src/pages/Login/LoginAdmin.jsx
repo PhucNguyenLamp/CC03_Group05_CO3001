@@ -11,7 +11,7 @@ import api from "../../api/axios";
 // const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
 
-export default function LoginUser() {
+export default function LoginAdmin() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -108,7 +108,7 @@ export default function LoginUser() {
             textAlign="center"
             fontSize="18px"
             fontWeight="bold">
-            Đăng nhập tài khoản HCMUT
+            Đăng nhập Admin
           </Typography>
         </Box>
         <Divider sx={{ width: "100%" }} />
