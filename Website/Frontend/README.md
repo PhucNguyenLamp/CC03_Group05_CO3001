@@ -18,10 +18,9 @@
 
 ---
 
-<del>
-## 2. Đăng ký
-**`POST /register`**  
-- **Mô tả**: Dùng để đăng ký tài khoản mới.  
+## ~~2. Đăng ký~~ (Không thêm vài)
+~~POST /register~~  
+- **Mô tả**: ~~Dùng để đăng ký tài khoản mới.~~  
 - **Yêu cầu**:  
   ```json
   {
@@ -31,9 +30,9 @@
     "thông tin ngân hàng": "<string>"
   }
   ```
-~~
-</del>
 
+---
+  
 ## 3. Lệnh in
 **`POST /print`**  
 - **Mô tả**: Gửi lệnh in.  
