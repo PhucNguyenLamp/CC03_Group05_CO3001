@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # Env variable
-.env
+*.env
 
 # Initial data
 dev-data/
