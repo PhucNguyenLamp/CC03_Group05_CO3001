@@ -54,7 +54,6 @@ export default function LoginUser() {
       }
     } catch (error) {
       console.error("Login failed: ", error);
-      
     }
   };
 
