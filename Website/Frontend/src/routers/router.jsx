@@ -6,6 +6,7 @@ import History from "../pages/History";
 import Buy from "../pages/Buy";
 import Login from "../pages/Login/Login";
 import LoginUser from "../pages/Login/LoginUser";
+import LoginAdmin from "../pages/Login/LoginAdmin";
 import Dashboard from "../pages/Dashboard";
 
 const router = createBrowserRouter([
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: "/login-user",
     element: <LoginUser />,
+  },
+  {
+    path: "/login-admin",
+    element: <LoginAdmin />,
   },
 ]);
 
