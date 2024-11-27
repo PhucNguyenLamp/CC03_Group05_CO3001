@@ -23,8 +23,20 @@ export default function Login() {
       <Box
         sx={{
           position: "relative",
-          width: "30vw",
-          height: "auto",
+          width: {
+            xs: "90vw",
+            sm: "80vw",
+            md: "50vw",
+            lg: "30vw",
+            xl: "30vw",
+          },
+          height: {
+            xs: "70vh",
+            sm: "70vh",
+            md: "70vh",
+            lg: "70vh",
+            xl: "70vh",
+          },
           maxHeight: "70vh",
           backgroundColor: "#fff",
           padding: "30px",
@@ -39,7 +51,7 @@ export default function Login() {
         <img
           src={hcmut_logo}
           alt="HCMUT LOGO"
-          style={{ width: "45%", marginBottom: "10%", marginTop: "5%" }}
+          style={{ height: "35%", marginBottom: "10%", marginTop: "5%" }}
         />
         <Typography
           color="primary.dark"
