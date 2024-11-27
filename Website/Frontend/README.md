@@ -13,6 +13,8 @@
   }
   ```
 ![image](https://github.com/user-attachments/assets/50070656-5dda-4a3f-b834-47f7661eff15)
+**Demo các trường jwt**  
+![image](https://github.com/user-attachments/assets/0685507b-004a-4fcf-aaaa-be0809396d62)
 
 ---
 
