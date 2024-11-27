@@ -9,7 +9,7 @@
   {
     "username": "<string>",
     "password": "<string>",
-  // không cần role đâu, nhưng nhớ trả role về cảm ơn
+    "role": "<string>",
   }
   ```
 ![image](https://github.com/user-attachments/assets/50070656-5dda-4a3f-b834-47f7661eff15)
@@ -74,6 +74,7 @@
 - **Yêu cầu**:  
   ```json
   {
+    "username": "<string>",
     "số tiền": "<integer>",
     "số trang": "<integer>"
   }
