@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         try {
             console.log('Attempting login with:', { username, password });
-            const response = await api.post('/api/users/signin', {
+            const response = await api.post('/api/v1/authentication/login', {
                 username,
                 password
             });
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
             console.log('Login response:', response.data);
 
             const { token, user } = response.data;
+
 
             if (!token || !user) {
                 console.error('Missing token or user_data in response:', response.data);
