@@ -18,7 +18,7 @@
 
 ---
 
-## ~~2. Đăng ký~~ (Không thêm vài)
+## ~~2. Đăng ký~~ (Không thêm vào)
 ~~POST /register~~  
 - **Mô tả**: ~~Dùng để đăng ký tài khoản mới.~~  
 - **Yêu cầu**:  
