@@ -42,11 +42,11 @@ export default function Preview() {
     const [selectedPrinter, setSelectedPrinter] = useState(1);
     const [pdfUrl, setPdfUrl] = useState("");
     const [number, setNumber] = useState(1);
+    const [pages, setPages] = useState(null);
     const [side, setSide] = useState(1);
-    const [sidesInOnePage, setSidesInOnePage] = useState(1);
+    const [direction, setDirection] = useState("Dọc");
     const [range, setRange] = useState("all");
     const [paperSize, setPaperSize] = useState("A4");
-
     const [activeStep, setActiveStep] = useState(0);
 
 
@@ -115,7 +115,7 @@ export default function Preview() {
                                 <Box sx={{ height: '100%', width: 80 }}>
                                     <img src={pdf} alt="Document Icon" style={{ height: "100%", width: "100%" }} />
                                 </Box>
-    
+
                                 <Box>
                                     <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -123,14 +123,14 @@ export default function Preview() {
                                         </Typography>
                                         <Typography variant="body1">{file.name}</Typography>
                                     </Box>
-    
+
                                     <Box sx={{ display: "flex", gap: 1, alignItems: "center", mt: 0.5 }}>
                                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                                             Kích thước:
                                         </Typography>
                                         <Typography variant="body1">{file.size / 1000}kB</Typography>
                                     </Box>
-    
+
                                     {/* <Box sx={{ display: "flex", gap: 1, alignItems: "center", mt: 0.5 }}>
                                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
                                         Số trang:
@@ -139,10 +139,10 @@ export default function Preview() {
                                 </Box> */}
                                 </Box>
                             </Box>
-    
-    
-    
-    
+
+
+
+
                             <TableContainer component={Paper} sx={{ maxWidth: 600, mt: 2, maxHeight: 400 }}>
                                 <Typography variant="h6" sx={{ textAlign: "center", mt: 2 }}>
                                     Chọn máy in
@@ -174,7 +174,7 @@ export default function Preview() {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-    
+
                             <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, }}>
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }}
                                     onClick={() => navigate('/print')}> Trở lại </Button>
@@ -197,24 +197,56 @@ export default function Preview() {
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
                                     <strong>Số trang in còn lại:</strong> {user.pages}
                                 </Typography>
-    
-    
-                                <TextField variant="outlined" label="Số lượng" sx={{ mt: 2 }} fullWidth value={number} onChange={(e) => setNumber(e.target.value)}/>
-                                    <TextField variant="outlined" label="Số mặt" sx={{ mt: 2 }} fullWidth value={side} onChange={(e) => setSide(e.target.value)} />
-                                    <TextField variant="outlined" label="Số trang một mặt" sx={{ mt: 2, mb: 2 }} fullWidth value={sidesInOnePage} onChange={(e) => setSidesInOnePage(e.target.value)} />
+
+
+                                <TextField variant="outlined" label="Số lượng" sx={{ my: 2 }} fullWidth value={number} onChange={(e) => setNumber(e.target.value)} />
                                 <FormControl fullWidth>
-                                    <InputLabel id="phamvilabel">Phạm vi</InputLabel>
+                                    <InputLabel id="sidelabel">Số mặt</InputLabel>
                                     <Select
-                                        labelId="phamvilabel"
-                                        id="phamvi"
+                                        labelId="sidelabel"
+                                        id="side"
                                         sx={{ mb: 2 }}
-                                        value={range}
-                                        label="Phạm vi"
-                                        onChange={(e) => setRange(e.target.value)}
+                                        value={side}
+                                        label="Số mặt"
+                                        onChange={(e) => setSide(e.target.value)}
                                     >
-                                        <MenuItem value={"all"}>Toàn bộ</MenuItem>
+                                        <MenuItem value={1}>1</MenuItem>
+                                        <MenuItem value={2}>2</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <FormControl fullWidth>
+                                    <InputLabel id="directionlabel">Hướng in</InputLabel>
+                                    <Select
+                                        labelId="directionlabel"
+                                        id="direction"
+                                        sx={{ mb: 2 }}
+                                        value={direction}
+                                        label="Hướng in"
+                                        onChange={(e) => setDirection(e.target.value)}
+                                    >
+                                        <MenuItem value={"Dọc"}>Dọc</MenuItem>
+                                        <MenuItem value={"Ngang"}>Ngang</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, width: '100%' }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="phamvilabel">Phạm vi</InputLabel>
+                                        <Select
+                                            labelId="phamvilabel"
+                                            id="phamvi"
+                                            sx={{ mb: 2 }}
+                                            value={range}
+                                            label="Phạm vi"
+                                            onChange={(e) => setRange(e.target.value)}
+                                        >
+                                            <MenuItem value={"all"}>Toàn bộ</MenuItem>
+                                            <MenuItem value={"thispage"}>Trang hiện tại</MenuItem>
+                                            <MenuItem value={"selection"}>Tự chọn</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <TextField variant="outlined" label="Các trang" fullWidth sx={{}} placeholder="1,2,3-5" disabled={range !== "selection"}
+                                        value={pages} onChange={(e) => setPages(e.target.value)} />
+                                </Box>
                                 <FormControl fullWidth>
                                     <InputLabel id="kichthuoclabel">Loại giấy</InputLabel>
                                     <Select
@@ -240,8 +272,8 @@ export default function Preview() {
                         </>
                     )}
                 </Paper>
-    
-    
+
+
                 <Paper>
                     <Typography variant="h6" sx={{ textAlign: "center", mt: 2 }}>
                         Bản xem trước
@@ -253,7 +285,7 @@ export default function Preview() {
                             <Typography variant="body1">Loading PDF...</Typography>
                         )}
                     </Box>
-    
+
                 </Paper>
             </Box>
         </Container>
