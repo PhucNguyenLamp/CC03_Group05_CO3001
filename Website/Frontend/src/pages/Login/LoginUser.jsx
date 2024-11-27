@@ -53,8 +53,8 @@ export default function LoginUser() {
         navigate(comeTo, { replace: true });
       }
     } catch (error) {
-      // setErrMsg(error.response?.data?.message || "Login failed");
-      // errRef.current?.focus();
+      console.error("Login failed: ", error);
+      
     }
   };
 

@@ -31,7 +31,7 @@ export default function Appbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, userInfo } = useAuth();
   const [isCustomer] = useState(true);
 
   const handleOpenNavMenu = (event) => {
@@ -53,7 +53,6 @@ export default function Appbar() {
   const handleLogOut = () => {
     logout();
     navigate('/login');
-
   }
   return (
     <AppBar position="sticky" >
@@ -83,27 +82,30 @@ export default function Appbar() {
         </Box>
 
         {/* User Menu */}
-        <Box>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} className="p-0">
-              <Avatar alt="User" />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}>
+        {userInfo ? (
+          <Box sx={{display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center'}}>
+            <Typography>{userInfo.name}</Typography>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} className="p-0">
+                <Avatar alt="User" />
+              </IconButton>
+            </Tooltip>
+            
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}>
               <MenuItem
                 key={"dashboard"}
                 onClick={() => {
@@ -114,15 +116,15 @@ export default function Appbar() {
                   Dashboard
                 </Typography>
               </MenuItem>
-            <MenuItem
-              key={"logout"}
-              onClick={handleLogOut}>
-              <Typography sx={{ textAlign: "center" }}>
-                Log out
-              </Typography>
-            </MenuItem>
-          </Menu>
-        </Box>
+              <MenuItem
+                key={"logout"}
+                onClick={handleLogOut}>
+                <Typography sx={{ textAlign: "center" }}>
+                  Log out
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Box>) : (<Box><Button sx={{color: 'white'}} onClick={() => navigate('/login')}>Log in</Button></Box>)}
       </Toolbar>
     </AppBar>
   );
