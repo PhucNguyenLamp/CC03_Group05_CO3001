@@ -24,7 +24,7 @@ api.interceptors.response.use(
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             delete api.defaults.headers.common['Authorization'];
-            window.location.href='/signin'
+            window.location.href='/login'
         }
         return Promise.reject(error)
     }

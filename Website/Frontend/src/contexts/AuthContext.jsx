@@ -4,13 +4,13 @@ import api from '../api/axios'
 const AuthContext = createContext(null);
 
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState(null);
     const [loading, setLoading] = useState(true);
-    
+
     useEffect(() => {
         const checkAuth = async () => {
-            try{
+            try {
                 const token = localStorage.getItem('token')
                 const userData = localStorage.getItem('user')
 
@@ -19,13 +19,13 @@ export const AuthProvider = ({children}) => {
                     const parsedUser = JSON.parse(userData);
                     setUserInfo(parsedUser);
                 }
-            }catch(error){
+            } catch (error) {
                 console.error("Error loading auth state: ", error);
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 delete api.defaults.headers.common['Authorization'];
 
-            }finally{
+            } finally {
                 setLoading(false);
             }
         }
@@ -40,11 +40,11 @@ export const AuthProvider = ({children}) => {
                 username,
                 password
             });
-            
+
             console.log('Login response:', response.data);
-            
+
             const { token, user } = response.data;
-            
+
             if (!token || !user) {
                 console.error('Missing token or user_data in response:', response.data);
                 throw new Error('Invalid response data');
@@ -53,15 +53,15 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             console.log('Stored user data:', user);
-            
+
             setUserInfo(user);
-            console.log("USERINFO: ", userInfo);
+            console.log("USERINFO: ", user);
             return { success: true, user: user };
         } catch (error) {
             console.error('Login error:', error);
-            return { 
-                success: false, 
-                error: error.response?.data?.message || 'Login failed' 
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Login failed'
             };
         }
     };
@@ -75,13 +75,13 @@ export const AuthProvider = ({children}) => {
 
         setUserInfo(null);
     }
-    if(loading){
+    if (loading) {
         return <div>Loading...</div>
     }
 
     return (
         <AuthContext.Provider
-            value= {{
+            value={{
                 userInfo,
                 login,
                 logout,
@@ -97,7 +97,7 @@ export const AuthProvider = ({children}) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context){
+    if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;

@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { PrintTwoTone } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import Dashboard from './../pages/Dashboard';
+import { useAuth } from "../contexts/AuthContext";
 
 const pages = [
   { name: "In tài liệu", path: "/print" },
@@ -29,7 +31,7 @@ export default function Appbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
-
+  const { logout } = useAuth();
   const [isCustomer] = useState(true);
 
   const handleOpenNavMenu = (event) => {
@@ -48,6 +50,11 @@ export default function Appbar() {
     setAnchorElUser(null);
   };
 
+  const handleLogOut = () => {
+    logout();
+    navigate('/login');
+
+  }
   return (
     <AppBar position="sticky" >
       <Toolbar className="flex justify-between items-center px-6">
@@ -97,18 +104,23 @@ export default function Appbar() {
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}>
-            {settings.map((setting) => (
               <MenuItem
-                key={setting.name}
+                key={"dashboard"}
                 onClick={() => {
                   handleCloseUserMenu();
-                  navigate(setting.path);
+                  navigate('/dashboard');
                 }}>
                 <Typography sx={{ textAlign: "center" }}>
-                  {setting.name}
+                  Dashboard
                 </Typography>
               </MenuItem>
-            ))}
+            <MenuItem
+              key={"logout"}
+              onClick={handleLogOut}>
+              <Typography sx={{ textAlign: "center" }}>
+                Log out
+              </Typography>
+            </MenuItem>
           </Menu>
         </Box>
       </Toolbar>
