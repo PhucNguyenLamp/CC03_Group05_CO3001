@@ -21,7 +21,7 @@ import {
     FormControl
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import docx from "../assets/docx.png";
+// import docx from "../assets/docx.png";
 import pdf from "../assets/pdf.png";
 import { useNavigate } from 'react-router';
 import { useLocation } from "react-router-dom";

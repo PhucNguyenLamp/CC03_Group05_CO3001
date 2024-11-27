@@ -9,6 +9,7 @@ import LoginUser from "../pages/Login/LoginUser";
 import Dashboard from "../pages/Dashboard";
 import Preview from "../pages/Preview";
 import Success from "../pages/Success";
+import { ProtectedRoute } from './../pages/ProtectedRoutes';
 
 const router = createBrowserRouter([
     {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/signup',
-        element: <Login />
+        element: <Login /> // sửa thành Signup sau
     },
     {
         path: '/login',

@@ -29,11 +29,11 @@ export default function Success() {
                     </Typography>
                 </Box>
                 <Box sx={{display:'flex', justifyContent: 'space-around', width: '80%'}}>
-                    <Box>
-                        <Button onClick={() => navigate('/')}>Trở về</Button>
+                    <Button  onClick={() => navigate('/buy')}>Mua trang</Button>
+                    <Box sx={{ display: 'flex', gap: 2 }}>
                         <Button onClick={() => navigate('/print')}>Tiếp tục in</Button>
+                        <Button variant='contained' onClick={() => navigate('/')}>Trở về</Button>
                     </Box>
-                    <Button variant='contained' onClick={() => navigate('/buy')}>Mua trang</Button>
                 </Box>
             </Paper>
         </Container>

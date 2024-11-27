@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Footer from "../../components/Footer";
 import Box from "@mui/material/Box";
 import {
@@ -14,14 +14,20 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import bg from "../../assets/bg.png";
 import hcmut_logo from "../../assets/HCMUT.png";
+import { useAuth } from "../../contexts/AuthContext";
+import api from '../../api/axios';
+
+// const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
 
 export default function LoginUser() {
   const navigate = useNavigate();
+  const {login} = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const location = useLocation();
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -33,12 +39,23 @@ export default function LoginUser() {
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
-  const handleSubmit = (event) => {
+  const comeTo = location.state?.from?.pathname || '/';
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle login logic here
-    console.log("Username:", username);
-    console.log("Password:", password);
+    try {
+      const result = await login(username, password);
+
+      console.log("Inside handleSubmit, result: ", result);
+      if (result.success) {
+        console.log('Token after login:', localStorage.getItem('token'));
+        console.log('Auth header:', api.defaults.headers.common['Authorization']);
+        navigate(comeTo, { replace: true });
+      }
+    } catch (error) {
+      // setErrMsg(error.response?.data?.message || "Login failed");
+      // errRef.current?.focus();
+    }
   };
 
   return (
@@ -140,6 +157,7 @@ export default function LoginUser() {
             Trở về
           </Button>
           <Button
+            onClick={handleSubmit}
             variant="contained"
             color="primary.main"
             sx={{
