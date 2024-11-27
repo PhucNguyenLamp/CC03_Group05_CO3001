@@ -31,13 +31,13 @@ const Footer = () => {
             alignItems: "center",
           }}>
           <Box>
-            <Typography fontSize="1.2vw" fontWeight="bold">
+            <Typography fontSize="1.1vw" fontWeight="bold">
               Địa chỉ:
             </Typography>
-            <Typography fontSize="1vw">
+            <Typography fontSize="0.9vw">
               CS1: 268 Lý Thường Kiệt, Phường 14, Quận 10, TP. HCM
             </Typography>
-            <Typography fontSize="1vw">
+            <Typography fontSize="0.9vw">
               CS2: Khu phố Tân Lập, Phường Đông Hòa, TP. Dĩ An, Tỉnh Bình Dương
             </Typography>
           </Box>
@@ -52,12 +52,12 @@ const Footer = () => {
             <img src={hcmut_logo} alt="HCMUT" />
           </Box>
           <Box>
-            <Typography fontSize="1.2vw" fontWeight="bold">
+            <Typography fontSize="1.1vw" fontWeight="bold">
               Liên hệ Tổ kỹ thuật:
             </Typography>
 
-            <Typography fontSize="1vw">Email : ddthu@hcmut.edu.vn</Typography>
-            <Typography fontSize="1vw">
+            <Typography fontSize="0.9vw">Email : ddthu@hcmut.edu.vn</Typography>
+            <Typography fontSize="0.9vw">
               ĐT (Tel.) : (84-8) 38647256 - 5258
             </Typography>
           </Box>
