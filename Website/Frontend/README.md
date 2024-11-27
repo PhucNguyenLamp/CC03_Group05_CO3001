@@ -9,7 +9,7 @@
   {
     "username": "<string>",
     "password": "<string>",
-  // không cần role đâu, nhưng nhớ trả role về cảm ơn
+    "role": "<string>",
   }
   ```
 ![image](https://github.com/user-attachments/assets/50070656-5dda-4a3f-b834-47f7661eff15)
@@ -18,9 +18,9 @@
 
 ---
 
-## 2. Đăng ký
-**`POST /register`**  
-- **Mô tả**: Dùng để đăng ký tài khoản mới.  
+## ~~2. Đăng ký~~ (Không thêm vào)
+~~POST /register~~  
+- **Mô tả**: ~~Dùng để đăng ký tài khoản mới.~~  
 - **Yêu cầu**:  
   ```json
   {
@@ -32,7 +32,7 @@
   ```
 
 ---
-
+  
 ## 3. Lệnh in
 **`POST /print`**  
 - **Mô tả**: Gửi lệnh in.  
@@ -74,6 +74,7 @@
 - **Yêu cầu**:  
   ```json
   {
+    "username": "<string>",
     "số tiền": "<integer>",
     "số trang": "<integer>"
   }
@@ -88,7 +89,7 @@ Cho màn mua trang
   {
     "username": "<string>",
     "số trang còn lại": "<integer>",
-    "tài khoản ngân hàng": "<object>"
+    "tài khoản ngân hàng": "<string>"
   }
   ```
   Cho màn dashboard
