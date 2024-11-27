@@ -89,7 +89,7 @@ Cho màn mua trang
   {
     "username": "<string>",
     "số trang còn lại": "<integer>",
-    "tài khoản ngân hàng": "<object>"
+    "tài khoản ngân hàng": "<string>"
   }
   ```
   Cho màn dashboard
