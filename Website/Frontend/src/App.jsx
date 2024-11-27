@@ -1,14 +1,13 @@
-import React from "react";
 import Appbar from "./components/Appbar";
 import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Appbar />
-      <Outlet />
-    </>
-  );
+    <div style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
+      <Appbar/>
+      <Outlet/>
+    </div>
+  )
 }
 
 export default App;

@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { PrintTwoTone } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import Dashboard from './../pages/Dashboard';
+import { useAuth } from "../contexts/AuthContext";
 
 const pages = [
   { name: "In tài liệu", path: "/print" },
@@ -29,7 +31,7 @@ export default function Appbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
-
+  const { logout, userInfo } = useAuth();
   const [isCustomer] = useState(true);
 
   const handleOpenNavMenu = (event) => {
@@ -48,8 +50,12 @@ export default function Appbar() {
     setAnchorElUser(null);
   };
 
+  const handleLogOut = () => {
+    logout();
+    navigate('/login');
+  }
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" >
       <Toolbar className="flex justify-between items-center px-6">
         {/* Logo and Title */}
         <Box
@@ -76,41 +82,49 @@ export default function Appbar() {
         </Box>
 
         {/* User Menu */}
-        <Box>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} className="p-0">
-              <Avatar alt="User" />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}>
-            {settings.map((setting) => (
+        {userInfo ? (
+          <Box sx={{display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center'}}>
+            <Typography>{userInfo.name}</Typography>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} className="p-0">
+                <Avatar alt="User" />
+              </IconButton>
+            </Tooltip>
+            
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}>
               <MenuItem
-                key={setting.name}
+                key={"dashboard"}
                 onClick={() => {
                   handleCloseUserMenu();
-                  navigate(setting.path);
+                  navigate('/dashboard');
                 }}>
                 <Typography sx={{ textAlign: "center" }}>
-                  {setting.name}
+                  Dashboard
                 </Typography>
               </MenuItem>
-            ))}
-          </Menu>
-        </Box>
+              <MenuItem
+                key={"logout"}
+                onClick={handleLogOut}>
+                <Typography sx={{ textAlign: "center" }}>
+                  Log out
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Box>) : (<Box><Button sx={{color: 'white'}} onClick={() => navigate('/login')}>Log in</Button></Box>)}
       </Toolbar>
     </AppBar>
   );

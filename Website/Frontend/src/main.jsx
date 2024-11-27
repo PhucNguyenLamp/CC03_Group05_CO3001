@@ -17,6 +17,7 @@ import "@fontsource/be-vietnam-pro/500.css";
 import "@fontsource/be-vietnam-pro/700.css";
 
 import router from "./routers/router.jsx";
+import { AuthProvider } from './contexts/AuthContext.jsx'
 
 const theme = createTheme({
   palette: {
@@ -35,10 +36,12 @@ const theme = createTheme({
 });
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <AuthProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </AuthProvider>
   </StrictMode>
 );
