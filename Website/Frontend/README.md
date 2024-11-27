@@ -18,7 +18,8 @@
 
 ---
 
-~~## 2. Đăng ký
+<del>
+## 2. Đăng ký
 **`POST /register`**  
 - **Mô tả**: Dùng để đăng ký tài khoản mới.  
 - **Yêu cầu**:  
@@ -31,7 +32,7 @@
   }
   ```
 ~~
----
+</del>
 
 ## 3. Lệnh in
 **`POST /print`**  
