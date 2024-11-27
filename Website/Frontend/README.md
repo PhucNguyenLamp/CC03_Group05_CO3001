@@ -18,7 +18,7 @@
 
 ---
 
-## 2. Đăng ký
+~~## 2. Đăng ký
 **`POST /register`**  
 - **Mô tả**: Dùng để đăng ký tài khoản mới.  
 - **Yêu cầu**:  
@@ -30,7 +30,7 @@
     "thông tin ngân hàng": "<string>"
   }
   ```
-
+~~
 ---
 
 ## 3. Lệnh in
