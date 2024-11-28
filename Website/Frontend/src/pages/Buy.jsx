@@ -9,7 +9,12 @@ const PurchasePage = () => {
     const handlePaperChange = (event) => {
         setSelectedPaper(event.target.value); // Cập nhật loại giấy được chọn
       };
+      const [selectedTab, setSelectedTab] = useState("BKPay");
 
+      // Hàm xử lý khi người dùng chọn tab
+      const handleTabClick = (tab) => {
+        setSelectedTab(tab);
+      };
   return (
     <div style={{ fontFamily: "Arial, sans-serif", background: "#f4f4f9", padding: "20px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -47,7 +52,7 @@ const PurchasePage = () => {
           <div style={{ marginTop: "20px" }}>
             <hr style={{ border: '1px solid #2A3E50', width: '100%' }} />
             <h3 style={{ marginBottom: "10px",marginTop: "10px",textAlign:"center" ,fontSize:'18px'}}><b>Hóa đơn</b></h3>
-            <div style={{ border: '2px solid black', padding: '10px', width: '700px' ,borderRadius: "5px", padding :"50px"}}>
+            <div style={{ boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", padding: '10px', width: '700px' ,borderRadius: "5px", padding :"50px"}}>
             <div style={invoiceRowStyle}>
               <span>Loại giấy</span>
               <span>{selectedPaper}</span>
@@ -74,13 +79,32 @@ const PurchasePage = () => {
           
           <h1 style={{ marginBottom: "20px",textAlign:"center",fontSize: '24px'  }}><b>Phương thức thanh toán</b></h1>
           <div style={paymentTabsStyle}>
-            <button style={{ ...tabButtonStyle }}>Momo</button>
-            <button style={{ ...tabButtonStyle, backgroundColor: "#007bff", color: "black" }}>
-              BKPay
-            </button>
-            <button style={{ ...tabButtonStyle }}>Ngân hàng</button>
+          <button
+          style={{ ...tabButtonStyle, ...(selectedTab === "Momo" ? selectedTabStyle : {}) }}
+          onClick={() => handleTabClick("Momo")} // Chọn tab Momo
+        >
+          Momo
+        </button>
+
+        <button
+          style={{ ...tabButtonStyle, ...(selectedTab === "BKPay" ? selectedTabStyle : {}) }}
+          onClick={() => handleTabClick("BKPay")} // Chọn tab BKPay
+        >
+          BKPay
+        </button>
+        <button
+          style={{ ...tabButtonStyle, ...(selectedTab === "Ngân hàng" ? selectedTabStyle : {}) }}
+          onClick={() => handleTabClick("Ngân hàng")} // Chọn tab Ngân hàng
+        >
+          Ngân hàng
+        </button>
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{marginTop:"20px"}}>
+        {selectedTab === "Momo" && <p>Thanh toán qua Momo</p>}
+        {selectedTab === "BKPay" && <p>Thanh toán qua BKPay</p>}
+        {selectedTab === "Ngân hàng" && <p>Thanh toán qua Ngân hàng</p>}
+      </div>
+          <div style={{ marginTop: "10px" }}>
             <div style={infoRowStyle}>
               <span>MSSV</span>
               <span><b>2223456</b></span>
@@ -187,6 +211,10 @@ const actionButtonStyle = {
   borderRadius: "5px",
   cursor: "pointer",
   marginRight: "10px",
+};
+const selectedTabStyle = {
+  backgroundColor: "#007bff", // Màu nền khi được chọn
+  color: "black", // Màu chữ khi được chọn
 };
 
 export default PurchasePage;
