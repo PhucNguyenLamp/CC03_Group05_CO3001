@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/login',AuthController.prototype.login);
 
-router.post('/checklogin',AuthController.prototype.isLoggedin);
+router.post('/authorization',AuthController.prototype.isLoggedin);
 
 export default router;

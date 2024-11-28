@@ -3,6 +3,7 @@ import Document from "../model/Document.model.js";
 import Student from "../model/Student.model.js";
 import Printer from "../model/Printer.model.js";
 import AppError from "../utils/AppError.js";
+import get_standard_datetime from "../utils/getDateTime.js";
 
 export class PrintOrderController {
   async createPrintOrder(req, res, next) {
@@ -70,28 +71,34 @@ export class PrintOrderController {
   }
 
   async getHistoryPrintOrder(req, res, next) {
-    const cur_user = req.user;
+    try {
+      const cur_user = req.user;
 
-    const print_orders = await PrintOrder.find({ Student: cur_user._id });
+      const print_orders = await PrintOrder.find({ Student: cur_user._id });
 
-    const result = [];
-    print_orders.forEach((item) => {
-      const { room, building, campus } = item.Printer.location;
-      const location = `${campus}/${building}-${room}`;
-      console.log(item.Document);
-      const order = {
-        date: item.date,
-        printer: item.Printer.brand,
-        location,
-        filename: item.Document.name,
-        page_count: item.Document.page_count,
-      };
-      result.push(order);
-    });
+      const result = [];
+      print_orders.forEach((item) => {
+        const { room, building, campus } = item.Printer.location;
+        const location = `${campus}/${building}-${room}`;
+        const order = {
+          date: get_standard_datetime(item.date),
+          printer: item.Printer.brand,
+          location,
+          filename: item.Document.name,
+          page_count: item.Document.page_count,
+        };
+        result.push(order);
+      });
 
-    res.status(200).json({
-      status: "success",
-      data: result,
-    });
+      res.status(200).json({
+        status: "success",
+        data: result,
+      });
+    } catch(err) {
+      console.log(err.message);
+      return next(new AppError(err.message, 401));
+    }
+    
   }
+
 }

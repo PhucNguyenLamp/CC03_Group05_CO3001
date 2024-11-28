@@ -39,7 +39,15 @@ const StudentSchema = mongoose.Schema ({
   },
   role: {
     type:String,
+    required:true,
     default: "Student"
+  },
+  bank_card: {
+    type:String,
+    required:true
+  },
+  bank_name: {
+    type:String
   }
 }, {
   timestamps:true
