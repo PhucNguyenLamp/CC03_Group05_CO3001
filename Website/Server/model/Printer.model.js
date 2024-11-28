@@ -11,14 +11,14 @@ const PrinterSchema = mongoose.Schema({
   },
   status: {
     type: Boolean,
-    require: true
+    required: true
   },
   description: {
     type:String
   },
   location: {
     room: {
-      type:String,
+      type:Number,
       required: true
     },
     building: {
@@ -26,7 +26,9 @@ const PrinterSchema = mongoose.Schema({
       required: true
     },
     campus: {
-      type:String
+      type:String,
+      enum: ["CS1","CS2"],
+      required:true
     }
   }
   
