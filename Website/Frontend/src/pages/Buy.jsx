@@ -29,6 +29,8 @@ const PurchasePage = () => {
           <div style={{ marginBottom: "20px" }}>
             <label style={labelStyle}>Loại giấy</label>
             <select style={inputStyle} value ={selectedPaper} onChange={handlePaperChange}>
+              <option value="A2">A2</option>
+              <option value="A3">A3</option>
               <option value="A4">A4</option>
               <option value="A5">A5</option>
               {/* Add more options if needed */}
