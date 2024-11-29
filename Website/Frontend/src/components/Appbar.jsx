@@ -15,6 +15,7 @@ import { PrintTwoTone } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import Dashboard from './../pages/Dashboard';
 import { useAuth } from "../contexts/AuthContext";
+import Printer from './../../../Server/model/Printer.model';
 
 const pages = [
   { name: "In tài liệu", path: "/print" },
@@ -69,7 +70,6 @@ export default function Appbar() {
           </Typography>
         </Box>
 
-        {/* Navigation Buttons */}
         <Box className="md:flex space-x-4">
           {pages.map((page, index) => (
             <Button
@@ -79,18 +79,29 @@ export default function Appbar() {
               {page.name}
             </Button>
           ))}
+          {
+            userInfo && userInfo.role == 'SPSO' ? (
+              <Button
+                className="text-white py-2 px-4"
+                onClick={() => navigate('/manageprinter')}>
+                Máy in
+              </Button>
+            ) : (
+              <></>
+            )
+          }
         </Box>
 
         {/* User Menu */}
         {userInfo ? (
-          <Box sx={{display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center'}}>
-            <Typography>{userInfo.name}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+            <Typography>{userInfo.fname ?? userInfo.name}</Typography>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} className="p-0">
                 <Avatar alt="User" />
               </IconButton>
             </Tooltip>
-            
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -124,7 +135,7 @@ export default function Appbar() {
                 </Typography>
               </MenuItem>
             </Menu>
-          </Box>) : (<Box><Button sx={{color: 'white'}} onClick={() => navigate('/login')}>Log in</Button></Box>)}
+          </Box>) : (<Box><Button sx={{ color: 'white' }} onClick={() => navigate('/login')}>Log in</Button></Box>)}
       </Toolbar>
     </AppBar>
   );

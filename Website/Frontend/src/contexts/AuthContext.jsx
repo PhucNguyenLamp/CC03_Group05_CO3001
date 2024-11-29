@@ -6,7 +6,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState(null);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -26,19 +26,20 @@ export const AuthProvider = ({ children }) => {
                 delete api.defaults.headers.common['Authorization'];
 
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         }
         checkAuth();
     }, []);
 
 
-    const login = async (username, password) => {
+    const login = async (username, password, role) => {
         try {
             console.log('Attempting login with:', { username, password });
             const response = await api.post('/api/v1/authentication/login', {
                 username,
-                password
+                password,
+                role
             });
 
             console.log('Login response:', response.data);
@@ -54,9 +55,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             console.log('Stored user data:', user);
-
             setUserInfo(user);
-            console.log("USERINFO: ", user);
             return { success: true, user: user };
         } catch (error) {
             console.error('Login error:', error);
@@ -76,9 +75,9 @@ export const AuthProvider = ({ children }) => {
 
         setUserInfo(null);
     }
-    if (loading) {
-        return <div>Loading...</div>
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>
+    // }
 
     return (
         <AuthContext.Provider

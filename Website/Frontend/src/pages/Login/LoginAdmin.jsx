@@ -35,7 +35,7 @@ export default function LoginAdmin() {
     event.preventDefault();
     // Handle login logic here
     try {
-      const result = await login(username, password);
+      const result = await login(username, password, "SPSO");
 
       console.log("Inside handleSubmit, result: ", result);
       if (result.success) {
