@@ -2,9 +2,11 @@ import { Paper, Typography, Container, Tabs, Tab } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState } from 'react'
 
+import { useNavigate } from 'react-router';
 
 
 const PurchasePage = () => {
+  const navigate = useNavigate();
     const [selectedPaper, setSelectedPaper] = useState("A4");
     const handlePaperChange = (event) => {
         setSelectedPaper(event.target.value); // Cập nhật loại giấy được chọn
@@ -141,7 +143,7 @@ const PurchasePage = () => {
 
       {/* Buttons */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button style={{ ...actionButtonStyle, backgroundColor: "#007bff", color: "white" }}>
+        <button onClick={() => { navigate('/print'); }} style={{ ...actionButtonStyle, backgroundColor: "#007bff", color: "white" }}>
             Trở lại
             </button>
         <button style={{ ...actionButtonStyle, backgroundColor: "#007bff", color: "white" }}>
@@ -151,6 +153,7 @@ const PurchasePage = () => {
      
     </div>
   );
+  
 };
 
 // Styles
