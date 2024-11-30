@@ -34,13 +34,11 @@ export class AuthController {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
-    console.log(req.headers.authorization);
     if(!token) {
       return next(new AppError("You are not logged in !! Please log in again",401));
     }
     try{
       const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-      console.log(decoded);
       const {id,role} = decoded;
       let user ={};
       if(role==="SPSO") {
@@ -49,7 +47,7 @@ export class AuthController {
         user = await Student.findById(id);
       }
       if(!user) {
-        return next( new AppError('The token belonging to this user no longer exist.'),401);
+        return next( new AppError('The token belonging to this user no longer exist.',401));
       }
       req.user=user;
       req.role=role;

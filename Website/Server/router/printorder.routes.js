@@ -9,4 +9,10 @@ router.post('/create-print-order',
   PrintOrderController.prototype.createPrintOrder
 );
 
+router.get('/get-print-order',
+  AuthController.prototype.isLoggedin,
+  PrintOrderController.prototype.getHistoryPrintOrder
+);
+
+
 export default router;

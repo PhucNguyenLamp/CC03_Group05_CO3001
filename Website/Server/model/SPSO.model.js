@@ -24,7 +24,7 @@ const SPSOSchema = mongoose.Schema ({
   },
   password: {
     type:String,
-    require: [true,"Password is required"],
+    required: [true,"Password is required"],
     minlength: [8, "Password have at least 8 characters"],
     maxlength: 16,
     select:false
