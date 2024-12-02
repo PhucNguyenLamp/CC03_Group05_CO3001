@@ -186,8 +186,20 @@ export default function Appbar() {
                   }}>
                   <Typography sx={{ textAlign: "center" }}>Dashboard</Typography>
                 </MenuItem>
+                {
+                  userInfo.role == 'SPSO' ? (
+                    <MenuItem
+                      key={"logs"}
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        navigate("/logs");
+                      }}>
+                      <Typography sx={{ textAlign: "center" }}>Report hệ thống</Typography>
+                    </MenuItem>
+                  ) : (<></>)
+                }
                 <MenuItem key={"logout"} onClick={handleLogOut}>
-                  <Typography sx={{ textAlign: "center" }}>Log out</Typography>
+                  <Typography sx={{ textAlign: "center" }}>Đăng xuất</Typography>
                 </MenuItem>
               </Menu>
             </Box>
