@@ -58,7 +58,7 @@ export default function Appbar() {
     navigate("/login");
   };
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
+    <AppBar position="sticky" sx={{ backgroundColor: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)" }}>
       <Toolbar
         className="flex justify-between items-center px-6"
         sx={{
