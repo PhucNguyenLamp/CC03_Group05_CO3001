@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const PrinterSchema = mongoose.Schema({
+  ID: {
+    type: String,
+    required:true
+  },
   model: {
     type:String,
     required:true,
@@ -11,14 +15,11 @@ const PrinterSchema = mongoose.Schema({
   },
   status: {
     type: Boolean,
-    require: true
-  },
-  description: {
-    type:String
+    required: true
   },
   location: {
     room: {
-      type:String,
+      type:Number,
       required: true
     },
     building: {
@@ -26,18 +27,20 @@ const PrinterSchema = mongoose.Schema({
       required: true
     },
     campus: {
-      type:String
+      type:String,
+      enum: ["CS1","CS2"],
+      required:true
     }
   }
   
 });
 
 
-PrinterSchema.pre(/^find/,function(next){
-  //this points to current query
-  this.find({status:true});
-  next();
-});
+// PrinterSchema.pre(/^find/,function(next){
+//   //this points to current query
+//   this.find({status:true});
+//   next();
+// });
 
 const Printer = mongoose.model('Printer',PrinterSchema);
 export default Printer;

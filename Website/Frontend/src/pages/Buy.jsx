@@ -1,221 +1,183 @@
-import { Paper, Typography, Container, Tabs, Tab } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid';
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import {
+  Container,
+  Paper,
+  Typography,
+  Select,
+  MenuItem,
+  TextField,
+  Divider,
+  Button,
+  Tabs,
+  Tab,
+  Box,
+  Grid,
+} from "@mui/material";
 
-
+const paperPrice = {"A2": 1000, "A3": 600, "A4": 400, "A5": 300};
 
 const PurchasePage = () => {
-    const [selectedPaper, setSelectedPaper] = useState("A4");
-    const handlePaperChange = (event) => {
-        setSelectedPaper(event.target.value); // Cập nhật loại giấy được chọn
-      };
-      const [selectedTab, setSelectedTab] = useState("BKPay");
+  const navigate = useNavigate();
+  const [selectedPaper, setSelectedPaper] = useState("A4");
+  const [selectedTab, setSelectedTab] = useState("BKPay");
+  const [pages, setPages] = useState(20);
+  
+  const handlePaperChange = (event) => {
+    setSelectedPaper(event.target.value);
+  };
 
-      // Hàm xử lý khi người dùng chọn tab
-      const handleTabClick = (tab) => {
-        setSelectedTab(tab);
-      };
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", background: "#f4f4f9", padding: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-        
-      </div>
-
-      {/* Main Content */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+    <Container maxWidth="lg" sx={{ mt: 4, fontFamily: "Arial, sans-serif" }}>
+      <Grid container spacing={4}>
         {/* Purchase Info */}
-        <div style={panelStyle}>
-          <h1 style={{ marginBottom: "10px",textAlign:"center",fontSize: '24px'  }}><b>Thông tin mua</b></h1>
-          <div style={{ marginBottom: "20px" }}>
-            <label style={labelStyle}>Loại giấy</label>
-            <select style={inputStyle} value ={selectedPaper} onChange={handlePaperChange}>
-              <option value="A4">A4</option>
-              <option value="A5">A5</option>
-              {/* Add more options if needed */}
-            </select>
-          </div>
-          <div>
-            <label style={labelStyle}>Số lượng trang</label>
-            <input
-              type="number"
-              defaultValue={50}
-              style={{ ...inputStyle, width: "100px" }}
-              min="1"
-              max="500"
-            />
-            <p style={{ fontSize: "12px", color: "#555" }}>
-             
-            </p>
-          </div>
-
-          {/* Invoice */}
-          <div style={{ marginTop: "20px" }}>
-            <hr style={{ border: '1px solid #2A3E50', width: '100%' }} />
-            <h3 style={{ marginBottom: "10px",marginTop: "10px",textAlign:"center" ,fontSize:'18px'}}><b>Hóa đơn</b></h3>
-            <div style={{ boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", padding: '10px', width: '700px' ,borderRadius: "5px", padding :"50px"}}>
-            <div style={invoiceRowStyle}>
-              <span>Loại giấy</span>
-              <span>{selectedPaper}</span>
-            </div>
-            <div style={invoiceRowStyle}>
-              <span>Số lượng</span>
-              <span>50</span>
-            </div>
-            <div style={invoiceRowStyle}>
-              <span>Đơn giá</span>
-              <span>400 VND/trang</span>
-            </div>
-            <hr style={{ border: '1px solid #2A3E50', width: '100%' }} />
-            <div style={{ ...invoiceRowStyle,marginTop:"10px", fontWeight: "bold" }}>
-              <span>Tổng cộng</span>
-              <span>20.000 VND</span>
-            </div>
-            </div>
-          </div>
-        </div>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
+            <Typography variant="h5" align="center" gutterBottom>
+              Thông tin mua
+            </Typography>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                Loại giấy
+              </Typography>
+              <Select
+                fullWidth
+                value={selectedPaper}
+                onChange={handlePaperChange}
+                sx={{ mb: 2 }}
+              >
+                <MenuItem value="A3">A2</MenuItem>
+                <MenuItem value="A3">A3</MenuItem>
+                <MenuItem value="A4">A4</MenuItem>
+                <MenuItem value="A5">A5</MenuItem>
+              </Select>
+            </Box>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                Số lượng trang
+              </Typography>
+              <TextField
+                type="number"
+                value={pages}
+                onChange={(e) => setPages(e.target.value)}
+                inputProps={{ min: 1, max: 500 }}
+                fullWidth
+              />
+            </Box>
+            <Divider sx={{ my: 2 }} />
+            <Typography variant="h6" align="center" gutterBottom>
+              Hóa đơn
+            </Typography>
+            <Box sx={{ px: 2, py: 1, backgroundColor: "#f9f9f9", borderRadius: 1 }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Loại giấy</Typography>
+                <Typography>{selectedPaper}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Số lượng</Typography>
+                <Typography>{pages}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Đơn giá</Typography>
+                <Typography>{paperPrice[selectedPaper]}</Typography>
+              </Box>
+              <Divider />
+              <Box display="flex" justifyContent="space-between" mt={1} fontWeight="bold">
+                <Typography>Tổng cộng</Typography>
+                <Typography>{(paperPrice[selectedPaper] * pages).toLocaleString()} VND</Typography>
+              </Box>
+            </Box>
+          </Paper>
+        </Grid>
 
         {/* Payment Info */}
-        <div style={panelStyle}>
-          
-          <h1 style={{ marginBottom: "20px",textAlign:"center",fontSize: '24px'  }}><b>Phương thức thanh toán</b></h1>
-          <div style={paymentTabsStyle}>
-          <button
-          style={{ ...tabButtonStyle, ...(selectedTab === "Momo" ? selectedTabStyle : {}) }}
-          onClick={() => handleTabClick("Momo")} // Chọn tab Momo
-        >
-          Momo
-        </button>
-
-        <button
-          style={{ ...tabButtonStyle, ...(selectedTab === "BKPay" ? selectedTabStyle : {}) }}
-          onClick={() => handleTabClick("BKPay")} // Chọn tab BKPay
-        >
-          BKPay
-        </button>
-        <button
-          style={{ ...tabButtonStyle, ...(selectedTab === "Ngân hàng" ? selectedTabStyle : {}) }}
-          onClick={() => handleTabClick("Ngân hàng")} // Chọn tab Ngân hàng
-        >
-          Ngân hàng
-        </button>
-          </div>
-          <div style={{marginTop:"20px"}}>
-        {selectedTab === "Momo" && <p>Thanh toán qua Momo</p>}
-        {selectedTab === "BKPay" && <p>Thanh toán qua BKPay</p>}
-        {selectedTab === "Ngân hàng" && <p>Thanh toán qua Ngân hàng</p>}
-      </div>
-          <div style={{ marginTop: "10px" }}>
-            <div style={infoRowStyle}>
-              <span>MSSV</span>
-              <span><b>2223456</b></span>
-            </div>
-            <div style={infoRowStyle}>
-              <span>Họ và Tên</span>
-              <span><b>Trần Văn Đại</b></span>
-            </div>
-            <div style={infoRowStyle}>
-              <span>Email sinh viên</span>
-              <span><b>dai.tranvan@hcmut.edu.vn</b></span>
-            </div>
-            <div style={infoRowStyle}>
-              <span>Mã lớp</span>
-              <span><b>CC22KHM1</b></span>
-            </div>
-            <div style={infoRowStyle}>
-              <span>Số điện thoại</span>
-              <span><b>0989112222</b></span>
-            </div>
-            <div style={infoRowStyle}>
-              <span>Khoa</span>
-              <span><b>Khoa học và Kỹ thuật máy tính</b></span>
-            </div>
-            <div>
-              <span>Mã Qr</span>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&size=150x150" alt="QR Code" />
-            </div>
-          </div>
-        </div>
-      </div>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
+            <Typography variant="h5" align="center" gutterBottom>
+              Phương thức thanh toán
+            </Typography>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              centered
+              textColor="primary"
+              indicatorColor="primary"
+              sx={{ mb: 3 }}
+            >
+              <Tab value="Momo" label="Momo" />
+              <Tab value="BKPay" label="BKPay" />
+              <Tab value="Ngân hàng" label="Ngân hàng" />
+            </Tabs>
+            <Box sx={{ mt: 2 }}>
+              {selectedTab === "Momo" && (
+                <Typography align="center">Thanh toán qua Momo</Typography>
+              )}
+              {selectedTab === "BKPay" && (
+                <Typography align="center">Thanh toán qua BKPay</Typography>
+              )}
+              {selectedTab === "Ngân hàng" && (
+                <Typography align="center">Thanh toán qua Ngân hàng</Typography>
+              )}
+            </Box>
+            <Box sx={{ mt: 3 }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>MSSV</Typography>
+                <Typography><b>2223456</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Họ và Tên</Typography>
+                <Typography><b>Trần Văn Đại</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Email sinh viên</Typography>
+                <Typography><b>dai.tranvan@hcmut.edu.vn</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Mã lớp</Typography>
+                <Typography><b>CC22KHM1</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Số điện thoại</Typography>
+                <Typography><b>0989112222</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Khoa</Typography>
+                <Typography><b>Khoa học và Kỹ thuật máy tính</b></Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mt={2}>
+                <Typography>Mã QR</Typography>
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&size=150x150"
+                  alt="QR Code"
+                />
+              </Box>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
 
       {/* Buttons */}
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <button style={{ ...actionButtonStyle, backgroundColor: "#007bff", color: "white" }}>
-            Trở lại
-            </button>
-        <button style={{ ...actionButtonStyle, backgroundColor: "#007bff", color: "white" }}>
-          Xác nhận 
-        </button>
-      </div>
-     
-    </div>
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Button
+          variant="contained"
+          sx={{ mr: 2 }}
+          onClick={() => navigate("/")}
+        >
+          Trở lại
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => navigate("/buysuccess")}
+        >
+          Xác nhận
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
-// Styles
-
-
-
-
-const panelStyle = {
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  flex: 1,
-};
-
-const labelStyle = {
-  display: "block",
-  marginBottom: "5px",
-  fontWeight: "bold",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  border: "1px solid #ddd",
-  borderRadius: "5px",
-  fontSize: "14px",
-};
-
-const invoiceRowStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginBottom: "10px",
-};
-
-const paymentTabsStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-};
-
-const tabButtonStyle = {
-  flex: 1,
-  padding: "10px",
-  backgroundColor: "#ddd",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginRight: "5px",
-};
-
-const infoRowStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginBottom: "10px",
-};
-
-const actionButtonStyle = {
-  padding: "10px 20px",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginRight: "10px",
-};
-const selectedTabStyle = {
-  backgroundColor: "#007bff", // Màu nền khi được chọn
-  color: "black", // Màu chữ khi được chọn
-};
-
 export default PurchasePage;
-

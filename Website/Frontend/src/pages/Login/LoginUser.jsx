@@ -13,12 +13,13 @@ import api from "../../api/axios";
 
 export default function LoginUser() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
   const { login } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -35,7 +36,7 @@ export default function LoginUser() {
     event.preventDefault();
     // Handle login logic here
     try {
-      const result = await login(username, password);
+      const result = await login(username, password, "Student");
 
       console.log("Inside handleSubmit, result: ", result);
       if (result.success) {

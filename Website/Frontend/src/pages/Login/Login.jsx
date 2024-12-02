@@ -7,6 +7,7 @@ import bg from "../../assets/bg.png";
 import hcmut_logo from "../../assets/HCMUT.png";
 export default function Login() {
   const navigate = useNavigate();
+  
   return (
     <Box
       sx={{

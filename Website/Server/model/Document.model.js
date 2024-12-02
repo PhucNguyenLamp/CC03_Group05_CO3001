@@ -4,8 +4,12 @@ import Printer from './Printer.model.js';
 const DocumentSchema = mongoose.Schema({
   name: {
     type:String,
-    require:true
+    required:true
   }, 
+  page_count: {
+    type:Number,
+    required:true
+  },
   Printer: {
     type:mongoose.Schema.ObjectId,
     ref: 'Printer',

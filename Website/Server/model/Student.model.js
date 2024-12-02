@@ -23,7 +23,7 @@ const StudentSchema = mongoose.Schema ({
   },
   password: {
     type:String,
-    require: [true,"Password is required"],
+    required: [true,"Password is required"],
     minlength: [8, "Password have at least 8 characters"],
     maxlength: [16],
     select:false
@@ -39,7 +39,15 @@ const StudentSchema = mongoose.Schema ({
   },
   role: {
     type:String,
+    required:true,
     default: "Student"
+  },
+  bank_card: {
+    type:String,
+    required:true
+  },
+  bank_name: {
+    type:String
   }
 }, {
   timestamps:true

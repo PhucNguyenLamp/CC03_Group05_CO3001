@@ -11,6 +11,8 @@ import Dashboard from "../pages/Dashboard";
 import Preview from "../pages/Preview";
 import Success from "../pages/Success";
 import { ProtectedRoute } from "./../pages/ProtectedRoutes";
+import BuySuccess from "../pages/BuySuccess";
+import ManagePrinter from "../pages/ManagePrinter";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
         path: "/success",
         element: <Success />,
       },
+      {
+        path: "/buysuccess",
+        element: <BuySuccess />,
+      },
+      {
+        path: "/manageprinter",
+        element: <ManagePrinter />,
+      }
     ],
   },
   {

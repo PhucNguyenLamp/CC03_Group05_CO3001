@@ -11,7 +11,7 @@ export default function UploadFiles() {
   const [files, setFiles] = useState([]);
   const handleDrop = (acceptedFiles) => {
     setFiles(acceptedFiles);
-    console.log(acceptedFiles);
+    // console.log(acceptedFiles);
     navigate("/preview", { state: { file: acceptedFiles[0] } });
   };
 

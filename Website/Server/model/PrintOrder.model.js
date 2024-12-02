@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Student from "./Student.model.js";
 import Document from "./Document.model.js";
+import Printer from "./Printer.model.js";
 
 const PrintOrderSchema = mongoose.Schema({
   Student: {
@@ -11,16 +12,21 @@ const PrintOrderSchema = mongoose.Schema({
   Document: {
     type: mongoose.Schema.ObjectId,
     ref: "Document",
-    require: true,
+    required: true,
+  },
+  Printer: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Printer",
+    required:true
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now()
   },
   configuration: {
     copy: {
       type: Number,
-      require: true,
+      required: true,
       default: 1,
     },
     typeface: {
@@ -31,6 +37,7 @@ const PrintOrderSchema = mongoose.Schema({
     },
     vector: {
       type: String,
+      enum: ["Portrait", "Landscape"],
       required: true,
     },
     papersize: {
@@ -38,8 +45,28 @@ const PrintOrderSchema = mongoose.Schema({
       required: true,
     },
   },
+  status: {
+    type: String,
+    enum: ["Pending", "Cancel", "Complete"],
+    required: true,
+    default: "Pending" 
+  }
 });
 
+PrintOrderSchema.pre(/^find/, function(next){
+  this
+  .populate({
+    path:'Student'
+  })
+  .populate({
+    path:'Document'
+  })
+  .populate({
+    path:'Printer'
+  });
+
+  next();
+})
 
 const PrintOrder = mongoose.model('PrintOrder',PrintOrderSchema);
 

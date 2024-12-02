@@ -40,6 +40,7 @@ export class PrinterController {
         printerData.model = id;
       }
       const newPrinter = await Printer.create(printerData);
+
       res.status(201).json({
         status: 'success',
         message: 'Printer added successfully!',
