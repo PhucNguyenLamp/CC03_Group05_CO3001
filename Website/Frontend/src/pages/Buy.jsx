@@ -15,11 +15,14 @@ import {
   Grid,
 } from "@mui/material";
 
+const paperPrice = {"A2": 1000, "A3": 600, "A4": 400, "A5": 300};
+
 const PurchasePage = () => {
   const navigate = useNavigate();
   const [selectedPaper, setSelectedPaper] = useState("A4");
   const [selectedTab, setSelectedTab] = useState("BKPay");
-
+  const [pages, setPages] = useState(20);
+  
   const handlePaperChange = (event) => {
     setSelectedPaper(event.target.value);
   };
@@ -59,7 +62,8 @@ const PurchasePage = () => {
               </Typography>
               <TextField
                 type="number"
-                defaultValue={50}
+                value={pages}
+                onChange={(e) => setPages(e.target.value)}
                 inputProps={{ min: 1, max: 500 }}
                 fullWidth
               />
@@ -75,16 +79,16 @@ const PurchasePage = () => {
               </Box>
               <Box display="flex" justifyContent="space-between" mb={1}>
                 <Typography>Số lượng</Typography>
-                <Typography>50</Typography>
+                <Typography>{pages}</Typography>
               </Box>
               <Box display="flex" justifyContent="space-between" mb={1}>
                 <Typography>Đơn giá</Typography>
-                <Typography>400 VND/trang</Typography>
+                <Typography>{paperPrice[selectedPaper]}</Typography>
               </Box>
               <Divider />
               <Box display="flex" justifyContent="space-between" mt={1} fontWeight="bold">
                 <Typography>Tổng cộng</Typography>
-                <Typography>20.000 VND</Typography>
+                <Typography>{(paperPrice[selectedPaper] * pages).toLocaleString()} VND</Typography>
               </Box>
             </Box>
           </Paper>
