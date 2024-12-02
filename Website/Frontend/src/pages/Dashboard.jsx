@@ -1,37 +1,64 @@
 import { Container, Typography, Box, Paper } from "@mui/material";
-
-const information = {
-  name: "Adobe After Effects",
-  pagesLeft: 10,
-  bankAccount: "123456789",
-};
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Dashboard() {
+  const { userInfo } = useAuth();
+  console.log(userInfo);
+
+  if (!userInfo) {
+    return (
+      <Container>
+        <Typography variant="h4" color="error">
+          Please login to access this page
+        </Typography>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-        <Typography variant="h4" gutterBottom>
-          Dashboard
-        </Typography>
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="h6" color="text.secondary">
-            User Name:
+      {userInfo.role === "Student" ? (
+        <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Typography variant="h4" gutterBottom>
+            Dashboard
           </Typography>
-          <Typography variant="body1">{information.name}</Typography>
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="h6" color="text.secondary">
-            Pages Left:
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" color="text.secondary">
+              User Name:
+            </Typography>
+            <Typography variant="body1">{`${userInfo.lname} ${userInfo.fname}`}</Typography>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" color="text.secondary">
+              Email:
+            </Typography>
+            <Typography variant="body1">{userInfo.email}</Typography>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" color="text.secondary">
+              Pages Left:
+            </Typography>
+            <Typography variant="body1">{userInfo.page_remain}</Typography>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" color="text.secondary">
+              Bank Account:
+            </Typography>
+            <Typography variant="body1">{`${userInfo.bank_name}: ${userInfo.bank_card}`}</Typography>
+          </Box>
+        </Paper>
+      ) : (
+        <Container>
+          <Typography variant="h4" color="error">
+            Admin
           </Typography>
-          <Typography variant="body1">{information.pagesLeft}</Typography>
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="h6" color="text.secondary">
-            Bank Account:
-          </Typography>
-          <Typography variant="body1">{information.bankAccount}</Typography>
-        </Box>
-      </Paper>
+          <Typography variant="body1">Username: {userInfo.username}</Typography>
+        </Container>
+      )}
     </Container>
   );
 }

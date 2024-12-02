@@ -54,8 +54,7 @@ export default function Preview() {
     const navigate = useNavigate();
     const location = useLocation();
     const { file } = location.state;
-    console.log(file);
-
+    
 
     const handleNext = () => {
         if (activeStep < steps.length - 1) {
