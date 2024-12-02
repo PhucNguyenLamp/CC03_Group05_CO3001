@@ -25,6 +25,7 @@ import { useState, useEffect } from "react";
 import pdf from "../assets/pdf.png";
 import { useNavigate } from 'react-router';
 import { useLocation } from "react-router-dom";
+import api from '../api/axios'
 
 const printers = [
     { id: 1, name: "TOSHIBA e-STUDIO2520AC", location: "CS1 / B3-102" },
@@ -40,28 +41,27 @@ const steps = ['Chọn máy in', 'Chọn chế độ in'];
 
 export default function Preview() {
     const [selectedPrinter, setSelectedPrinter] = useState(1);
-    const [pdfUrl, setPdfUrl] = useState("");
-    const [number, setNumber] = useState(1);
-    const [pages, setPages] = useState(null);
-    const [side, setSide] = useState(1);
+    const [number, setNumber] = useState(1); //số trang
+    const [side, setSide] = useState(1); // số mặt
     const [direction, setDirection] = useState("Dọc");
-    const [range, setRange] = useState("all");
-    const [paperSize, setPaperSize] = useState("A4");
+    const [pages, setPages] = useState(null); //phạm vi
+    const [range, setRange] = useState("all"); // range trang khi phạm vi là tự chọn
+    const [paperSize, setPaperSize] = useState("A4"); //loại giấy
+    const [pdfUrl, setPdfUrl] = useState(""); //preview
+    
     const [activeStep, setActiveStep] = useState(0);
-
-
 
     const navigate = useNavigate();
     const location = useLocation();
     const { file } = location.state;
     console.log(file);
 
+
     const handleNext = () => {
         if (activeStep < steps.length - 1) {
             setActiveStep(activeStep + 1); // Go to next step
         }
     };
-
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep(activeStep - 1); // Go to previous step
@@ -70,10 +70,19 @@ export default function Preview() {
         }
     };
 
-    const handleRadioChange = (id) => {
-        setSelectedPrinter(id);
-    };
-
+    const onSubmit = async () => {        
+        const res = await api.post('/api/v1/printorder/create-print-order', {
+            printer: printers[selectedPrinter].name,
+            pageremain: user.pages - number, // này backend đòi làm gì? lấy user.pages mà trừ copy
+            copy: number,
+            typeface: side,
+            vector: direction,
+            page_count: pages,
+            papersize: paperSize,
+            filename: file.name
+        });
+        console.log(res);
+    }
     useEffect(() => {
         if (file) {
             const fileUrl = URL.createObjectURL(file); // Create a temporary URL
@@ -165,7 +174,7 @@ export default function Preview() {
                                                 <TableCell align="center">
                                                     <Radio
                                                         checked={selectedPrinter === printer.id}
-                                                        onChange={() => handleRadioChange(printer.id)}
+                                                        onChange={() => setSelectedPrinter(printer.id)}
                                                         color="primary"
                                                     />
                                                 </TableCell>
@@ -267,7 +276,7 @@ export default function Preview() {
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }}
                                     onClick={() => { handleBack(); }}> Trở lại </Button>
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }}
-                                    onClick={() => { navigate('/success'); }}> Xác nhận </Button>
+                                        onClick={() => {onSubmit(); navigate('/success'); }}> Xác nhận </Button>
                             </Box>
                         </>
                     )}
