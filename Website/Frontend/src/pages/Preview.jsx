@@ -27,19 +27,20 @@ import { useNavigate } from 'react-router';
 import { useLocation } from "react-router-dom";
 import api from '../api/axios'
 
-const printers = [
-    { id: 1, name: "TOSHIBA e-STUDIO2520AC", location: "CS1 / B3-102" },
-    { id: 2, name: "TOSHIBA e-STUDIO4528AG", location: "CS1 / B3-102" },
-    { id: 3, name: "Canon Pixma TR4570S", location: "CS1 / B9-304" },
-    { id: 4, name: "Canon LBP226Dw", location: "CS2 / H6-604" },
-    { id: 5, name: "Canon MF461DW", location: "CS2 / H6-602" },
-];
+// const printers = [
+//     { id: 1, name: "TOSHIBA e-STUDIO2520AC", location: "CS1 / B3-102" },
+//     { id: 2, name: "TOSHIBA e-STUDIO4528AG", location: "CS1 / B3-102" },
+//     { id: 3, name: "Canon Pixma TR4570S", location: "CS1 / B9-304" },
+//     { id: 4, name: "Canon LBP226Dw", location: "CS2 / H6-604" },
+//     { id: 5, name: "Canon MF461DW", location: "CS2 / H6-602" },
+// ];
 
 const user = { pages: 10 };
 
 const steps = ['Chọn máy in', 'Chọn chế độ in'];
 
 export default function Preview() {
+    const [printers, setPrinters] = useState([]);
     const [selectedPrinter, setSelectedPrinter] = useState(1);
     const [number, setNumber] = useState(1); //số trang
     const [side, setSide] = useState(1); // số mặt
@@ -48,13 +49,13 @@ export default function Preview() {
     const [range, setRange] = useState("all"); // range trang khi phạm vi là tự chọn
     const [paperSize, setPaperSize] = useState("A4"); //loại giấy
     const [pdfUrl, setPdfUrl] = useState(""); //preview
-    
+
     const [activeStep, setActiveStep] = useState(0);
 
     const navigate = useNavigate();
     const location = useLocation();
     const { file } = location.state;
-    
+
 
     const handleNext = () => {
         if (activeStep < steps.length - 1) {
@@ -69,9 +70,9 @@ export default function Preview() {
         }
     };
 
-    const onSubmit = async () => {        
+    const onSubmit = async () => {
         const res = await api.post('/api/v1/printorder/create-print-order', {
-            printer: printers[selectedPrinter].name,
+            printer: printers[selectedPrinter].brand + " " + printers[selectedPrinter].model,
             pageremain: user.pages - number, // này backend đòi làm gì? lấy user.pages mà trừ copy
             copy: number,
             typeface: side,
@@ -80,19 +81,33 @@ export default function Preview() {
             papersize: paperSize,
             filename: file.name
         });
-        console.log(res);
     }
     useEffect(() => {
         if (file) {
             const fileUrl = URL.createObjectURL(file); // Create a temporary URL
             setPdfUrl(fileUrl); // Set it to the state
         }
+        const fetchPrinters = async () => {
+            try {
+                const res = await api.get('/api/v1/printer');
+                setPrinters(res.data.data);
+                setSelectedPrinter(res.data.data[0].ID);
+                console.log(res.data.data);
+            } catch (error) {
+                console.error("Failed to fetch printers:", error);
+            }
+        };
+        fetchPrinters();
+
+
+
         return () => {
             // Clean up the URL when the component unmounts
             if (pdfUrl) {
                 URL.revokeObjectURL(pdfUrl);
             }
         };
+
     }, [file]);
     return (
         <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
@@ -166,14 +181,14 @@ export default function Preview() {
                                     </TableHead>
                                     <TableBody>
                                         {printers.map((printer) => (
-                                            <TableRow key={printer.id}>
-                                                <TableCell align="center">{printer.id}</TableCell>
-                                                <TableCell>{printer.name}</TableCell>
-                                                <TableCell>{printer.location}</TableCell>
+                                            <TableRow key={printer.ID}>
+                                                <TableCell align="center">{printer.ID}</TableCell>
+                                                <TableCell>{printer.brand + " " + printer.model}</TableCell>
+                                                <TableCell>{printer.location.building + "-" + printer.location.room + " / " + printer.location.campus}</TableCell>
                                                 <TableCell align="center">
                                                     <Radio
-                                                        checked={selectedPrinter === printer.id}
-                                                        onChange={() => setSelectedPrinter(printer.id)}
+                                                        checked={selectedPrinter === printer.ID}
+                                                        onChange={() => setSelectedPrinter(printer.ID)}
                                                         color="primary"
                                                     />
                                                 </TableCell>
@@ -197,10 +212,10 @@ export default function Preview() {
                                     Xác nhận in
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-                                    <strong>Máy in:</strong> {printers.find((printer) => printer.id === selectedPrinter).name} để in tài liệu
+                                    <strong>Máy in:</strong> {printers.find((printer) => printer.ID === selectedPrinter).brand + " " + printers.find((printer) => printer.ID === selectedPrinter).model}
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-                                    <strong>Địa điểm in:</strong> {printers.find((printer) => printer.id === selectedPrinter).location}
+                                        <strong>Địa điểm in:</strong> {` ${printers.find((printer) => printer.ID === selectedPrinter).location.building}-${printers.find((printer) => printer.ID === selectedPrinter).location.room} / ${printers.find((printer) => printer.ID === selectedPrinter).location.campus}`}
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
                                     <strong>Số trang in còn lại:</strong> {user.pages}
@@ -275,7 +290,7 @@ export default function Preview() {
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }}
                                     onClick={() => { handleBack(); }}> Trở lại </Button>
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }}
-                                        onClick={() => {onSubmit(); navigate('/success'); }}> Xác nhận </Button>
+                                    onClick={() => { onSubmit(); navigate('/success'); }}> Xác nhận </Button>
                             </Box>
                         </>
                     )}
