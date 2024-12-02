@@ -177,8 +177,8 @@ export default function Dashboard() {
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" sx={{ fontWeight: "bold" }}>Action</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: "bold" }}>Printer</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: "bold" }}>Date</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Printer</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
                   </TableRow>
                 </TableHead>
 
@@ -189,8 +189,8 @@ export default function Dashboard() {
                       <TableCell align="center" sx={{ color: getColor(log.action), fontWeight: "bold" }}>
                         {log.action}
                       </TableCell>
-                      <TableCell align="center">{log.printer}</TableCell>
-                      <TableCell align="center">{log.date}</TableCell>
+                      <TableCell >{log.printer}</TableCell>
+                      <TableCell >{log.date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

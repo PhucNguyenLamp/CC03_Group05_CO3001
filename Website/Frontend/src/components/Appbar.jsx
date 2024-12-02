@@ -119,7 +119,7 @@ export default function Appbar() {
             {
               userInfo && userInfo.role == 'SPSO' ? (
                 <Button
-                  className="text-white py-2 px-4"
+                  className=" py-2 px-4"
                   sx={{
                     fontWeight: "bold",
                     fontSize: "18px",
