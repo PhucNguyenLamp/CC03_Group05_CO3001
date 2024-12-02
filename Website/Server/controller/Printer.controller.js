@@ -25,16 +25,21 @@ export class PrinterController {
 
   async addPrinter(req, res, next) {
     try {
-      const { model, brand, description, location, status } = req.body;
-
-      const newPrinter = await Printer.create({
-        model,
+      const { id, brand, description, campus, building, room } = req.body;
+      const printerData = {
         brand,
         description,
-        location,
-        status,
-      });
-
+        location: {
+          campus,
+          building,
+          room,
+        },
+        status: true,
+      };
+      if (id) {
+        printerData.model = id;
+      }
+      const newPrinter = await Printer.create(printerData);
       res.status(201).json({
         status: 'success',
         message: 'Printer added successfully!',
