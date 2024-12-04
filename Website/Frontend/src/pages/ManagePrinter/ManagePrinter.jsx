@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Delete, Visibility } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import api from "../../api/axios";
 
@@ -28,7 +28,6 @@ const columns = (
     headerAlign: "center",
   },
   { field: "brand", headerName: "Thương hiệu", flex: 1, headerAlign: "center" },
-
   { field: "model", headerName: "Mã máy", flex: 1, headerAlign: "center" },
   {
     field: "campus",
@@ -37,7 +36,6 @@ const columns = (
     align: "center",
     headerAlign: "center",
   },
-
   {
     field: "building",
     headerName: "Toà nhà",
@@ -63,7 +61,6 @@ const columns = (
         <Tooltip title="Xem thông tin máy in" arrow>
           <IconButton
             color="primary"
-            tooltop
             onClick={() => handlePrinterConfigure(params.row)}>
             <Visibility />
           </IconButton>
@@ -86,20 +83,20 @@ const columns = (
     headerAlign: "center",
     renderCell: (params) => (
       <Switch
-        checked={params.row.enableDisable}
         onChange={() => handleEnableDisablePrinter(params.row)}
+        checked={params.row.enableDisable}
       />
     ),
   },
 ];
 
 export default function ManagePrinter() {
-  const [rows, setRows] = React.useState([]);
-  const [searchText, setSearchText] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [rows, setRows] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchPrinters();
   }, []);
 
@@ -129,12 +126,17 @@ export default function ManagePrinter() {
   };
 
   const handleConfigurePrinter = (row) => {
-    // Implement configuration logic
-    console.log("Configuring printer:", row);
+    navigate(`/printerinfo/${row.id}`);
   };
 
-  const handleAddPrinter = () => {
-    navigate("/addprinter");
+  const handleAddPrinter = async () => {
+    try {
+      navigate("/addprinter");
+    } catch (error) {
+      console.error("Error adding printer:", error);
+    } finally {
+      fetchPrinters();
+    }
   };
 
   const handleDeletePrinter = async (row) => {
@@ -142,7 +144,7 @@ export default function ManagePrinter() {
     try {
       await api.delete(`api/v1/printer/${row.id}`);
       console.log("Printer deleted:", row);
-      setRows(rows.filter((r) => r.id !== row.id));
+      fetchPrinters();
     } catch (error) {
       console.error(
         "Error deleting printer:",
@@ -156,13 +158,20 @@ export default function ManagePrinter() {
   const handleEnableDisablePrinter = async (row) => {
     try {
       const response = await api.patch(`api/v1/printer/toggle/${row.id}`);
-      const updatedPrinter = response.data.printer;
 
-      setRows(
-        rows.map((r) =>
-          r.id === row.id ? { ...r, enableDisable: updatedPrinter.status } : r
-        )
-      );
+      if (response.status === 200) {
+        console.log("Printer status updated to ", response.data.data.status);
+
+        setRows((prevRows) =>
+          prevRows.map((printer) =>
+            printer.id === row.id
+              ? { ...printer, enableDisable: response.data.data.status }
+              : printer
+          )
+        );
+      } else {
+        console.warn("No status field returned in the response", response.data);
+      }
     } catch (error) {
       console.error(
         "Error toggling printer status:",
@@ -177,22 +186,20 @@ export default function ManagePrinter() {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.id.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.branch.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.model.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.campus.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.building.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.room.toLowerCase().includes(searchText.toLowerCase())
+      row.id?.toLowerCase().includes(searchText.toLowerCase()) ||
+      row.brand?.toLowerCase().includes(searchText.toLowerCase()) ||
+      row.model?.toLowerCase().includes(searchText.toLowerCase()) ||
+      row.campus?.toLowerCase().includes(searchText.toLowerCase()) ||
+      row.building?.toLowerCase().includes(searchText.toLowerCase()) ||
+      (row.room
+        ? row.room.toString().toLowerCase().includes(searchText.toLowerCase())
+        : false)
   );
 
   return (
     <Container
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
-      {/* Main box  */}
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      {/* Main box */}
       <Paper
         elevation={8}
         sx={{

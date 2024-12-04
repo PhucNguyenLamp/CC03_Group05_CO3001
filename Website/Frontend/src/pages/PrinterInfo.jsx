@@ -132,8 +132,7 @@ const PrinterDetail = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: "flex",
@@ -143,16 +142,15 @@ const PrinterDetail = () => {
           overflow: "hidden",
           boxShadow: 2,
           minWidth: 1000,
+          borderRadius: "20px",
           margin: "20px auto",
           backgroundColor: "#f9f9f9",
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-          }}
-        >
+          }}>
           <Box
             sx={{
               flex: 1,
@@ -163,17 +161,15 @@ const PrinterDetail = () => {
               padding: 2,
               borderBottom: "1px solid #eee",
               backgroundColor: "#fff",
-            }}
-          >
+            }}>
             <img
               src={`../../public/printers/${printer.image}`}
               alt="Printer"
-              style={{ width: "385px",height:"385px", borderRadius: "8px" }}
+              style={{ width: "385px", height: "385px", borderRadius: "8px" }}
             />
             <Typography
               variant="h6"
-              sx={{ marginTop: 2, textAlign: "center", fontWeight: "bold" }}
-            >
+              sx={{ marginTop: 2, textAlign: "center", fontWeight: "bold" }}>
               {editingFields.name ? (
                 <TextField
                   value={updatedFields.name}
@@ -190,8 +186,7 @@ const PrinterDetail = () => {
                   <IconButton
                     size="small"
                     sx={{ marginLeft: 1 }}
-                    onClick={() => handleEdit("name")}
-                  >
+                    onClick={() => handleEdit("name")}>
                     <EditIcon fontSize="small" />
                   </IconButton>
                 </>
@@ -205,12 +200,10 @@ const PrinterDetail = () => {
               padding: 3,
               width: "100%",
               backgroundColor: "#fff",
-            }}
-          >
+            }}>
             <Box sx={{ padding: 3 }}>
               <Box
-                sx={{ marginBottom: 2, display: "flex", alignItems: "center" }}
-              >
+                sx={{ marginBottom: 2, display: "flex", alignItems: "center" }}>
                 <Typography variant="subtitle1" sx={{ width: "10%" }}>
                   <strong>Cơ sở:</strong>
                 </Typography>
@@ -219,8 +212,7 @@ const PrinterDetail = () => {
                     <FormControl
                       sx={{ width: "90%" }}
                       variant="outlined"
-                      size="small"
-                    >
+                      size="small">
                       <Select
                         value={updatedFields.campus}
                         onChange={(e) =>
@@ -228,8 +220,7 @@ const PrinterDetail = () => {
                             ...updatedFields,
                             campus: e.target.value,
                           })
-                        }
-                      >
+                        }>
                         <MenuItem value="CS1">CS1</MenuItem>
                         <MenuItem value="CS2">CS2</MenuItem>
                       </Select>
@@ -240,8 +231,7 @@ const PrinterDetail = () => {
                       <IconButton
                         size="small"
                         sx={{ marginLeft: 1 }}
-                        onClick={() => handleEdit("campus")}
-                      >
+                        onClick={() => handleEdit("campus")}>
                         <EditIcon fontSize="small" />
                       </IconButton>
                     </>
@@ -249,8 +239,7 @@ const PrinterDetail = () => {
                 </Typography>
               </Box>
               <Box
-                sx={{ marginBottom: 2, display: "flex", alignItems: "center" }}
-              >
+                sx={{ marginBottom: 2, display: "flex", alignItems: "center" }}>
                 <Typography variant="subtitle1" sx={{ width: "10%" }}>
                   <strong>Vị trí:</strong>
                 </Typography>
@@ -260,8 +249,7 @@ const PrinterDetail = () => {
                       <FormControl
                         variant="outlined"
                         size="small"
-                        sx={{ flex: 1, marginRight: 1 }}
-                      >
+                        sx={{ flex: 1, marginRight: 1 }}>
                         <InputLabel>Building</InputLabel>
                         {updatedFields.campus === "CS1" ? (
                           <Select
@@ -272,8 +260,7 @@ const PrinterDetail = () => {
                                 ...updatedFields,
                                 building: e.target.value,
                               })
-                            }
-                          >
+                            }>
                             <MenuItem value="A1">A1</MenuItem>
                             <MenuItem value="A2">A2</MenuItem>
                             <MenuItem value="A3">A3</MenuItem>
@@ -294,8 +281,7 @@ const PrinterDetail = () => {
                                 ...updatedFields,
                                 building: e.target.value,
                               })
-                            }
-                          >
+                            }>
                             <MenuItem value="BK.B1">BK.B1</MenuItem>
                             <MenuItem value="BK.B2">BK.B2</MenuItem>
                             <MenuItem value="BK.B3">BK.B3</MenuItem>
@@ -324,8 +310,7 @@ const PrinterDetail = () => {
                       <IconButton
                         size="small"
                         sx={{ marginLeft: 1 }}
-                        onClick={() => handleEdit("building")}
-                      >
+                        onClick={() => handleEdit("building")}>
                         <EditIcon fontSize="small" />
                       </IconButton>
                     </>
@@ -338,8 +323,7 @@ const PrinterDetail = () => {
                   marginBottom: 2,
                   display: "flex",
                   alignItems: "flex-start",
-                }}
-              >
+                }}>
                 <Typography variant="subtitle1" sx={{ width: "10%" }}>
                   <strong>Mô tả:</strong>
                 </Typography>
@@ -348,8 +332,7 @@ const PrinterDetail = () => {
                     <FormControl
                       sx={{ width: "90%" }}
                       variant="outlined"
-                      size="small"
-                    >
+                      size="small">
                       <TextField
                         value={updatedFields.description}
                         onChange={(e) =>
@@ -370,8 +353,7 @@ const PrinterDetail = () => {
                       <IconButton
                         size="small"
                         sx={{ marginLeft: 1 }}
-                        onClick={() => handleEdit("description")}
-                      >
+                        onClick={() => handleEdit("description")}>
                         <EditIcon fontSize="small" />
                       </IconButton>
                     </>
@@ -382,17 +364,15 @@ const PrinterDetail = () => {
               <Box sx={{ marginBottom: 2 }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+                  sx={{ display: "flex", alignItems: "center" }}>
                   <strong>Trạng thái: </strong>
-                  <span style={{marginLeft: "8px"}}>
+                  <span style={{ marginLeft: "8px" }}>
                     {printer.status ? (
                       <span
                         style={{
                           color: "green", // Màu xanh cho trạng thái đang hoạt động
                           fontWeight: "bold", // Tùy chọn để làm nổi bật
-                        }}
-                      >
+                        }}>
                         ĐANG HOẠT ĐỘNG
                       </span>
                     ) : (
@@ -400,8 +380,7 @@ const PrinterDetail = () => {
                         style={{
                           color: "red", // Màu đỏ cho trạng thái tạm ngưng hoạt động
                           fontWeight: "bold", // Tùy chọn để làm nổi bật
-                        }}
-                      >
+                        }}>
                         TẠM NGƯNG HOẠT ĐỘNG
                       </span>
                     )}
@@ -414,17 +393,15 @@ const PrinterDetail = () => {
                 <Box sx={{ marginBottom: 2 }}>
                   <Typography
                     variant="subtitle1"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <strong style={{paddingRight:2}}>Cập nhật:</strong>
-                    <span style={{marginLeft: "8px"}}>
+                    sx={{ display: "flex", alignItems: "center" }}>
+                    <strong style={{ paddingRight: 2 }}>Cập nhật:</strong>
+                    <span style={{ marginLeft: "8px" }}>
                       {printer.update ? (
                         <span
                           style={{
                             color: "royalblue", // Màu xanh cho trạng thái đang hoạt động
                             fontWeight: "bold", // Tùy chọn để làm nổi bật
-                          }}
-                        >
+                          }}>
                           UP-TO-DATE
                         </span>
                       ) : (
@@ -432,8 +409,7 @@ const PrinterDetail = () => {
                           style={{
                             color: "#494848", // Màu xanh cho trạng thái đang hoạt động
                             fontWeight: "bold", // Tùy chọn để làm nổi bật
-                          }}
-                        >
+                          }}>
                           OUT-OF-DATE
                         </span>
                       )}
@@ -441,8 +417,7 @@ const PrinterDetail = () => {
                     <IconButton
                       size="small"
                       sx={{ marginLeft: 1 }}
-                      onClick={handleUpdateDriver}
-                    >
+                      onClick={handleUpdateDriver}>
                       <SyncIcon fontSize="small" sx={{ color: "black" }} />
                     </IconButton>
                   </Typography>
@@ -462,8 +437,7 @@ const PrinterDetail = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       zIndex: 9999,
-                    }}
-                  >
+                    }}>
                     <Box
                       sx={{
                         display: "flex",
@@ -476,26 +450,22 @@ const PrinterDetail = () => {
                         userSelect: "none",
                         maxWidth: "400px",
                         textAlign: "center",
-                      }}
-                    >
+                      }}>
                       <Typography
                         variant="h6"
-                        sx={{ color: "#333", fontWeight: "bold" }}
-                      >
+                        sx={{ color: "#333", fontWeight: "bold" }}>
                         Bạn có chắc chắn update driver không?
                       </Typography>
                       <Box sx={{ marginTop: 2 }}>
                         <Button
                           variant="outlined"
                           sx={{ marginRight: 2 }}
-                          onClick={handleCancelUpdateDriver}
-                        >
+                          onClick={handleCancelUpdateDriver}>
                           Trở về
                         </Button>
                         <Button
                           variant="contained"
-                          onClick={handleConfirmUpdateDriver}
-                        >
+                          onClick={handleConfirmUpdateDriver}>
                           Update
                         </Button>
                       </Box>
@@ -517,8 +487,7 @@ const PrinterDetail = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       zIndex: 9999,
-                    }}
-                  >
+                    }}>
                     <Box
                       sx={{
                         display: "flex",
@@ -531,8 +500,7 @@ const PrinterDetail = () => {
                         userSelect: "none",
                         maxWidth: "400px",
                         textAlign: "center",
-                      }}
-                    >
+                      }}>
                       <img
                         src="../../public/loading-imange.gif"
                         alt="loading"
@@ -550,8 +518,7 @@ const PrinterDetail = () => {
                           fontSize: "18px",
                           letterSpacing: "0.5px",
                           lineHeight: 1.5,
-                        }}
-                      >
+                        }}>
                         Updating newest driver...
                       </Typography>
                     </Box>
@@ -562,8 +529,7 @@ const PrinterDetail = () => {
               <Box sx={{ marginBottom: 2 }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+                  sx={{ display: "flex", alignItems: "center" }}>
                   <strong>Số lần sử dụng trong tháng:</strong>
                   {printer.printed_count}
                   {printer.monthlyUsage}
@@ -573,8 +539,7 @@ const PrinterDetail = () => {
               <Box sx={{ marginBottom: 2 }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+                  sx={{ display: "flex", alignItems: "center" }}>
                   <strong>Số trang đã in trong tháng:</strong>
                   {printer.paged_printed}
                   {printer.pagesPrinted}
@@ -584,8 +549,7 @@ const PrinterDetail = () => {
               <Box sx={{ marginBottom: 2 }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+                  sx={{ display: "flex", alignItems: "center" }}>
                   <strong>% Mực còn lại:</strong>
                 </Typography>
                 <LinearProgress
@@ -599,8 +563,7 @@ const PrinterDetail = () => {
                 />
                 <Typography
                   variant="body2"
-                  sx={{ textAlign: "right", marginTop: 1, color: "#666" }}
-                >
+                  sx={{ textAlign: "right", marginTop: 1, color: "#666" }}>
                   {printer.printingInk}%
                 </Typography>
               </Box>
@@ -608,8 +571,7 @@ const PrinterDetail = () => {
                 <Button
                   sx={{ marginTop: 2 }}
                   variant="contained"
-                  onClick={handleSave}
-                >
+                  onClick={handleSave}>
                   Lưu
                 </Button>
               )}
@@ -623,29 +585,28 @@ const PrinterDetail = () => {
             padding: 2,
             borderTop: "1px solid #eee",
             backgroundColor: "#f9f9f9",
-          }}
-        >
+          }}>
           <Button
             variant="contained"
             color="#555"
             onClick={() => navigate("/manageprinter")}
             sx={{
               backgroundColor: "#d0d0d0",
+              borderRadius: "12px",
               color: "#000",
               borderColor: "#ccc",
               marginRight: 2,
               "&:hover": {
                 backgroundColor: "#e0e0e0",
               },
-            }}
-          >
+            }}>
             Quay lại
           </Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate(`/printerlogs/${id}`)}
-          >
+            sx={{ borderRadius: "12px" }}
+            onClick={() => navigate(`/printerlogs/${id}`)}>
             View Logs
           </Button>
         </Box>

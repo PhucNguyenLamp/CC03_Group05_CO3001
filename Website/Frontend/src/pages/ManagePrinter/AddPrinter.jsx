@@ -19,6 +19,15 @@ export default function AddPrinter() {
   const [building, setBuilding] = useState("");
   const [room, setRoom] = useState("");
 
+  const [errors, setErrors] = useState({
+    ID: false,
+    brand: false,
+    model: false,
+    campus: false,
+    building: false,
+    room: false,
+  });
+
   const navigate = useNavigate();
 
   const handleIDChange = (event) => {
@@ -34,6 +43,23 @@ export default function AddPrinter() {
   };
 
   const handleConfirm = async () => {
+    // Validate required fields
+    const newErrors = {
+      brand: !brand,
+      model: !model,
+      campus: !campus,
+      building: !building,
+      room: !room,
+    };
+
+    setErrors(newErrors);
+
+    // If any required field is empty, stop further execution
+    if (Object.values(newErrors).includes(true)) {
+      alert("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
+
     try {
       const newPrinter = {
         ID,
@@ -122,6 +148,8 @@ export default function AddPrinter() {
               fullWidth
               value={ID}
               onChange={handleIDChange}
+              error={errors.ID}
+              helperText={errors.ID ? "Mã máy là bắt buộc!" : ""}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
               }}
@@ -144,6 +172,8 @@ export default function AddPrinter() {
               required
               value={brand}
               onChange={handleBrandChange}
+              error={errors.brand}
+              helperText={errors.brand ? "Thương hiệu là bắt buộc!" : ""}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
               }}>
@@ -172,6 +202,8 @@ export default function AddPrinter() {
               required
               value={model}
               onChange={handleModelChange}
+              error={errors.model}
+              helperText={errors.model ? "Mẫu máy là bắt buộc!" : ""}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
               }}
@@ -186,6 +218,7 @@ export default function AddPrinter() {
             setBuilding={setBuilding}
             room={room}
             setRoom={setRoom}
+            errors={errors}
           />
 
           {/* Confirm/Cancel Buttons */}
@@ -238,7 +271,6 @@ export default function AddPrinter() {
     </Container>
   );
 }
-
 const CampusBuildingRoomSelector = ({
   campus,
   setCampus,
@@ -246,29 +278,23 @@ const CampusBuildingRoomSelector = ({
   setBuilding,
   room,
   setRoom,
+  errors,
 }) => {
   const campusOptions = ["1", "2"];
   const buildingOptions = {
     1: ["A4", "B4", "B6"],
     2: ["H6", "H4"],
   };
-  const roomOptions = {
-    A4: ["110"],
-    B4: ["102", "104"],
-    B6: ["308"],
-    H6: ["604", "602"],
-    H4: ["204"],
-  };
 
   const handleCampusChange = (event) => {
     setCampus(event.target.value);
-    setBuilding("");
-    setRoom("");
+    setBuilding(""); // Clear building selection
+    setRoom(""); // Clear room input
   };
 
   const handleBuildingChange = (event) => {
     setBuilding(event.target.value);
-    setRoom("");
+    setRoom(""); // Clear room input when building changes
   };
 
   const handleRoomChange = (event) => {
@@ -284,6 +310,7 @@ const CampusBuildingRoomSelector = ({
         width: "70%",
         justifyContent: "space-between",
       }}>
+      {/* Campus Selector */}
       <TextField
         label="Cơ sở"
         variant="outlined"
@@ -292,6 +319,8 @@ const CampusBuildingRoomSelector = ({
         required
         value={campus}
         onChange={handleCampusChange}
+        error={errors.campus}
+        helperText={errors.campus ? "Cơ sở là bắt buộc!" : ""}
         slotProps={{
           input: { style: { borderRadius: 12 } },
         }}>
@@ -302,43 +331,43 @@ const CampusBuildingRoomSelector = ({
         ))}
       </TextField>
 
+      {/* Building Selector */}
       <TextField
-        label="Toà nhà"
+        label="Tòa nhà"
         variant="outlined"
         select
         fullWidth
         required
         value={building}
         onChange={handleBuildingChange}
-        disabled={!campus}
+        error={errors.building}
+        helperText={errors.building ? "Tòa nhà là bắt buộc!" : ""}
         slotProps={{
           input: { style: { borderRadius: 12 } },
-        }}>
-        {(buildingOptions[campus] || []).map((option) => (
+        }}
+        disabled={!campus}>
+        {buildingOptions[campus]?.map((option) => (
           <MenuItem key={option} value={option}>
             {option}
           </MenuItem>
         ))}
       </TextField>
 
+      {/* Room Input */}
       <TextField
         label="Phòng"
         variant="outlined"
-        select
         fullWidth
         required
         value={room}
         onChange={handleRoomChange}
-        disabled={!building}
+        error={errors.room}
+        helperText={errors.room ? "Phòng là bắt buộc!" : ""}
         slotProps={{
           input: { style: { borderRadius: 12 } },
-        }}>
-        {(roomOptions[building] || []).map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+        }}
+        disabled={!building}
+      />
     </Box>
   );
 };

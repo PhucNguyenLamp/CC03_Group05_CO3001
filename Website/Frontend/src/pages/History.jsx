@@ -161,26 +161,25 @@ const OrderTable = () => {
         backgroundColor: "white",
         maxWidth: "80%",
         margin: "24px auto",
-        borderRadius: "8px",
+        borderRadius: "20px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         border: "1px solid #e0e0e0",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-      }}
-    >
+      }}>
       <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
         <Button
           variant={view === "PrintOrder" ? "contained" : "outlined"}
-          onClick={() => setView("PrintOrder")}
-        >
+          sx={{ borderRadius: "12px" }}
+          onClick={() => setView("PrintOrder")}>
           PrintOrder
         </Button>
         <Button
           variant={view === "PageOrder" ? "contained" : "outlined"}
-          onClick={() => setView("PageOrder")}
-        >
+          sx={{ borderRadius: "12px" }}
+          onClick={() => setView("PageOrder")}>
           PageOrder
         </Button>
       </Box>
@@ -190,8 +189,7 @@ const OrderTable = () => {
         gutterBottom
         align="center"
         sx={{ fontWeight: "bold" }}
-        marginBottom="40px"
-      >
+        marginBottom="40px">
         {view === "PrintOrder" ? "Tất cả đơn in" : "Tất cả đơn Page"}
       </Typography>
 
@@ -203,8 +201,7 @@ const OrderTable = () => {
           marginBottom: 2,
           justifyContent: "flex-start",
           width: "100%", // Đảm bảo Box chiếm hết chiều rộng có sẵn
-        }}
-      >
+        }}>
         {view === "PrintOrder" && (
           <>
             <TextField
@@ -287,8 +284,7 @@ const OrderTable = () => {
           <Button
             variant="contained"
             color="error"
-            onClick={handleResetFilters}
-          >
+            onClick={handleResetFilters}>
             Reset
           </Button>
         </Box>
