@@ -20,7 +20,6 @@ export default function AddPrinter() {
   const [building, setBuilding] = useState("");
   const [room, setRoom] = useState("");
   const [description, setDescription] = useState("");
-  const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleIDChange = (event) => {
@@ -38,23 +37,6 @@ export default function AddPrinter() {
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-
-  const handleAdd = () => {
-    if (
-      ID != "" ||
-      brand != "" ||
-      model != "" ||
-      campus != "" ||
-      building != "" ||
-      room != "" ||
-      description != ""
-    ) {
-      setAddPopupOpen(true);
-    } else {
-      navigate("/manageprinter");
-    }
-  };
-
   const handleConfirm = async () => {
     try {
       const newPrinter = {
@@ -97,12 +79,14 @@ export default function AddPrinter() {
       <Paper
         elevation={8}
         sx={{
-          marginTop: "8vh",
+          marginTop: "5vh",
           width: {
             xs: "90vw",
-            md: "35vw",
+            md: "50vw",
           },
+          height: "80vh",
           borderRadius: "20px",
+          px: "2vw",
           py: "3vh",
           display: "flex",
           flexDirection: "column",
@@ -114,7 +98,7 @@ export default function AddPrinter() {
             justifyContent: "center",
             alignSelf: "center",
             alignItems: "center",
-            width: "80%",
+            width: "70%",
             height: "18vh",
           }}
         >
@@ -137,7 +121,7 @@ export default function AddPrinter() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "80%",
+              width: "70%",
             }}
           >
             <TextField
@@ -158,11 +142,10 @@ export default function AddPrinter() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "80%",
+              width: "70%",
             }}
           >
             <TextField
-              sx={{marginRight: "18px"}}
               label="Thương hiệu"
               variant="outlined"
               select
@@ -182,6 +165,17 @@ export default function AddPrinter() {
                 )
               )}
             </TextField>
+          </Box>
+
+          {/* Model TextField */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "70%",
+            }}
+          >
             <TextField
               label="Mẫu máy in"
               variant="outlined"
@@ -194,14 +188,12 @@ export default function AddPrinter() {
               }}
             />
           </Box>
-
-          
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "80%",
+              width: "70%",
             }}
           >
             <TextField
@@ -229,7 +221,7 @@ export default function AddPrinter() {
           {/* Confirm/Cancel Buttons */}
           <Box
             sx={{
-              width: "80%",
+              width: "70%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
@@ -250,7 +242,9 @@ export default function AddPrinter() {
                 boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.25)",
                 borderRadius: "10px",
               }}
-              onClick={handleAdd}
+              onClick={() => {
+                navigate("/manageprinter");
+              }}
             >
               Trở về
             </Button>
@@ -272,62 +266,62 @@ export default function AddPrinter() {
               Xác nhận
             </Button>
           </Box>
-          {isAddPopupOpen && (
-            <Box
-              sx={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 9999,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  backgroundColor: "#fff",
-                  padding: "30px",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
-                  userSelect: "none",
-                  maxWidth: "400px",
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{ color: "#333", fontWeight: "bold" }}
-                >
-                  Bạn có chắc chắn trở lại không?
-                </Typography>
-                <Box sx={{ marginTop: 2 }}>
-                  <Button
-                    variant="outlined"
-                    sx={{ marginRight: 2 }}
-                    onClick={() => setAddPopupOpen(false)}
-                  >
-                    Từ chối
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => navigate("/manageprinter")}
-                  >
-                    Xác nhận
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          )}
         </Box>
       </Paper>
+      {isAddPopupOpen && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "#fff",
+              padding: "30px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
+              userSelect: "none",
+              maxWidth: "400px",
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ color: "#333", fontWeight: "bold" }}
+            >
+              Bạn có chắc chắn xóa máy in không?
+            </Typography>
+            <Box sx={{ marginTop: 2 }}>
+              <Button
+                variant="outlined"
+                sx={{ marginRight: 2 }}
+                onClick={closeAddPopup}
+              >
+                Trở về
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddPrinter}
+              >
+                Xác nhận
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
     </Container>
   );
 }
@@ -344,6 +338,13 @@ const CampusBuildingRoomSelector = ({
   const buildingOptions = {
     1: ["A1", "A2", "A3", "A4", "B1", "B2", "B4", "C4", "C5", "C6"],
     2: ["BK.B1", "BK.B2", "BK.B3", "BK.B6"],
+  };
+  const roomOptions = {
+    A4: ["110"],
+    B4: ["102", "104"],
+    B6: ["308"],
+    H6: ["604", "602"],
+    H4: ["204"],
   };
 
   const handleCampusChange = (event) => {
@@ -367,7 +368,7 @@ const CampusBuildingRoomSelector = ({
         display: "flex",
         gap: 2,
         mx: "auto",
-        width: "80%",
+        width: "70%",
         justifyContent: "space-between",
       }}
     >
@@ -422,5 +423,10 @@ const CampusBuildingRoomSelector = ({
         }}
       />
     </Box>
+    
   );
 };
+
+
+
+

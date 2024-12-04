@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -15,51 +15,52 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
+import api from "../api/axios";
 
 const OrderTable = () => {
-  // Sample data for PrintOrders
-  const [orders] = useState([
-    {
-      id: 1,
-      documentName: "Computer_Network.pdf",
-      printer: "Máy in 1",
-      startTime: "18/10/2024 09:01:01",
-      endTime: "20/10/2024 11:01:01",
-      status: "Hoàn thành",
-    },
-    // Add more PrintOrder data...
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [pageOrders, setPageOrders] = useState([]);
 
-  // Sample data for PageOrders
-  const [pageOrders] = useState([
-    {
-      id: 1,
-      transactionCode: "TX12345",
-      Student: "Nguyen Van A",
-      StudentID: "2241222",
-      date: "18/10/2024, 09:01:01",
-      paperType: "A4",
-      pages: 10,
-      price: "50.000 VND",
-    },
-    // Add more PageOrder data...
-  ]);
+  useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const response = await api.get("/api/v1/printorder/get-print-order");
+        const { data } = response.data;
+        setOrders(data);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
 
-  // States for active view
+    fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    async function fetchPageOrders() {
+      try {
+        const response = await api.get("/api/v1/pageorder/get-page-order");
+        const { data } = response.data;
+        setPageOrders(data);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+
+    fetchPageOrders();
+  }, []);
+
   const [view, setView] = useState("PrintOrder");
 
-  // Filter states for PrintOrder
+  const [printstudentID, setPrintStudentID] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("Tất cả");
   const [selectedPrinter, setSelectedPrinter] = useState("Tất cả");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Filter states for PageOrder
   const [selectedPaperType, setSelectedPaperType] = useState("Tất cả");
   const [selectedTransactionTime, setSelectedTransactionTime] = useState("");
   const [studentID, setStudentID] = useState("");
 
-  // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(6);
 
@@ -75,7 +76,6 @@ const OrderTable = () => {
     setStudentID("");
   };
 
-  // Render status chip for PrintOrder
   const renderStatusChip = (status) => {
     let statusColor;
 
@@ -104,17 +104,17 @@ const OrderTable = () => {
     );
   };
 
-  // Filter logic for PrintOrder
   const filteredPrintOrders = useMemo(() => {
     return orders.filter((order) => {
-      // Tách ngày và khởi tạo thời gian
       const orderStartDate = new Date(order.startTime.split(" ")[1]);
       const orderEndDate = new Date(order.endTime.split(" ")[1]);
 
-      // Khởi tạo `endDate` với thời gian 00:00:00
       const adjustedEndDate = endDate
         ? new Date(new Date(endDate).setHours(0, 0, 0, 0))
         : null;
+      const studentIDMatch =
+        !printstudentID ||
+        order.studentID.toString().includes(printstudentID.toString());
 
       const statusMatch =
         selectedStatus === "Tất cả" || order.status === selectedStatus;
@@ -124,9 +124,22 @@ const OrderTable = () => {
         !startDate || orderStartDate >= new Date(startDate);
       const endDateMatch = !adjustedEndDate || orderEndDate <= adjustedEndDate;
 
-      return statusMatch && printerMatch && startDateMatch && endDateMatch;
+      return (
+        studentIDMatch &&
+        statusMatch &&
+        printerMatch &&
+        startDateMatch &&
+        endDateMatch
+      );
     });
-  }, [orders, selectedStatus, selectedPrinter, startDate, endDate]);
+  }, [
+    orders,
+    selectedStatus,
+    selectedPrinter,
+    startDate,
+    endDate,
+    printstudentID,
+  ]);
 
   const filteredPageOrders = useMemo(() => {
     return pageOrders.filter((order) => {
@@ -137,18 +150,17 @@ const OrderTable = () => {
       const paperTypeMatch =
         selectedPaperType === "Tất cả" || order.paperType === selectedPaperType;
 
-      const studentIDMatch = !studentID || order.StudentID === studentID;
+      const studentIDMatch =
+        !studentID || order.StudentID.toString().includes(studentID.toString());
 
       return transactionTimeMatch && paperTypeMatch && studentIDMatch;
     });
   }, [pageOrders, selectedTransactionTime, selectedPaperType, studentID]);
 
-  // Handle page change
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  // Handle rows per page change
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -175,13 +187,13 @@ const OrderTable = () => {
           variant={view === "PrintOrder" ? "contained" : "outlined"}
           onClick={() => setView("PrintOrder")}
         >
-          PrintOrder
+          Đơn in
         </Button>
         <Button
           variant={view === "PageOrder" ? "contained" : "outlined"}
           onClick={() => setView("PageOrder")}
         >
-          PageOrder
+          Thanh toán
         </Button>
       </Box>
 
@@ -195,14 +207,13 @@ const OrderTable = () => {
         {view === "PrintOrder" ? "Tất cả đơn in" : "Tất cả đơn Page"}
       </Typography>
 
-      {/* Filters for both views */}
       <Box
         sx={{
           display: "flex",
           gap: 2,
           marginBottom: 2,
           justifyContent: "flex-start",
-          width: "100%", // Đảm bảo Box chiếm hết chiều rộng có sẵn
+          width: "100%",
         }}
       >
         {view === "PrintOrder" && (
@@ -224,18 +235,23 @@ const OrderTable = () => {
               select
               value={selectedPrinter}
               onChange={(e) => setSelectedPrinter(e.target.value)}
-              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              sx={{ flex: 1, minWidth: 80 }}
             >
               <MenuItem value="Tất cả">Tất cả</MenuItem>
-              <MenuItem value="Máy in 1">Máy in 1</MenuItem>
-              <MenuItem value="Máy in 2">Máy in 2</MenuItem>
+              {Array.from(new Set(orders.map((item) => item.printer))).map(
+                (printer) => (
+                  <MenuItem key={printer} value={printer}>
+                    {printer}
+                  </MenuItem>
+                )
+              )}
             </TextField>
             <TextField
               label="Ngày bắt đầu"
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              sx={{ flex: 1, minWidth: 80 }}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -245,10 +261,16 @@ const OrderTable = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              sx={{ flex: 1, minWidth: 80 }}
               InputLabelProps={{
                 shrink: true,
               }}
+            />
+            <TextField
+              label="Student ID"
+              value={printstudentID}
+              onChange={(e) => setPrintStudentID(e.target.value)}
+              sx={{ flex: 1, minWidth: 120 }}
             />
           </>
         )}
@@ -259,7 +281,7 @@ const OrderTable = () => {
               select
               value={selectedPaperType}
               onChange={(e) => setSelectedPaperType(e.target.value)}
-              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              sx={{ flex: 1, minWidth: 80 }}
             >
               <MenuItem value="Tất cả">Tất cả</MenuItem>
               <MenuItem value="A4">A4</MenuItem>
@@ -270,16 +292,16 @@ const OrderTable = () => {
               type="date"
               value={selectedTransactionTime}
               onChange={(e) => setSelectedTransactionTime(e.target.value)}
-              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              sx={{ flex: 1, minWidth: 80 }}
               InputLabelProps={{
                 shrink: true,
               }}
             />
             <TextField
               label="Student ID"
-              value={studentID} // Gán giá trị từ state
-              onChange={(e) => setStudentID(e.target.value)} // Cập nhật giá trị state khi thay đổi
-              sx={{ flex: 1, minWidth: 120 }} // Đảm bảo các trường có độ dài hợp lý
+              value={studentID}
+              onChange={(e) => setStudentID(e.target.value)}
+              sx={{ flex: 1, minWidth: 120 }}
             />
           </>
         )}
@@ -301,6 +323,7 @@ const OrderTable = () => {
               {view === "PrintOrder" ? (
                 <>
                   <TableCell align="center">ID</TableCell>
+                  <TableCell align="center">Student</TableCell>
                   <TableCell align="center">Tên tài liệu</TableCell>
                   <TableCell align="center">Máy in</TableCell>
                   <TableCell align="center">Thời gian bắt đầu</TableCell>
@@ -311,7 +334,6 @@ const OrderTable = () => {
                 <>
                   <TableCell align="center">Mã giao dịch</TableCell>
                   <TableCell align="center">Sinh viên</TableCell>
-                  <TableCell align="center">Mã sinh viên</TableCell>
                   <TableCell align="center">Ngày giao dịch</TableCell>
                   <TableCell align="center">Loại giấy</TableCell>
                   <TableCell align="center">Số trang</TableCell>
@@ -328,6 +350,7 @@ const OrderTable = () => {
                   {view === "PrintOrder" ? (
                     <>
                       <TableCell align="center">{order.id}</TableCell>
+                      <TableCell align="center">{order.studentID}</TableCell>
                       <TableCell align="center">{order.documentName}</TableCell>
                       <TableCell align="center">{order.printer}</TableCell>
                       <TableCell align="center">{order.startTime}</TableCell>
@@ -341,7 +364,6 @@ const OrderTable = () => {
                       <TableCell align="center">
                         {order.transactionCode}
                       </TableCell>
-                      <TableCell align="center">{order.Student}</TableCell>
                       <TableCell align="center">{order.StudentID}</TableCell>
                       <TableCell align="center">{order.date}</TableCell>
                       <TableCell align="center">{order.paperType}</TableCell>

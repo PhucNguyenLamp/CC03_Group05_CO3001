@@ -15,7 +15,7 @@ import BuySuccess from "../pages/BuySuccess";
 import ManagePrinter from "../pages/ManagePrinter/ManagePrinter";
 import AddPrinter from "../pages/ManagePrinter/AddPrinter";
 import Logs from "../pages/Logs";
-import Printer from "../pages/Printer-Info";
+import Printer from "../pages/ManagePrinter/Printer-Info";
 import PrinterLogs from "../pages/Printer-Logs";
 
 const router = createBrowserRouter([
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <Login />, // sửa thành Signup sau
+    element: <Login />, 
   },
   {
     path: "/login",

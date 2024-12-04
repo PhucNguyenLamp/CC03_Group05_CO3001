@@ -83,7 +83,7 @@ export default function AddPrinter() {
           borderRadius: "20px",
           px: "2vw",
           py: "3vh",
-          display: "flex",
+          display: "flex",upda
           flexDirection: "column",
         }}>
         {/* Add Printer Title */}

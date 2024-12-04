@@ -13,10 +13,10 @@ import {
   InputLabel,
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
-import "../../node_modules/react-toastify/dist/ReactToastify.css";
+import "../../../node_modules/react-toastify/dist/ReactToastify.css";
 import EditIcon from "@mui/icons-material/Edit";
 import SyncIcon from "@mui/icons-material/Sync";
-import api from "../api/axios";
+import api from "../../api/axios";
 
 const PrinterDetail = () => {
   const { id } = useParams();
@@ -38,7 +38,24 @@ const PrinterDetail = () => {
     description: "",
     status: "",
   });
-
+  const buildingOptions_CS1 = {
+    A1: "A1",
+    A2: "A2",
+    A3: "A3",
+    A4: "A4",
+    B1: "B1",
+    B2: "B2",
+    B4: "B4",
+    C4: "C4",
+    C5: "C5",
+    C6: "C6",
+  };
+  const buildingOptions_CS2 = {
+    "BK.B1": "BK.B1", 
+    "BK.B2": "BK.B2",
+    "BK.B3": "BK.B3",
+    "BK.B4": "BK.B4"
+  }
   useEffect(() => {
     const fetchPrinter = async () => {
       try {
@@ -166,9 +183,9 @@ const PrinterDetail = () => {
             }}
           >
             <img
-              src={`../../public/printers/${printer.image}`}
+              src={`/printers/${printer.image}`}
               alt="Printer"
-              style={{ width: "385px",height:"385px", borderRadius: "8px" }}
+              style={{ width: "385px", height: "385px", borderRadius: "8px" }}
             />
             <Typography
               variant="h6"
@@ -262,7 +279,7 @@ const PrinterDetail = () => {
                         size="small"
                         sx={{ flex: 1, marginRight: 1 }}
                       >
-                        <InputLabel>Building</InputLabel>
+                        <InputLabel>Tòa</InputLabel>
                         {updatedFields.campus === "CS1" ? (
                           <Select
                             value={updatedFields.building}
@@ -274,16 +291,11 @@ const PrinterDetail = () => {
                               })
                             }
                           >
-                            <MenuItem value="A1">A1</MenuItem>
-                            <MenuItem value="A2">A2</MenuItem>
-                            <MenuItem value="A3">A3</MenuItem>
-                            <MenuItem value="A4">A4</MenuItem>
-                            <MenuItem value="B1">B1</MenuItem>
-                            <MenuItem value="B2">B2</MenuItem>
-                            <MenuItem value="B4">B4</MenuItem>
-                            <MenuItem value="C4">C4</MenuItem>
-                            <MenuItem value="C5">C5</MenuItem>
-                            <MenuItem value="C6">C6</MenuItem>
+                            {Object.keys(buildingOptions_CS1).map((key) => (
+                              <MenuItem key={key} value={key}>
+                                {buildingOptions_CS1[key]}
+                              </MenuItem>
+                            ))}
                           </Select>
                         ) : (
                           <Select
@@ -296,10 +308,11 @@ const PrinterDetail = () => {
                               })
                             }
                           >
-                            <MenuItem value="BK.B1">BK.B1</MenuItem>
-                            <MenuItem value="BK.B2">BK.B2</MenuItem>
-                            <MenuItem value="BK.B3">BK.B3</MenuItem>
-                            <MenuItem value="BK.B6">BK.B6</MenuItem>
+                            {Object.keys(buildingOptions_CS2).map((key) => (
+                              <MenuItem key={key} value={key}>
+                                {buildingOptions_CS2[key]}
+                              </MenuItem>
+                            ))}
                           </Select>
                         )}
                       </FormControl>
@@ -314,7 +327,7 @@ const PrinterDetail = () => {
                         }
                         variant="outlined"
                         size="small"
-                        label="Room"
+                        label="Phòng"
                         sx={{ flex: 1 }}
                       />
                     </Box>
@@ -360,7 +373,7 @@ const PrinterDetail = () => {
                         }
                         variant="outlined"
                         size="small"
-                        label="Room"
+                        label="Mô tả"
                         sx={{ flex: 1 }}
                       />
                     </FormControl>
@@ -385,12 +398,12 @@ const PrinterDetail = () => {
                   sx={{ display: "flex", alignItems: "center" }}
                 >
                   <strong>Trạng thái: </strong>
-                  <span style={{marginLeft: "8px"}}>
+                  <span style={{ marginLeft: "8px" }}>
                     {printer.status ? (
                       <span
                         style={{
-                          color: "green", // Màu xanh cho trạng thái đang hoạt động
-                          fontWeight: "bold", // Tùy chọn để làm nổi bật
+                          color: "green",
+                          fontWeight: "bold",
                         }}
                       >
                         ĐANG HOẠT ĐỘNG
@@ -398,8 +411,8 @@ const PrinterDetail = () => {
                     ) : (
                       <span
                         style={{
-                          color: "red", // Màu đỏ cho trạng thái tạm ngưng hoạt động
-                          fontWeight: "bold", // Tùy chọn để làm nổi bật
+                          color: "red",
+                          fontWeight: "bold",
                         }}
                       >
                         TẠM NGƯNG HOẠT ĐỘNG
@@ -416,13 +429,13 @@ const PrinterDetail = () => {
                     variant="subtitle1"
                     sx={{ display: "flex", alignItems: "center" }}
                   >
-                    <strong style={{paddingRight:2}}>Cập nhật:</strong>
-                    <span style={{marginLeft: "8px"}}>
+                    <strong style={{ paddingRight: 2 }}>Cập nhật:</strong>
+                    <span style={{ marginLeft: "8px" }}>
                       {printer.update ? (
                         <span
                           style={{
-                            color: "royalblue", // Màu xanh cho trạng thái đang hoạt động
-                            fontWeight: "bold", // Tùy chọn để làm nổi bật
+                            color: "royalblue",
+                            fontWeight: "bold",
                           }}
                         >
                           UP-TO-DATE
@@ -430,8 +443,8 @@ const PrinterDetail = () => {
                       ) : (
                         <span
                           style={{
-                            color: "#494848", // Màu xanh cho trạng thái đang hoạt động
-                            fontWeight: "bold", // Tùy chọn để làm nổi bật
+                            color: "#494848",
+                            fontWeight: "bold",
                           }}
                         >
                           OUT-OF-DATE
@@ -442,13 +455,13 @@ const PrinterDetail = () => {
                       size="small"
                       sx={{ marginLeft: 1 }}
                       onClick={handleUpdateDriver}
+                      title="Update Driver"
                     >
                       <SyncIcon fontSize="small" sx={{ color: "black" }} />
                     </IconButton>
                   </Typography>
                 </Box>
 
-                {/* Popup Confirm Update */}
                 {showConfirm && (
                   <Box
                     sx={{
@@ -503,7 +516,6 @@ const PrinterDetail = () => {
                   </Box>
                 )}
 
-                {/* Hiển thị Loading */}
                 {loading && (
                   <Box
                     sx={{
@@ -644,9 +656,9 @@ const PrinterDetail = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate(`/printerlogs/${id}`)}
+            onClick={() => navigate(`/printerlogs`)}
           >
-            View Logs
+            Lịch sử
           </Button>
         </Box>
       </Box>
