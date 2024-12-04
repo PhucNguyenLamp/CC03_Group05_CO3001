@@ -31,9 +31,8 @@ export class PageOrderController {
 
   async getPageOrder(req,res,next) {
     try {
-      const cur_user = req.user;
 
-      const page_orders = await PageOrder.find({ Student: cur_user._id });
+      const page_orders = await PageOrder.find({});
 
       const result = [];
       page_orders.forEach((item) => {
