@@ -109,7 +109,7 @@ export default function ManagePrinter() {
       const response = await api.get("api/v1/printer");
       setRows(
         response.data.data.map((printer) => ({
-          id: printer._id,
+          id: printer.id,
           brand: printer.brand,
           model: printer.model,
           campus: printer.location?.campus || "",

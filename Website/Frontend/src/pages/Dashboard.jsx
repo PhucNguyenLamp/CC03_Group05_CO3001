@@ -4,101 +4,121 @@ import { useAuth } from "../contexts/AuthContext";
 const logs = [ // sample logs
   {
     action: "Add",
+    id: 'HL40',
     printer: "HP LaserJet Pro M404dn",
     date: "2021-10-09 10:00:00",
   },
   {
     action: "Edit",
+    id: 'CP00',
     printer: "Canon Pixma",
     date: "2021-10-10 12:00:00",
   },
   {
     action: "Delete",
+    id: 'EL50',
     printer: "Epson L3150",
     date: "2021-10-11 14:00:00",
   },
   {
     action: "Add",
+    id: 'HD24',
     printer: "HP DeskJet 2330",
     date: "2021-10-12 16:00:00",
   },
   {
     action: "Add",
+    id: 'HL41',
     printer: "HP LaserJet Pro M404dn",
     date: "2021-10-09 10:00:00",
   },
   {
     action: "Edit",
+    id: 'CP01',
     printer: "Canon Pixma",
     date: "2021-10-10 12:00:00",
   },
   {
     action: "Delete",
+    id: 'EL51',
     printer: "Epson L3150",
     date: "2021-10-11 14:00:00",
   },
   {
     action: "Add",
+    id: 'HD25',
     printer: "HP DeskJet 2330",
     date: "2021-10-12 16:00:00",
   },
   {
     action: "Add",
+    id: 'HL42',
     printer: "HP LaserJet Pro M404dn",
     date: "2021-10-09 10:00:00",
   },
   {
     action: "Edit",
+    id: 'CP02',
     printer: "Canon Pixma",
     date: "2021-10-10 12:00:00",
   },
   {
     action: "Delete",
+    id: 'EL52',
     printer: "Epson L3150",
     date: "2021-10-11 14:00:00",
   },
   {
     action: "Add",
+    id: 'HD26',
     printer: "HP DeskJet 2330",
     date: "2021-10-12 16:00:00",
   }, 
   {
     action: "Add",
+    id: 'HL43',
     printer: "HP LaserJet Pro M404dn",
     date: "2021-10-09 10:00:00",
   },
   {
     action: "Edit",
+    id: 'CP03',
     printer: "Canon Pixma",
     date: "2021-10-10 12:00:00",
   },
   {
     action: "Delete",
+    id: 'EL53',
     printer: "Epson L3150",
     date: "2021-10-11 14:00:00",
   },
   {
     action: "Add",
+    id: 'HD27',
     printer: "HP DeskJet 2330",
     date: "2021-10-12 16:00:00",
   },
   {
     action: "Add",
+    id: 'HL44',
     printer: "HP LaserJet Pro M404dn",
     date: "2021-10-09 10:00:00",
   },
   {
     action: "Edit",
+    id: 'CP04',
     printer: "Canon Pixma",
     date: "2021-10-10 12:00:00",
   },
   {
     action: "Delete",
+    id: 'EL54',
     printer: "Epson L3150",
     date: "2021-10-11 14:00:00",
   },
   {
     action: "Add",
+    id: 'HD28',
     printer: "HP DeskJet 2330",
     date: "2021-10-12 16:00:00",
   }
@@ -177,6 +197,7 @@ export default function Dashboard() {
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" sx={{ fontWeight: "bold" }}>Action</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Printer</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
                   </TableRow>
@@ -186,9 +207,10 @@ export default function Dashboard() {
                 <TableBody>
                   {logs.map((log, index) => (
                     <TableRow key={index}>
-                      <TableCell align="center" sx={{ color: getColor(log.action), fontWeight: "bold" }}>
+                      <TableCell  sx={{ color: getColor(log.action), fontWeight: "bold" }}>
                         {log.action}
                       </TableCell>
+                      <TableCell>{log.id}</TableCell>
                       <TableCell >{log.printer}</TableCell>
                       <TableCell >{log.date}</TableCell>
                     </TableRow>
