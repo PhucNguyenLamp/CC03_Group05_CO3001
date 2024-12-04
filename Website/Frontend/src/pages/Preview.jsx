@@ -91,7 +91,7 @@ export default function Preview() {
             try {
                 const res = await api.get('/api/v1/printer');
                 setPrinters(res.data.data);
-                setSelectedPrinter(res.data.data[0].ID);
+                setSelectedPrinter(res.data.data[0].id);
                 console.log(res.data.data);
             } catch (error) {
                 console.error("Failed to fetch printers:", error);
@@ -181,14 +181,14 @@ export default function Preview() {
                                     </TableHead>
                                     <TableBody>
                                         {printers.map((printer) => (
-                                            <TableRow key={printer.ID}>
-                                                <TableCell align="center">{printer.ID}</TableCell>
+                                            <TableRow key={printer.id}>
+                                                <TableCell align="center">{printer.id}</TableCell>
                                                 <TableCell>{printer.brand + " " + printer.model}</TableCell>
                                                 <TableCell>{printer.location.building + "-" + printer.location.room + " / " + printer.location.campus}</TableCell>
                                                 <TableCell align="center">
                                                     <Radio
-                                                        checked={selectedPrinter === printer.ID}
-                                                        onChange={() => setSelectedPrinter(printer.ID)}
+                                                        checked={selectedPrinter === printer.id}
+                                                        onChange={() => setSelectedPrinter(printer.id)}
                                                         color="primary"
                                                     />
                                                 </TableCell>
@@ -212,10 +212,10 @@ export default function Preview() {
                                     Xác nhận in
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-                                    <strong>Máy in:</strong> {printers.find((printer) => printer.ID === selectedPrinter).brand + " " + printers.find((printer) => printer.ID === selectedPrinter).model}
+                                    <strong>Máy in:</strong> {printers.find((printer) => printer.id === selectedPrinter).brand + " " + printers.find((printer) => printer.id === selectedPrinter).model}
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-                                        <strong>Địa điểm in:</strong> {` ${printers.find((printer) => printer.ID === selectedPrinter).location.building}-${printers.find((printer) => printer.ID === selectedPrinter).location.room} / ${printers.find((printer) => printer.ID === selectedPrinter).location.campus}`}
+                                        <strong>Địa điểm in:</strong> {` ${printers.find((printer) => printer.id === selectedPrinter).location.building}-${printers.find((printer) => printer.id === selectedPrinter).location.room} / ${printers.find((printer) => printer.id === selectedPrinter).location.campus}`}
                                 </Typography>
                                 <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
                                     <strong>Số trang in còn lại:</strong> {user.pages}
