@@ -25,10 +25,10 @@ export class PrinterController {
 
   async addPrinter(req, res, next) {
     try {
-      const { id, brand, description, campus, building, room } = req.body;
+      const { id, brand, model, campus, building, room } = req.body;
       const printerData = {
         brand,
-        description,
+        model,
         location: {
           campus,
           building,
