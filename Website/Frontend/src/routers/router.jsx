@@ -15,6 +15,9 @@ import BuySuccess from "../pages/BuySuccess";
 import ManagePrinter from "../pages/ManagePrinter/ManagePrinter";
 import AddPrinter from "../pages/ManagePrinter/AddPrinter";
 import Logs from "../pages/Logs";
+import Printer from "../pages/Printer-Info";
+import PrinterLogs from "../pages/Printer-Logs";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -64,6 +67,15 @@ const router = createBrowserRouter([
         path: "/logs",
         element: <Logs />,
       },
+      {
+        path: "/printerinfo/:id", 
+        element: <Printer />
+      },
+      {
+        path: "/printerlogs",
+        element: <PrinterLogs/>
+      }
+
     ],
   },
   {

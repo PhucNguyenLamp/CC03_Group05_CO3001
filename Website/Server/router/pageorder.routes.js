@@ -10,7 +10,6 @@ router.post('/create-page-order',
 );
 
 router.get('/get-page-order',
-  AuthController.prototype.isLoggedin, 
   PageOrderController.prototype.getPageOrder
 );
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const PrinterSchema = mongoose.Schema({
-  ID: {
+  id: {
     type: String,
     required:true
   },
@@ -31,6 +31,23 @@ const PrinterSchema = mongoose.Schema({
       enum: ["CS1","CS2"],
       required:true
     }
+  },
+  printing_ink: {
+    type:Number,
+    default: 100,
+    select:false
+  },
+  update: {
+    type:Boolean,
+    default: true,
+    select:false
+  },
+  description: {
+    type:String
+  },
+  image: {
+    type:String,
+    select:false
   }
   
 });
