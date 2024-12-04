@@ -1,104 +1,375 @@
-import { Paper, Typography, Container, Tabs, Tab } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid';
-import React, { useState } from 'react'
+import { useState, useMemo } from "react";
+import {
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Button,
+  MenuItem,
+  Chip,
+  Paper,
+  TablePagination,
+} from "@mui/material";
 
-const columns2 = [
-    { field: 'id', headerName: 'STT', type: 'number', width: 70 },
-    { field: 'transactionId', headerName: 'Mã giao dịch', width: 200 },
-    { field: 'time', headerName: 'Thời gian', width: 130 },
-    { field: 'paper', headerName: 'Loại giấy', width: 100 },
-    { field: 'pages', headerName: 'Số trang mua', type: 'number', width: 100 },
-    { field: 'price', headerName: 'Tổng cộng', width: 170 },
-];
-
-const rows2 = [
-    { id: 1, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-    { id: 2, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-    { id: 3, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-    { id: 4, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-    { id: 5, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-    { id: 6, transactionId: '7362738490', time: '15:40 12/11', paper: 'A4', pages: 40, price: "20.000VND" },
-];
-
-const columns1 = [
-    { field: 'id', headerName: 'STT', type: 'number', width: 70 },
-    { field: 'time', headerName: 'Thời điểm in', width: 130 },
-    { field: 'printer', headerName: 'Máy in', width: 130 },
+const OrderTable = () => {
+  // Sample data for PrintOrders
+  const [orders] = useState([
     {
-        field: 'address',
-        headerName: 'Địa điểm',
-        width: 150,
+      id: 1,
+      documentName: "Computer_Network.pdf",
+      printer: "Máy in 1",
+      startTime: "18/10/2024 09:01:01",
+      endTime: "20/10/2024 11:01:01",
+      status: "Hoàn thành",
     },
+    // Add more PrintOrder data...
+  ]);
+
+  // Sample data for PageOrders
+  const [pageOrders] = useState([
     {
-        field: 'document',
-        headerName: 'Tên tài liệu',
-        width: 190,
+      id: 1,
+      transactionCode: "TX12345",
+      Student: "Nguyen Van A",
+      StudentID: "2241222",
+      date: "18/10/2024, 09:01:01",
+      paperType: "A4",
+      pages: 10,
+      price: "50.000 VND",
     },
-    { field: 'pages', headerName: 'Số trang', type: 'number', width: 80 },
-];
+    // Add more PageOrder data...
+  ]);
 
-const rows1 = [
-    { id: 1, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-    { id: 2, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-    { id: 3, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-    { id: 4, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-    { id: 5, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-    { id: 6, time: '15:40 12/11', printer: 'TOSHIBA', address: "CS1/B3-102", document: "BTL_CNPM_2024.pdf", pages: 52 },
-];
+  // States for active view
+  const [view, setView] = useState("PrintOrder");
 
+  // Filter states for PrintOrder
+  const [selectedStatus, setSelectedStatus] = useState("Tất cả");
+  const [selectedPrinter, setSelectedPrinter] = useState("Tất cả");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-export default function History() {
-    const [value, setValue] = React.useState(0);
-    const [data, setData] = useState({ rows: rows1, columns: columns1 });
-    
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-        console.log(newValue);
-        // Switch data based on the tab index
-        if (newValue === 0) {
-            setData({ rows: rows1, columns: columns1 });
-        } else if (newValue === 1) {
-            setData({ rows: rows2, columns: columns2 });
-        }
+  // Filter states for PageOrder
+  const [selectedPaperType, setSelectedPaperType] = useState("Tất cả");
+  const [selectedTransactionTime, setSelectedTransactionTime] = useState("");
+  const [studentID, setStudentID] = useState("");
+
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+
+  const handleResetFilters = () => {
+    setSelectedStatus("Tất cả");
+    setSelectedPrinter("Tất cả");
+    setStartDate("");
+    setEndDate("");
+    setSelectedPaperType("Tất cả");
+    setSelectedTransactionTime("");
+    setSelectedPaperType("Tất cả");
+    setSelectedTransactionTime("");
+    setStudentID("");
+  };
+
+  // Render status chip for PrintOrder
+  const renderStatusChip = (status) => {
+    let statusColor;
+
+    if (status === "Hoàn thành") {
+      statusColor = "success";
+    } else if (status === "Đang in") {
+      statusColor = "info";
+    } else if (status === "Bị hủy") {
+      statusColor = "error";
+    } else {
+      statusColor = "default";
     }
+
     return (
-        <Container maxWidth="md" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', }} >
-            <Paper
-                elevation={5}
-                sx={{
-                    height: '70vh',
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    p: 4,
-                    width: '100%',
-                    textAlign: "center",
-                    my: 2,
-                }}
+      <Chip
+        label={status}
+        color={statusColor}
+        variant="outlined"
+        size="small"
+        sx={{
+          fontWeight: "bold",
+          width: "100px",
+          justifyContent: "center",
+        }}
+      />
+    );
+  };
+
+  // Filter logic for PrintOrder
+  const filteredPrintOrders = useMemo(() => {
+    return orders.filter((order) => {
+      // Tách ngày và khởi tạo thời gian
+      const orderStartDate = new Date(order.startTime.split(" ")[1]);
+      const orderEndDate = new Date(order.endTime.split(" ")[1]);
+
+      // Khởi tạo `endDate` với thời gian 00:00:00
+      const adjustedEndDate = endDate
+        ? new Date(new Date(endDate).setHours(0, 0, 0, 0))
+        : null;
+
+      const statusMatch =
+        selectedStatus === "Tất cả" || order.status === selectedStatus;
+      const printerMatch =
+        selectedPrinter === "Tất cả" || order.printer === selectedPrinter;
+      const startDateMatch =
+        !startDate || orderStartDate >= new Date(startDate);
+      const endDateMatch = !adjustedEndDate || orderEndDate <= adjustedEndDate;
+
+      return statusMatch && printerMatch && startDateMatch && endDateMatch;
+    });
+  }, [orders, selectedStatus, selectedPrinter, startDate, endDate]);
+
+  const filteredPageOrders = useMemo(() => {
+    return pageOrders.filter((order) => {
+      const transactionTimeMatch =
+        !selectedTransactionTime ||
+        order.date.includes(selectedTransactionTime);
+
+      const paperTypeMatch =
+        selectedPaperType === "Tất cả" || order.paperType === selectedPaperType;
+
+      const studentIDMatch = !studentID || order.StudentID === studentID;
+
+      return transactionTimeMatch && paperTypeMatch && studentIDMatch;
+    });
+  }, [pageOrders, selectedTransactionTime, selectedPaperType, studentID]);
+
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  return (
+    <Box
+      sx={{
+        padding: 4,
+        backgroundColor: "white",
+        maxWidth: "80%",
+        margin: "24px auto",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        border: "1px solid #e0e0e0",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
+        <Button
+          variant={view === "PrintOrder" ? "contained" : "outlined"}
+          onClick={() => setView("PrintOrder")}
+        >
+          PrintOrder
+        </Button>
+        <Button
+          variant={view === "PageOrder" ? "contained" : "outlined"}
+          onClick={() => setView("PageOrder")}
+        >
+          PageOrder
+        </Button>
+      </Box>
+
+      <Typography
+        variant="h5"
+        gutterBottom
+        align="center"
+        sx={{ fontWeight: "bold" }}
+        marginBottom="40px"
+      >
+        {view === "PrintOrder" ? "Tất cả đơn in" : "Tất cả đơn Page"}
+      </Typography>
+
+      {/* Filters for both views */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          marginBottom: 2,
+          justifyContent: "flex-start",
+          width: "100%", // Đảm bảo Box chiếm hết chiều rộng có sẵn
+        }}
+      >
+        {view === "PrintOrder" && (
+          <>
+            <TextField
+              label="Trạng thái"
+              select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
             >
-                <Typography variant="h4" color="primary" gutterBottom>
-                    Lịch Sử
-                </Typography>
-                <Tabs value={value} onChange={handleChange}>
-                    <Tab label="In ấn" />
-                    <Tab label="Thanh toán" />
-                </Tabs>
-                <Paper sx={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={data.rows}
-                        columns={data.columns}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 5,
-                                },
-                            },
-                        }}
-                        pageSizeOptions={[5]}
-                        disableRowSelectionOnClick
-                    />
-                </Paper>
-            </Paper>
-        </Container>
-    )
-}
+              <MenuItem value="Tất cả">Tất cả</MenuItem>
+              <MenuItem value="Hoàn thành">Hoàn thành</MenuItem>
+              <MenuItem value="Đang in">Đang in</MenuItem>
+              <MenuItem value="Bị hủy">Bị hủy</MenuItem>
+            </TextField>
+            <TextField
+              label="Máy in"
+              select
+              value={selectedPrinter}
+              onChange={(e) => setSelectedPrinter(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+            >
+              <MenuItem value="Tất cả">Tất cả</MenuItem>
+              <MenuItem value="Máy in 1">Máy in 1</MenuItem>
+              <MenuItem value="Máy in 2">Máy in 2</MenuItem>
+            </TextField>
+            <TextField
+              label="Ngày bắt đầu"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="Ngày kết thúc"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </>
+        )}
+        {view === "PageOrder" && (
+          <>
+            <TextField
+              label="Loại giấy"
+              select
+              value={selectedPaperType}
+              onChange={(e) => setSelectedPaperType(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+            >
+              <MenuItem value="Tất cả">Tất cả</MenuItem>
+              <MenuItem value="A4">A4</MenuItem>
+              <MenuItem value="A3">A3</MenuItem>
+            </TextField>
+            <TextField
+              label="Thời gian giao dịch"
+              type="date"
+              value={selectedTransactionTime}
+              onChange={(e) => setSelectedTransactionTime(e.target.value)}
+              sx={{ flex: 1, minWidth: 80 }} // Các trường filter chiếm không gian đều
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="Student ID"
+              value={studentID} // Gán giá trị từ state
+              onChange={(e) => setStudentID(e.target.value)} // Cập nhật giá trị state khi thay đổi
+              sx={{ flex: 1, minWidth: 120 }} // Đảm bảo các trường có độ dài hợp lý
+            />
+          </>
+        )}
+        <Box sx={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleResetFilters}
+          >
+            Reset
+          </Button>
+        </Box>
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {view === "PrintOrder" ? (
+                <>
+                  <TableCell align="center">ID</TableCell>
+                  <TableCell align="center">Tên tài liệu</TableCell>
+                  <TableCell align="center">Máy in</TableCell>
+                  <TableCell align="center">Thời gian bắt đầu</TableCell>
+                  <TableCell align="center">Thời gian kết thúc</TableCell>
+                  <TableCell align="center">Trạng thái</TableCell>
+                </>
+              ) : (
+                <>
+                  <TableCell align="center">Mã giao dịch</TableCell>
+                  <TableCell align="center">Sinh viên</TableCell>
+                  <TableCell align="center">Mã sinh viên</TableCell>
+                  <TableCell align="center">Ngày giao dịch</TableCell>
+                  <TableCell align="center">Loại giấy</TableCell>
+                  <TableCell align="center">Số trang</TableCell>
+                  <TableCell align="center">Giá</TableCell>
+                </>
+              )}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(view === "PrintOrder" ? filteredPrintOrders : filteredPageOrders)
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((order) => (
+                <TableRow key={order.id}>
+                  {view === "PrintOrder" ? (
+                    <>
+                      <TableCell align="center">{order.id}</TableCell>
+                      <TableCell align="center">{order.documentName}</TableCell>
+                      <TableCell align="center">{order.printer}</TableCell>
+                      <TableCell align="center">{order.startTime}</TableCell>
+                      <TableCell align="center">{order.endTime}</TableCell>
+                      <TableCell align="center">
+                        {renderStatusChip(order.status)}
+                      </TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell align="center">
+                        {order.transactionCode}
+                      </TableCell>
+                      <TableCell align="center">{order.Student}</TableCell>
+                      <TableCell align="center">{order.StudentID}</TableCell>
+                      <TableCell align="center">{order.date}</TableCell>
+                      <TableCell align="center">{order.paperType}</TableCell>
+                      <TableCell align="center">{order.pages}</TableCell>
+                      <TableCell align="center">{order.price}</TableCell>
+                    </>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <TablePagination
+        rowsPerPageOptions={[6, 8]}
+        component="div"
+        count={
+          view === "PrintOrder"
+            ? filteredPrintOrders.length
+            : filteredPageOrders.length
+        }
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Box>
+  );
+};
+
+export default OrderTable;

@@ -26,6 +26,9 @@ export class PrintOrderController {
       if (!cur_printer) {
         return next(new AppError("Printer not found", 404));
       }
+      if(cur_printer.status===false) {
+        return next(new AppError("Printer is unavailable",401));
+      }
 
       //Store new document
       const document = await Document.create({
@@ -71,20 +74,33 @@ export class PrintOrderController {
   }
 
   async getHistoryPrintOrder(req, res, next) {
+    function addHours(date, hours) {
+      const newDate = new Date(date); // Tạo bản sao của ngày hiện tại
+      newDate.setHours(newDate.getHours() + hours); // Cộng thêm số giờ
+      return newDate;
+    }
+    function parseDate(dateString) {
+      const [time, date] = dateString.split(" ");
+      const [day, month, year] = date.split("/");
+    
+      return new Date(`${month}/${day}/${year} ${time}`);
+    }
     try {
-      const cur_user = req.user;
-
-      const print_orders = await PrintOrder.find({ Student: cur_user._id });
-
+      const print_orders = await PrintOrder.find({});
       const result = [];
+      let id=0;
       print_orders.forEach((item) => {
+        console.log(item);
         const { room, building, campus } = item.Printer.location;
+        const startTime = get_standard_datetime(item.date);
         const location = `${campus}/${building}-${room}`;
         const order = {
-          date: get_standard_datetime(item.date),
+          id: id++,
+          startTime,
+          endTime: get_standard_datetime(addHours(startTime,3)),
           printer: item.Printer.brand,
           location,
-          filename: item.Document.name,
+          documentName: item.Document.name,
           page_count: item.Document.page_count,
         };
         result.push(order);

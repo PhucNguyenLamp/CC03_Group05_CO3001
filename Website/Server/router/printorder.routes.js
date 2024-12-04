@@ -10,7 +10,6 @@ router.post('/create-print-order',
 );
 
 router.get('/get-print-order',
-  AuthController.prototype.isLoggedin,
   PrintOrderController.prototype.getHistoryPrintOrder
 );
 
