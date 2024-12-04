@@ -12,7 +12,8 @@ import Preview from "../pages/Preview";
 import Success from "../pages/Success";
 import { ProtectedRoute } from "./../pages/ProtectedRoutes";
 import BuySuccess from "../pages/BuySuccess";
-import ManagePrinter from "../pages/ManagePrinter";
+import ManagePrinter from "../pages/ManagePrinter/ManagePrinter";
+import AddPrinter from "../pages/ManagePrinter/AddPrinter";
 import Logs from "../pages/Logs";
 import Printer from "../pages/Printer-Info";
 import PrinterLogs from "../pages/Printer-Logs";
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
         element: <ManagePrinter />,
       },
       {
+        path: "/addprinter",
+        element: <AddPrinter />,
+      },
+      {
         path: "/logs",
         element: <Logs />,
       },
@@ -70,6 +75,7 @@ const router = createBrowserRouter([
         path: "/printerlogs",
         element: <PrinterLogs/>
       }
+
     ],
   },
   {
