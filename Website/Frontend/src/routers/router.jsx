@@ -15,9 +15,12 @@ import BuySuccess from "../pages/BuySuccess";
 import ManagePrinter from "../pages/ManagePrinter/ManagePrinter";
 import AddPrinter from "../pages/ManagePrinter/AddPrinter";
 import Logs from "../pages/Logs";
-import Printer from "../pages/ManagePrinter/Printer-Info";
-import PrinterLogs from "../pages/Printer-Logs";
+
+import Printer from "../pages/PrinterInfo";
+import PrinterLogs from "../pages/PrinterLogs";
+import AdminDashboard from "../pages/AdminDashboard";
 import SystemConfiguration from "../pages/SystemConfiguration";
+
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,10 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
+        path: "/admindashboard",
+        element: <AdminDashboard />,
+      },
+      {
         path: "/Preview",
         element: <Preview />,
       },
@@ -69,8 +76,8 @@ const router = createBrowserRouter([
         element: <Logs />,
       },
       {
-        path: "/printerinfo/:id", 
-        element: <Printer />
+        path: "/printerinfo/:id",
+        element: <Printer />,
       },
       {
         path: "/printerlogs",
@@ -80,7 +87,6 @@ const router = createBrowserRouter([
         path: "/systemconfig",
         element: <SystemConfiguration />
       }
-
     ],
   },
   {
