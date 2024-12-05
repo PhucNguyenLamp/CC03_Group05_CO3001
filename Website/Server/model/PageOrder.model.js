@@ -33,6 +33,13 @@ const PageOrderSchema = mongoose.Schema({
   },
 });
 
+PageOrderSchema.pre(/^find/, function(next){
+  this
+  .populate({
+    path:'Student'
+  })
+  next();
+})
 
 
 const PageOrder = mongoose.model('PageOrder',PageOrderSchema);
