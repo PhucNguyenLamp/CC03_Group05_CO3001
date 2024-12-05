@@ -66,10 +66,9 @@ export default function AddPrinter() {
       room: !room,
     };
 
-
     // If any required field is empty, stop further execution
     if (Object.values(newErrors).includes(true)) {
-      alert("Vui lòng điền đầy đủ thông tin!");
+      toast.error("Vui lòng điền đầy đủ thông tin!");
       return;
     }
 
@@ -179,7 +178,7 @@ export default function AddPrinter() {
             }}
           >
             <TextField
-              sx={{marginRight: "18px"}}
+              sx={{ marginRight: "18px" }}
               label="Thương hiệu"
               variant="outlined"
               select
@@ -212,7 +211,6 @@ export default function AddPrinter() {
             />
           </Box>
 
-          
           <Box
             sx={{
               display: "flex",
