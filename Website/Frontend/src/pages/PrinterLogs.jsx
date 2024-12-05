@@ -47,9 +47,19 @@ export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const filteredLogs = logs.filter((log) => {
+    const logdate = log.date.split(' ')[1];
+    const convertDateFormat = (dateString) => {
+      const date = new Date(dateString);
+      
+      const day = date.getDate(); 
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear(); 
+          return `${day}/${month}/${year}`;
+    };
+
     const matchesAction = actionFilter ? log.action === actionFilter : true;
     const matchesAdmin = adminFilter ? log.Updatedby === adminFilter : true;
-    const matchesDate = dateFilter ? log.date.includes(dateFilter) : true;
+    const matchesDate = dateFilter ? convertDateFormat(dateFilter)===logdate : true;
     return matchesAction && matchesAdmin && matchesDate;
   });
 
