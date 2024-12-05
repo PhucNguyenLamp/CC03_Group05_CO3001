@@ -118,33 +118,62 @@ export default function Appbar() {
             ))}
             {
               userInfo && userInfo.role == 'SPSO' ? (
-                <Button
-                  className=" py-2 px-4"
-                  sx={{
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    color: "primary.dark",
-                    backgroundColor: "transparent",
-                    textTransform: "none",
-                    borderRadius: "16px",
-                    paddingX: "24px",
-                    paddingY: "2px",
-                    border:
-                      location.pathname == '/manageprinter'
-                        ? "2px solid"
-                        : "2px solid transparent",
-                    "&:hover": {
-                      border: "2px solid",
-                      borderColor: "primary.dark",
-                    },
-                  }}
-                  onClick={() => navigate('/manageprinter')}>
-                  <Typography sx={{
-                    color: "primary.dark",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                  }}> Quản lý máy in </Typography>
-                </Button>
+                <>
+                  <Button
+                    className=" py-2 px-4"
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      color: "primary.dark",
+                      backgroundColor: "transparent",
+                      textTransform: "none",
+                      borderRadius: "16px",
+                      paddingX: "24px",
+                      paddingY: "2px",
+                      border:
+                        location.pathname == '/manageprinter'
+                          ? "2px solid"
+                          : "2px solid transparent",
+                      "&:hover": {
+                        border: "2px solid",
+                        borderColor: "primary.dark",
+                      },
+                    }}
+                    onClick={() => navigate('/manageprinter')}>
+                    <Typography sx={{
+                      color: "primary.dark",
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                    }}> Quản lý máy in </Typography>
+                  </Button>
+                  <Button
+                    className=" py-2 px-4"
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      color: "primary.dark",
+                      backgroundColor: "transparent",
+                      textTransform: "none",
+                      borderRadius: "16px",
+                      paddingX: "24px",
+                      paddingY: "2px",
+                      border:
+                        location.pathname == '/systemconfig'
+                          ? "2px solid"
+                          : "2px solid transparent",
+                      "&:hover": {
+                        border: "2px solid",
+                        borderColor: "primary.dark",
+                      },
+                    }}
+                    onClick={() => navigate('/systemconfig')}>
+                    <Typography sx={{
+                      color: "primary.dark",
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                    }}> Cài đặt hệ thống </Typography>
+                  </Button>
+                </>
               ) : (
                 <></>
               )
@@ -182,17 +211,17 @@ export default function Appbar() {
                   key={"dashboard"}
                   onClick={() => {
                     handleCloseUserMenu();
-                    navigate("/dashboard");
+                    { userInfo.role == 'SPSO' ? navigate("/admindashboard") : navigate("/dashboard") }
                   }}>
                   <Typography sx={{ textAlign: "center" }}>Dashboard</Typography>
                 </MenuItem>
                 {
                   userInfo.role == 'SPSO' ? (
                     <MenuItem
-                      key={"logs"}
+                      key={"printerlogs"}
                       onClick={() => {
                         handleCloseUserMenu();
-                        navigate("/logs");
+                        navigate("/printerlogs");
                       }}>
                       <Typography sx={{ textAlign: "center" }}>Report hệ thống</Typography>
                     </MenuItem>
