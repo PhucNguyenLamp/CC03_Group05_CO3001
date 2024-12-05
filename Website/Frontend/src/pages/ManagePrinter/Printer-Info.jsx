@@ -266,14 +266,9 @@ const PrinterDetail = () => {
                       <FormControl
                         variant="outlined"
                         size="small"
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                        sx={{ flex: 1, marginRight: 1 }}>
-                        <InputLabel>Building</InputLabel>
-========
                         sx={{ flex: 1, marginRight: 1 }}
                       >
                         <InputLabel>Tòa</InputLabel>
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                         {updatedFields.campus === "CS1" ? (
                           <Select
                             value={updatedFields.building}
@@ -283,19 +278,6 @@ const PrinterDetail = () => {
                                 ...updatedFields,
                                 building: e.target.value,
                               })
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                            }>
-                            <MenuItem value="A1">A1</MenuItem>
-                            <MenuItem value="A2">A2</MenuItem>
-                            <MenuItem value="A3">A3</MenuItem>
-                            <MenuItem value="A4">A4</MenuItem>
-                            <MenuItem value="B1">B1</MenuItem>
-                            <MenuItem value="B2">B2</MenuItem>
-                            <MenuItem value="B4">B4</MenuItem>
-                            <MenuItem value="C4">C4</MenuItem>
-                            <MenuItem value="C5">C5</MenuItem>
-                            <MenuItem value="C6">C6</MenuItem>
-========
                             }
                           >
                             {Object.keys(buildingOptions_CS1).map((key) => (
@@ -303,7 +285,6 @@ const PrinterDetail = () => {
                                 {buildingOptions_CS1[key]}
                               </MenuItem>
                             ))}
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                           </Select>
                         ) : (
                           <Select
@@ -314,13 +295,6 @@ const PrinterDetail = () => {
                                 ...updatedFields,
                                 building: e.target.value,
                               })
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                            }>
-                            <MenuItem value="BK.B1">BK.B1</MenuItem>
-                            <MenuItem value="BK.B2">BK.B2</MenuItem>
-                            <MenuItem value="BK.B3">BK.B3</MenuItem>
-                            <MenuItem value="BK.B6">BK.B6</MenuItem>
-========
                             }
                           >
                             {Object.keys(buildingOptions_CS2).map((key) => (
@@ -328,7 +302,6 @@ const PrinterDetail = () => {
                                 {buildingOptions_CS2[key]}
                               </MenuItem>
                             ))}
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                           </Select>
                         )}
                       </FormControl>
@@ -413,31 +386,19 @@ const PrinterDetail = () => {
                     {printer.status ? (
                       <span
                         style={{
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                          color: "green", // Màu xanh cho trạng thái đang hoạt động
-                          fontWeight: "bold", // Tùy chọn để làm nổi bật
-                        }}>
-========
                           color: "green",
                           fontWeight: "bold",
                         }}
                       >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                         ĐANG HOẠT ĐỘNG
                       </span>
                     ) : (
                       <span
                         style={{
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                          color: "red", // Màu đỏ cho trạng thái tạm ngưng hoạt động
-                          fontWeight: "bold", // Tùy chọn để làm nổi bật
-                        }}>
-========
                           color: "red",
                           fontWeight: "bold",
                         }}
                       >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                         TẠM NGƯNG HOẠT ĐỘNG
                       </span>
                     )}
@@ -450,42 +411,26 @@ const PrinterDetail = () => {
                 <Box sx={{ marginBottom: 2 }}>
                   <Typography
                     variant="subtitle1"
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                    sx={{ display: "flex", alignItems: "center" }}>
-========
                     sx={{ display: "flex", alignItems: "center" }}
                   >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                     <strong style={{ paddingRight: 2 }}>Cập nhật:</strong>
                     <span style={{ marginLeft: "8px" }}>
                       {printer.update ? (
                         <span
                           style={{
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                            color: "royalblue", // Màu xanh cho trạng thái đang hoạt động
-                            fontWeight: "bold", // Tùy chọn để làm nổi bật
-                          }}>
-========
                             color: "royalblue",
                             fontWeight: "bold",
                           }}
                         >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                           UP-TO-DATE
                         </span>
                       ) : (
                         <span
                           style={{
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                            color: "#494848", // Màu xanh cho trạng thái đang hoạt động
-                            fontWeight: "bold", // Tùy chọn để làm nổi bật
-                          }}>
-========
                             color: "#494848",
                             fontWeight: "bold",
                           }}
                         >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                           OUT-OF-DATE
                         </span>
                       )}
@@ -493,13 +438,9 @@ const PrinterDetail = () => {
                     <IconButton
                       size="small"
                       sx={{ marginLeft: 1 }}
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-                      onClick={handleUpdateDriver}>
-========
                       onClick={handleUpdateDriver}
                       title="Update Driver"
                     >
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
                       <SyncIcon fontSize="small" sx={{ color: "black" }} />
                     </IconButton>
                   </Typography>
@@ -685,15 +626,9 @@ const PrinterDetail = () => {
           <Button
             variant="contained"
             color="primary"
-<<<<<<<< HEAD:Website/Frontend/src/pages/PrinterInfo.jsx
-            sx={{ borderRadius: "12px" }}
-            onClick={() => navigate(`/printerlogs/${id}`)}>
-            View Logs
-========
             onClick={() => navigate(`/printerlogs`)}
           >
             Lịch sử
->>>>>>>> 0dd4eb50bf586570ae8b0a7a115275bc4368d568:Website/Frontend/src/pages/ManagePrinter/Printer-Info.jsx
           </Button>
         </Box>
       </Box>
