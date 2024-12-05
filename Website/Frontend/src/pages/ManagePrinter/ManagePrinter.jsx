@@ -210,8 +210,8 @@ export default function ManagePrinter() {
       row.model.toLowerCase().includes(searchText.toLowerCase()) ||
       row.campus.toLowerCase().includes(searchText.toLowerCase()) ||
       row.building.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.room.toLowerCase().includes(searchText.toLowerCase())
-  );
+      (row.room).toString().toLowerCase().includes(searchText.toLowerCase())
+    );
 
   return (
     <Container
