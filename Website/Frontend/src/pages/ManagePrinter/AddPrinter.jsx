@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
 import api from "../../api/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function AddPrinter() {
   const [ID, setID] = useState("");
@@ -18,16 +20,8 @@ export default function AddPrinter() {
   const [campus, setCampus] = useState("");
   const [building, setBuilding] = useState("");
   const [room, setRoom] = useState("");
-
-  const [errors, setErrors] = useState({
-    ID: false,
-    brand: false,
-    model: false,
-    campus: false,
-    building: false,
-    room: false,
-  });
-
+  const [description, setDescription] = useState("");
+  const [isAddPopupOpen, setAddPopupOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleIDChange = (event) => {
@@ -42,6 +36,26 @@ export default function AddPrinter() {
     setModel(event.target.value);
   };
 
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleAdd = () => {
+    if (
+      ID != "" ||
+      brand != "" ||
+      model != "" ||
+      campus != "" ||
+      building != "" ||
+      room != "" ||
+      description != ""
+    ) {
+      setAddPopupOpen(true);
+    } else {
+      navigate("/manageprinter");
+    }
+  };
+
   const handleConfirm = async () => {
     // Validate required fields
     const newErrors = {
@@ -52,7 +66,6 @@ export default function AddPrinter() {
       room: !room,
     };
 
-    setErrors(newErrors);
 
     // If any required field is empty, stop further execution
     if (Object.values(newErrors).includes(true)) {
@@ -68,6 +81,7 @@ export default function AddPrinter() {
         campus,
         building,
         room,
+        description,
       };
 
       console.log("Sending printer data to server:", newPrinter);
@@ -76,18 +90,15 @@ export default function AddPrinter() {
 
       // Handle success
       if (response.data.status === "success") {
-        console.log("Printer added successfully:", response.data.data);
-        alert("Máy in được thêm thành công!");
+        toast.success("Máy in được thêm thành công!", { autoClose: 1500 });
+        setTimeout(() => navigate("/manageprinter"), 2500);
       } else {
-        console.error("Error adding printer:", response.data.message);
-        alert("Thêm máy in thất bại. Hãy vui lòng thử lại.");
+        console.log(response.data.message);
+        toast.error("Thêm máy in thất bại. Hãy vui lòng thử lại.");
       }
     } catch (error) {
-      console.error(
-        "Failed to add printer:",
-        error.response?.data?.message || error.message
-      );
-      alert("Xảy ra lỗi trong quá trình thêm máy in");
+      console.log(error);
+      toast.error(error.response.data.message, { autoClose: 2500 });
     }
   };
 
@@ -97,31 +108,33 @@ export default function AddPrinter() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-      }}>
+      }}
+    >
+      <ToastContainer />
       <Paper
         elevation={8}
         sx={{
-          marginTop: "5vh",
+          marginTop: "8vh",
           width: {
             xs: "90vw",
-            md: "50vw",
+            md: "35vw",
           },
-          height: "80vh",
           borderRadius: "20px",
-          px: "2vw",
           py: "3vh",
           display: "flex",
           flexDirection: "column",
-        }}>
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignSelf: "center",
             alignItems: "center",
-            width: "70%",
+            width: "80%",
             height: "18vh",
-          }}>
+          }}
+        >
           <Typography fontWeight="bold" fontSize="6vh" color="primary.dark">
             Thêm máy in
           </Typography>
@@ -134,22 +147,22 @@ export default function AddPrinter() {
             flexFlow: "column wrap",
             my: "2vh",
             gap: "2vh",
-          }}>
+          }}
+        >
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "70%",
-            }}>
+              width: "80%",
+            }}
+          >
             <TextField
               label="Mã máy (ID)"
               variant="outlined"
               fullWidth
               value={ID}
               onChange={handleIDChange}
-              error={errors.ID}
-              helperText={errors.ID ? "Mã máy là bắt buộc!" : ""}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
               }}
@@ -162,9 +175,11 @@ export default function AddPrinter() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "70%",
-            }}>
+              width: "80%",
+            }}
+          >
             <TextField
+              sx={{marginRight: "18px"}}
               label="Thương hiệu"
               variant="outlined"
               select
@@ -172,11 +187,10 @@ export default function AddPrinter() {
               required
               value={brand}
               onChange={handleBrandChange}
-              error={errors.brand}
-              helperText={errors.brand ? "Thương hiệu là bắt buộc!" : ""}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
-              }}>
+              }}
+            >
               {["Toshiba", "Canon", "Epsilon", "HP", "Brother", "Samsung"].map(
                 (option) => (
                   <MenuItem key={option} value={option}>
@@ -185,16 +199,6 @@ export default function AddPrinter() {
                 )
               )}
             </TextField>
-          </Box>
-
-          {/* Model TextField */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "70%",
-            }}>
             <TextField
               label="Mẫu máy in"
               variant="outlined"
@@ -202,8 +206,27 @@ export default function AddPrinter() {
               required
               value={model}
               onChange={handleModelChange}
-              error={errors.model}
-              helperText={errors.model ? "Mẫu máy là bắt buộc!" : ""}
+              slotProps={{
+                input: { style: { borderRadius: "12px" } },
+              }}
+            />
+          </Box>
+
+          
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "80%",
+            }}
+          >
+            <TextField
+              label="Mô tả"
+              variant="outlined"
+              fullWidth
+              value={description}
+              onChange={handleDescriptionChange}
               slotProps={{
                 input: { style: { borderRadius: "12px" } },
               }}
@@ -218,19 +241,19 @@ export default function AddPrinter() {
             setBuilding={setBuilding}
             room={room}
             setRoom={setRoom}
-            errors={errors}
           />
 
           {/* Confirm/Cancel Buttons */}
           <Box
             sx={{
-              width: "70%",
+              width: "80%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               flexFlow: "row wrap",
               flexGrow: 4,
-            }}>
+            }}
+          >
             <Button
               variant="contained"
               sx={{
@@ -244,9 +267,8 @@ export default function AddPrinter() {
                 boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.25)",
                 borderRadius: "10px",
               }}
-              onClick={() => {
-                navigate("/manageprinter");
-              }}>
+              onClick={handleAdd}
+            >
               Trở về
             </Button>
             <Button
@@ -262,10 +284,65 @@ export default function AddPrinter() {
                 fontWeight: "bold",
                 boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.25)",
                 borderRadius: "10px",
-              }}>
+              }}
+            >
               Xác nhận
             </Button>
           </Box>
+          {isAddPopupOpen && (
+            <Box
+              sx={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 9999,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  backgroundColor: "#fff",
+                  padding: "30px",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
+                  userSelect: "none",
+                  maxWidth: "400px",
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#333", fontWeight: "bold" }}
+                >
+                  Bạn có chắc chắn trở lại không?
+                </Typography>
+                <Box sx={{ marginTop: 2 }}>
+                  <Button
+                    variant="outlined"
+                    sx={{ marginRight: 2 }}
+                    onClick={() => setAddPopupOpen(false)}
+                  >
+                    Từ chối
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => navigate("/manageprinter")}
+                  >
+                    Xác nhận
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
       </Paper>
     </Container>
@@ -278,12 +355,11 @@ const CampusBuildingRoomSelector = ({
   setBuilding,
   room,
   setRoom,
-  errors,
 }) => {
   const campusOptions = ["1", "2"];
   const buildingOptions = {
-    1: ["A4", "B4", "B6"],
-    2: ["H6", "H4"],
+    1: ["A1", "A2", "A3", "A4", "B1", "B2", "B4", "C4", "C5", "C6"],
+    2: ["BK.B1", "BK.B2", "BK.B3", "BK.B6"],
   };
 
   const handleCampusChange = (event) => {
@@ -307,10 +383,10 @@ const CampusBuildingRoomSelector = ({
         display: "flex",
         gap: 2,
         mx: "auto",
-        width: "70%",
+        width: "80%",
         justifyContent: "space-between",
-      }}>
-      {/* Campus Selector */}
+      }}
+    >
       <TextField
         label="Cơ sở"
         variant="outlined"
@@ -319,11 +395,10 @@ const CampusBuildingRoomSelector = ({
         required
         value={campus}
         onChange={handleCampusChange}
-        error={errors.campus}
-        helperText={errors.campus ? "Cơ sở là bắt buộc!" : ""}
         slotProps={{
           input: { style: { borderRadius: 12 } },
-        }}>
+        }}
+      >
         {campusOptions.map((option) => (
           <MenuItem key={option} value={option}>
             {option}
@@ -340,13 +415,11 @@ const CampusBuildingRoomSelector = ({
         required
         value={building}
         onChange={handleBuildingChange}
-        error={errors.building}
-        helperText={errors.building ? "Tòa nhà là bắt buộc!" : ""}
         slotProps={{
           input: { style: { borderRadius: 12 } },
         }}
-        disabled={!campus}>
-        {buildingOptions[campus]?.map((option) => (
+      >
+        {(buildingOptions[campus] || []).map((option) => (
           <MenuItem key={option} value={option}>
             {option}
           </MenuItem>
@@ -361,12 +434,9 @@ const CampusBuildingRoomSelector = ({
         required
         value={room}
         onChange={handleRoomChange}
-        error={errors.room}
-        helperText={errors.room ? "Phòng là bắt buộc!" : ""}
         slotProps={{
-          input: { style: { borderRadius: 12 } },
+          input: { style: { borderRadius: "12px" } },
         }}
-        disabled={!building}
       />
     </Box>
   );

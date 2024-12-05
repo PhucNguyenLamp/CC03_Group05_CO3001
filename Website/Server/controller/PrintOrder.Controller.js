@@ -7,6 +7,11 @@ import get_standard_datetime from "../utils/getDateTime.js";
 
 export class PrintOrderController {
   async createPrintOrder(req, res, next) {
+    function getRandomStatus() {
+      const statuses = ["Hoàn thành", "Đang in", "Bị hủy"];
+      const randomIndex = Math.floor(Math.random() * statuses.length);
+      return statuses[randomIndex];
+    }
     try {
       const {
         printer,
@@ -26,8 +31,8 @@ export class PrintOrderController {
       if (!cur_printer) {
         return next(new AppError("Printer not found", 404));
       }
-      if(cur_printer.status===false) {
-        return next(new AppError("Printer is unavailable",401));
+      if (cur_printer.status === false) {
+        return next(new AppError("Printer is unavailable", 401));
       }
 
       //Store new document
@@ -59,6 +64,7 @@ export class PrintOrderController {
           vector,
           papersize,
         },
+        status: getRandomStatus(),
       };
 
       await PrintOrder.create(printorder);
@@ -82,26 +88,29 @@ export class PrintOrderController {
     function parseDate(dateString) {
       const [time, date] = dateString.split(" ");
       const [day, month, year] = date.split("/");
-    
+
       return new Date(`${month}/${day}/${year} ${time}`);
     }
+
     try {
       const print_orders = await PrintOrder.find({});
       const result = [];
-      let id=0;
+      let id = 1;
+      
       print_orders.forEach((item) => {
-        console.log(item);
         const { room, building, campus } = item.Printer.location;
         const startTime = get_standard_datetime(item.date);
         const location = `${campus}/${building}-${room}`;
         const order = {
           id: id++,
+          studentID: item.Student.ID,
           startTime,
-          endTime: get_standard_datetime(addHours(startTime,3)),
-          printer: item.Printer.brand,
+          endTime: get_standard_datetime(addHours(item.date, 3)),
+          printer: item.Printer.id,
           location,
           documentName: item.Document.name,
           page_count: item.Document.page_count,
+          status: item.status,
         };
         result.push(order);
       });
@@ -110,11 +119,9 @@ export class PrintOrderController {
         status: "success",
         data: result,
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err.message);
       return next(new AppError(err.message, 401));
     }
-    
   }
-
 }

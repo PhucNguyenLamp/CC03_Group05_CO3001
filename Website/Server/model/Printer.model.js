@@ -3,12 +3,12 @@ import mongoose from 'mongoose';
 const PrinterSchema = mongoose.Schema({
   id: {
     type: String,
-    required:true
+    required:true,
+    uniqued: true
   },
   model: {
     type:String,
     required:true,
-    uniqued:true
   }, 
   brand: {
     type:String
@@ -52,7 +52,20 @@ const PrinterSchema = mongoose.Schema({
   
 });
 
-
+PrinterSchema.pre(/^save/,function(next){
+  if(this.brand==="HP") {
+    this.image="HP.jpg";
+  } else if (this.brand==="Canon") {
+    this.image="Canon.png";
+  } else if (this.brand==="Epson") {
+    this.image="Epson.jpg";
+  } else if (this.brand==="Toshiba") {
+    this.image="Toshiba.jpg";
+  } else {
+    this.image="others.png";
+  }
+  next();
+})
 // PrinterSchema.pre(/^find/,function(next){
 //   //this points to current query
 //   this.find({status:true});

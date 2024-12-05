@@ -20,7 +20,7 @@ import hcmut_logo from "../assets/HCMUT.png";
 
 const pages = [
   { name: "In tài liệu", path: "/print" },
-  { name: "Lịch sử", path: "/history" },
+  { name: "Lịch sử đơn hàng", path: "/history" },
   { name: "Mua trang", path: "/buy" },
 ];
 
@@ -143,7 +143,7 @@ export default function Appbar() {
                     color: "primary.dark",
                     fontWeight: "bold",
                     fontSize: "18px",
-                  }}> Máy in </Typography>
+                  }}> Quản lý máy in </Typography>
                 </Button>
               ) : (
                 <></>
