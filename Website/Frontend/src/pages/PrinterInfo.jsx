@@ -13,10 +13,10 @@ import {
   InputLabel,
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
-import "../../../node_modules/react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 import EditIcon from "@mui/icons-material/Edit";
 import SyncIcon from "@mui/icons-material/Sync";
-import api from "../../api/axios";
+import api from "../api/axios";
 
 const PrinterDetail = () => {
   const { id } = useParams();

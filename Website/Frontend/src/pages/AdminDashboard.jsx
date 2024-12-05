@@ -85,7 +85,6 @@ export default function AdminDashboard() {
             display: "flex",
             width: "70%",
             height: "100%",
-            alignItems: "center",
             flexFlow: "column wrap",
             justifyContent: "flex-start",
             alignItems: "center",
