@@ -151,7 +151,7 @@ export default function Dashboard() {
           </FormControl>
 
           <TextField
-            label="Date (YYYY-MM-DD)"
+            label="Date"
             type="date"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
