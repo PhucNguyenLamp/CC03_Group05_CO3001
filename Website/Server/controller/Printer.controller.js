@@ -67,20 +67,32 @@ export class PrinterController {
 
   async addPrinter(req, res, next) {
     try {
-      const { id, brand, model, campus, building, room } = req.body;
+      const {brand, model, campus, building, room , description } = req.body;
+      if(!brand || !model || !campus || !building || !room) {
+        return next(new AppError("Vui lòng điền đầy đủ thông tin",400));
+      }
+      let {ID} = req.body;
+      if (!ID) {
+        const printer_count = await Printer.countDocuments({ brand }) + 1;
+        ID = brand.slice(0, 2) + printer_count.toString();
+      }
+      const anyprinter = await Printer.countDocuments({brand,model});
+      if (anyprinter>0) {
+        return next (new AppError("You already have this printer",401));
+      }
       const printerData = {
+        id: ID,
         brand,
         model,
         location: {
-          campus,
+          campus: `CS${campus}`,
           building,
           room,
         },
+        description,
         status: true,
       };
-      if (id) {
-        printerData.model = id;
-      }
+
       const newPrinter = await Printer.create(printerData);
 
       res.status(201).json({
@@ -89,7 +101,8 @@ export class PrinterController {
         data: newPrinter,
       });
     } catch (err) {
-      next(new AppError("Failed to add printer", 400));
+      if(err.message.includes("duplicate")) return next(new AppError("ID can not be duplicated",401));
+      next(new AppError(err.message, 400));
     }
   }
 
@@ -97,7 +110,6 @@ export class PrinterController {
     try {
       const { id } = req.params;
       const updatedData = req.body;
-      console.log(updatedData);
       const printername = updatedData.name.split(" - ");
       const updatedatamodel = {
         brand: printername[0],
@@ -193,7 +205,7 @@ export class PrinterController {
         message: `Printer status toggled to ${
           printer.status ? "enabled" : "disabled"
         }`,
-        data: printer,
+        printer,
       });
     } catch (err) {
       next(new AppError("Failed to toggle printer status", 400));

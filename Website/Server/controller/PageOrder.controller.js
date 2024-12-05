@@ -35,14 +35,18 @@ export class PageOrderController {
       const page_orders = await PageOrder.find({});
 
       const result = [];
+      let id =1;
       page_orders.forEach((item) => {
        
         const order = {
-          transaction_code: item.transaction_code,
+          id: id++,
+          transactionCode: item.transaction_code,
+          Student: `${item.Student.lname} ${item.Student.fname}`,
+          StudentID: item.Student.ID,
           date: get_standard_datetime(item.date),
-          papersize:item.papersize,
-          page_count: item.page_count,
-          price: item.price
+          paperType:item.papersize,
+          pages: item.page_count,
+          price: `${item.price} VND`
         };
         result.push(order);
       });

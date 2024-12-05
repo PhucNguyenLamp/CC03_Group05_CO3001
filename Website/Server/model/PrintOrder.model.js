@@ -47,7 +47,6 @@ const PrintOrderSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Cancel", "Complete"],
     required: true,
     default: "Pending" 
   }
@@ -66,7 +65,14 @@ PrintOrderSchema.pre(/^find/, function(next){
   });
 
   next();
-})
+});
+
+PrintOrderSchema.post(/^find/, function (docs, next) {
+  const filteredDocs = docs.filter(doc => doc.Printer !== null);
+  docs.splice(0, docs.length, ...filteredDocs);
+
+  next();
+});
 
 const PrintOrder = mongoose.model('PrintOrder',PrintOrderSchema);
 

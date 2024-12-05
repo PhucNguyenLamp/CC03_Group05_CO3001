@@ -15,9 +15,12 @@ import BuySuccess from "../pages/BuySuccess";
 import ManagePrinter from "../pages/ManagePrinter/ManagePrinter";
 import AddPrinter from "../pages/ManagePrinter/AddPrinter";
 import Logs from "../pages/Logs";
+
 import Printer from "../pages/PrinterInfo";
 import PrinterLogs from "../pages/PrinterLogs";
 import AdminDashboard from "../pages/AdminDashboard";
+import SystemConfiguration from "../pages/SystemConfiguration";
+
 
 const router = createBrowserRouter([
   {
@@ -78,13 +81,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/printerlogs",
-        element: <PrinterLogs />,
+        element: <PrinterLogs/>
       },
+      {
+        path: "/systemconfig",
+        element: <SystemConfiguration />
+      }
     ],
   },
   {
     path: "/signup",
-    element: <Login />, // sửa thành Signup sau
+    element: <Login />, 
   },
   {
     path: "/login",

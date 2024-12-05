@@ -155,6 +155,7 @@ const PrinterDetail = () => {
           display: "flex",
           flexDirection: "column",
           border: "1px solid #ccc",
+          borderRadius: "8px",
           overflow: "hidden",
           boxShadow: 2,
           minWidth: 1000,
