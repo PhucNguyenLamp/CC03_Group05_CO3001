@@ -179,12 +179,12 @@ export default function ManagePrinter() {
       const response = await api.patch(`api/v1/printer/toggle/${row.id}`);
 
       if (response.status === 200) {
-        console.log("Printer status updated to ", response.data.data.status);
+        console.log("Printer status updated to ", response.data.printer.status);
 
         setRows((prevRows) =>
           prevRows.map((printer) =>
             printer.id === row.id
-              ? { ...printer, enableDisable: response.data.data.status }
+              ? { ...printer, enableDisable: response.data.printer.status }
               : printer
           )
         );
@@ -210,8 +210,8 @@ export default function ManagePrinter() {
       row.model.toLowerCase().includes(searchText.toLowerCase()) ||
       row.campus.toLowerCase().includes(searchText.toLowerCase()) ||
       row.building.toLowerCase().includes(searchText.toLowerCase()) ||
-      row.room.toLowerCase().includes(searchText.toLowerCase())
-  );
+      (row.room).toString().toLowerCase().includes(searchText.toLowerCase())
+    );
 
   return (
     <Container
