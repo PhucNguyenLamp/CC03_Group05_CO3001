@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import {
   Container,
   Typography,
@@ -19,49 +19,47 @@ import {
   Button,
 } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
+import api from "../api/axios";
 
-const logs = [
-  {
-    action: "Add",
-    printer: "HP LaserJet Pro M404dn",
-    date: "2024-10-09 10:00:00",
-    Updatedby: "admin1",
-  },
-  {
-    action: "Edit",
-    printer: "Canon Pixma",
-    date: "2024-10-10 12:00:00",
-    Updatedby: "admin2",
-  },
-  {
-    action: "Delete",
-    printer: "Epson L3150",
-    date: "2024-10-11 14:00:00",
-    Updatedby: "admin3",
-  },
-  {
-    action: "Add",
-    printer: "HP DeskJet 2330",
-    date: "2024-10-12 16:00:00",
-    Updatedby: "admin1",
-  },
-];
 
 export default function Dashboard() {
   const { userInfo } = useAuth();
   console.log(userInfo);
 
+  const [logs,setLogs]= useState([]);
+
+  useEffect(() => {
+    const fetchLog = async () => {
+      try {
+        const response = await api.get(`/api/v1/printer/getlog/all`);
+        const { printerlogs } = response.data;
+        setLogs(printerlogs);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchLog();
+  }, []);
   const [actionFilter, setActionFilter] = useState("");
   const [adminFilter, setAdminFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-
+  const itemsPerPage = 9;
   const filteredLogs = logs.filter((log) => {
+    const logdate = log.date.split(' ')[1];
+    const convertDateFormat = (dateString) => {
+      const date = new Date(dateString);
+      
+      const day = date.getDate(); 
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear(); 
+          return `${day}/${month}/${year}`;
+    };
+
     const matchesAction = actionFilter ? log.action === actionFilter : true;
     const matchesAdmin = adminFilter ? log.Updatedby === adminFilter : true;
-    const matchesDate = dateFilter ? log.date.includes(dateFilter) : true;
+    const matchesDate = dateFilter ? convertDateFormat(dateFilter)===logdate : true;
     return matchesAction && matchesAdmin && matchesDate;
   });
 
@@ -78,6 +76,8 @@ export default function Dashboard() {
         return "gold";
       case "Delete":
         return "firebrick";
+      case "Update": 
+        return "blue"
       default:
         return "black";
     }
@@ -100,7 +100,7 @@ export default function Dashboard() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4, minWidth: "45%" }}>
+    <Container maxWidth="sm" sx={{ mt: 5, minWidth: "45%", }}>
       <Box
         sx={{
           border: "2px solid #ddd",
@@ -129,10 +129,10 @@ export default function Dashboard() {
               onChange={(e) => setActionFilter(e.target.value)}
               label="Action"
             >
-              <MenuItem value="">Tất cả</MenuItem>
               <MenuItem value="Add">Add</MenuItem>
               <MenuItem value="Edit">Edit</MenuItem>
               <MenuItem value="Delete">Delete</MenuItem>
+              <MenuItem value="Update">Update</MenuItem>
             </Select>
           </FormControl>
 
@@ -143,7 +143,6 @@ export default function Dashboard() {
               onChange={(e) => setAdminFilter(e.target.value)}
               label="Admin"
             >
-              <MenuItem value="">Tất cả</MenuItem>
               <MenuItem value="admin1">admin1</MenuItem>
               <MenuItem value="admin2">admin2</MenuItem>
               <MenuItem value="admin3">admin3</MenuItem>
@@ -181,6 +180,7 @@ export default function Dashboard() {
                 <TableCell sx={{ fontWeight: "bold" }}>Printer</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>UpdatedBy</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Note</TableCell>
               </TableRow>
             </TableHead>
 
@@ -196,6 +196,7 @@ export default function Dashboard() {
                   <TableCell>{log.printer}</TableCell>
                   <TableCell>{log.date}</TableCell>
                   <TableCell>{log.Updatedby}</TableCell>
+                  <TableCell>{log.description||""}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

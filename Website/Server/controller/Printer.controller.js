@@ -2,6 +2,8 @@ import Printer from "../model/Printer.model.js";
 import PrintOrder from "../model/PrintOrder.model.js";
 import Document from "../model/Document.model.js";
 import AppError from "../utils/AppError.js";
+import PrinterLogs from "../model/PrinterLogs.model.js";
+import get_standard_datetime from "../utils/getDateTime.js";
 
 export class PrinterController {
   async getPrinterInfo(req, res, next) {
@@ -34,7 +36,7 @@ export class PrinterController {
         printed_count,
         paged_printed,
         printingInk: printer.printing_ink,
-        image: printer.image
+        image: printer.image,
       };
       res.status(200).json({
         status: "success",
@@ -65,20 +67,40 @@ export class PrinterController {
     }
   }
 
+  async getPrinterLog(req, res, next) {
+    try {
+      const logs = await PrinterLogs.find();
+      const printerlogs=logs.map((element) => {
+        const plainObject = element.toObject();
+        return ({
+          ...plainObject,
+          date: get_standard_datetime(plainObject.date)
+        })
+      });
+      res.status(200).json({
+        status: "success",
+        printerlogs,
+      });
+    } catch (err) {
+      console.log(err.message);
+      return next(new AppError(err.message, 401));
+    }
+  }
+
   async addPrinter(req, res, next) {
     try {
-      const {brand, model, campus, building, room , description } = req.body;
-      if(!brand || !model || !campus || !building || !room) {
-        return next(new AppError("Vui lòng điền đầy đủ thông tin",400));
+      const { brand, model, campus, building, room, description } = req.body;
+      if (!brand || !model || !campus || !building || !room) {
+        return next(new AppError("Vui lòng điền đầy đủ thông tin", 400));
       }
-      let {ID} = req.body;
+      let { ID } = req.body;
       if (!ID) {
-        const printer_count = await Printer.countDocuments({ brand }) + 1;
+        const printer_count = (await Printer.countDocuments({ brand })) + 1;
         ID = brand.slice(0, 2) + printer_count.toString();
       }
-      const anyprinter = await Printer.countDocuments({brand,model});
-      if (anyprinter>0) {
-        return next (new AppError("You already have this printer",401));
+      const anyprinter = await Printer.countDocuments({ brand, model });
+      if (anyprinter > 0) {
+        return next(new AppError("You already have this printer", 401));
       }
       const printerData = {
         id: ID,
@@ -95,13 +117,22 @@ export class PrinterController {
 
       const newPrinter = await Printer.create(printerData);
 
+      //Printer Logs
+      const newlog = {
+        action: "Add",
+        printer: `${brand}-${model}`,
+      };
+
+      await PrinterLogs.create(newlog);
+
       res.status(201).json({
         status: "success",
         message: "Printer added successfully!",
         data: newPrinter,
       });
     } catch (err) {
-      if(err.message.includes("duplicate")) return next(new AppError("ID can not be duplicated",401));
+      if (err.message.includes("duplicate"))
+        return next(new AppError("ID can not be duplicated", 401));
       next(new AppError(err.message, 400));
     }
   }
@@ -117,12 +148,25 @@ export class PrinterController {
         location: {
           building: updatedData.building,
           room: updatedData.room,
-          campus: updatedData.campus
+          campus: updatedData.campus,
         },
         description: updatedData.description,
-        status: updatedData.status
-      }
+        status: updatedData.status,
+      };
       let cur_printer = await Printer.findOne({ id });
+
+      const fields = [
+        { key: "brand", label: "thương hiệu " },
+        { key: "model", label: "mã máy " },
+        { key: "location", label: "vị trí " },
+      ];
+
+      let editnote = fields.reduce((note, field) => {
+        return cur_printer[field.key] !== updatedatamodel[field.key]
+          ? note + (note ? ", " : "") + field.label
+          : note;
+      }, "");
+
       if (cur_printer) {
         cur_printer.set(updatedatamodel);
         await cur_printer.save();
@@ -132,6 +176,15 @@ export class PrinterController {
           message: "Printer not found!",
         });
       }
+
+      //Printer Logs
+      const newlog = {
+        action: "Edit",
+        printer: `${printername[0]}-${printername[1]}`,
+        description: `Thay đổi thông tin ${editnote}`,
+      };
+
+      await PrinterLogs.create(newlog);
 
       res.status(200).json({
         status: "success",
@@ -156,6 +209,15 @@ export class PrinterController {
 
       await printer.save();
 
+      //Printer Logs
+      const newlog = {
+        action: "Update",
+        printer: `${printer.brand}-${printer.model}`,
+        description: "Cập nhật driver mới nhất",
+      };
+
+      await PrinterLogs.create(newlog);
+
       res.status(200).json({
         status: "success",
         message: "Update driver successfully!",
@@ -171,13 +233,23 @@ export class PrinterController {
   async deletePrinter(req, res, next) {
     try {
       const { id } = req.params;
-  
+
+      const printer = await Printer.findOne({ id });
       const result = await Printer.deleteOne({ id });
-  
+
       if (result.deletedCount === 0) {
         return next(new AppError("Printer not found", 404));
       }
-        res.status(200).json({
+
+      //Printer Logs
+      const newlog = {
+        action: "Delete",
+        printer: `${printer.brand}-${printer.model}`,
+      };
+
+      await PrinterLogs.create(newlog);
+
+      res.status(200).json({
         status: "success",
         message: "Printer deleted successfully!",
       });
@@ -185,13 +257,12 @@ export class PrinterController {
       next(new AppError("Failed to delete printer", 400));
     }
   }
-  
 
   async togglePrinterStatus(req, res, next) {
     try {
       const { id } = req.params;
 
-      const printer = await Printer.findOne({id});
+      const printer = await Printer.findOne({ id });
 
       if (!printer) {
         return next(new AppError("Printer not found", 404));
@@ -199,6 +270,15 @@ export class PrinterController {
 
       printer.status = !printer.status;
       await printer.save();
+
+      //Printer Logs
+      const newlog = {
+        action: "Update",
+        printer: `${printer.brand}-${printer.model}`,
+        description: printer.status ? "Bật máy in" : "Tắt máy in",
+      };
+
+      await PrinterLogs.create(newlog);
 
       res.status(200).json({
         status: "success",
