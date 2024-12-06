@@ -86,8 +86,8 @@ export const AuthProvider = ({ children }) => {
                 login,
                 logout,
                 isAuthenticated: !!userInfo,
-                isUser: userInfo?.user_type === 'user',
-                isAdmin: userInfo?.user_type === 'admin'
+                isUser: userInfo?.user_type === 'Student',
+                isAdmin: userInfo?.user_type === 'SPSO'
             }}
         >
             {children}
