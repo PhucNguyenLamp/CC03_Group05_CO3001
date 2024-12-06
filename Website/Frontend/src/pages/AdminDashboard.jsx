@@ -7,54 +7,15 @@ import {
   List,
   Typography,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import { BarChart, LineChart } from "@mui/x-charts";
 import { AttachMoney, People, Print } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
+import { useTheme } from "@emotion/react";
 
 export default function AdminDashboard() {
-  const [printerIds, setPrinterIds] = useState([]);
-  const [printerDetails, setPrinterDetails] = useState({});
-
-  const fetchPrinters = async () => {
-    try {
-      const response = await api.get("api/v1/printer");
-      const printers = response.data.data;
-
-      const ids = printers.map((printer) => printer.id);
-      setPrinterIds(ids);
-
-      const details = {};
-      await Promise.all(
-        ids.map(async (id) => {
-          try {
-            const detailResponse = await api.get(`/api/v1/printer/${id}`, {});
-            const printer = detailResponse.data.printerinfo;
-
-            details[id] = printer;
-          } catch (error) {
-            console.error(
-              `Error fetching details for printer ${id}:`,
-              error.response?.data || error.message
-            );
-          }
-        })
-      );
-
-      setPrinterDetails(details);
-    } catch (error) {
-      console.error(
-        "Error fetching printers:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  useEffect(() => {
-    fetchPrinters();
-  }, []);
-
   return (
     <Container
       sx={{
@@ -149,16 +110,60 @@ export default function AdminDashboard() {
             width: "30%",
             height: "100%", // Ensuring full height
             alignItems: "center",
-            flexGrow: 0,
+            flexGrow: 1,
           }}>
-          <PrinterStatus printerDetails={printerDetails} />
+          <PrinterStatus />
         </Box>
       </Paper>
     </Container>
   );
 }
 
-const PrinterStatus = ({ printerDetails }) => {
+const PrinterStatus = () => {
+  const [printerDetails, setPrinterDetails] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const fetchPrinters = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get("api/v1/printer");
+      const printers = response.data.data;
+
+      const ids = printers.map((printer) => printer.id);
+
+      const details = {};
+      await Promise.all(
+        ids.map(async (id) => {
+          try {
+            const detailResponse = await api.get(`/api/v1/printer/${id}`, {});
+            const printer = detailResponse.data.printerinfo;
+
+            details[id] = printer;
+          } catch (error) {
+            console.error(
+              `Error fetching details for printer ${id}:`,
+              error.response?.data || error.message
+            );
+          }
+        })
+      );
+
+      setPrinterDetails(details);
+      setLoading(false);
+      console.log("Printer details fetched:", printerDetails);
+      console.log();
+    } catch (error) {
+      console.error(
+        "Error fetching printers:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchPrinters();
+  }, []);
+
   const sortedPrinters = Object.entries(printerDetails)
     .map(([id, details]) => ({ id, ...details }))
     .sort((a, b) => a.printingInk - b.printingInk);
@@ -168,6 +173,7 @@ const PrinterStatus = ({ printerDetails }) => {
       elevation={8}
       sx={{
         height: "100%",
+        width: "100%",
         borderRadius: "20px",
         display: "flex",
         flexDirection: "column",
@@ -185,69 +191,80 @@ const PrinterStatus = ({ printerDetails }) => {
         sx={{ marginBottom: "16px" }}>
         Tình trạng máy in
       </Typography>
-
-      <List>
-        {sortedPrinters.map((printer) => (
-          <ListItem
-            key={printer.id}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              marginBottom: "16px",
-              alignItems: "center",
-              gap: "5px",
-            }}>
-            <Box
+      {!loading ? (
+        <List>
+          {sortedPrinters.map((printer) => (
+            <ListItem
+              key={printer.id}
               sx={{
-                width: "30%",
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "16px",
+                alignItems: "center",
+                gap: "5px",
               }}>
-              <img
-                src={`../../printers/${printer.image}`}
-                alt="Printer"
-                style={{
-                  width: "100%",
-                  borderRadius: "8px",
-                  marginRight: "16px",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                width: "70%",
-              }}>
-              <ListItemText
-                primary={printer.name}
-                secondary={`Tình trạng: ${
-                  printer.status ? "BẬT" : "TẮT"
-                }, Địa điểm: ${printer.campus} - ${printer.building} - ${
-                  printer.room
-                }`}
+              <Box
                 sx={{
-                  textAlign: "left",
-                  "& .MuiListItemText-primary": {
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    color: "primary.main",
-                  },
-                  "& .MuiListItemText-secondary": {
-                    fontSize: "0.6rem",
-                  },
-                }}
-              />
-              <Box>
-                <Typography fontSize="0.6rem">
-                  Lượng mực còn lại: {printer.printingInk}%
-                </Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={printer.printingInk}
-                  sx={{ width: "100%", marginTop: "8px" }}
+                  width: "30%",
+                }}>
+                <img
+                  src={`../../printers/${printer.image}`}
+                  alt="Printer"
+                  style={{
+                    width: "100%",
+                    borderRadius: "8px",
+                    marginRight: "16px",
+                  }}
                 />
               </Box>
-            </Box>
-          </ListItem>
-        ))}
-      </List>
+              <Box
+                sx={{
+                  width: "70%",
+                }}>
+                <ListItemText
+                  primary={printer.name}
+                  secondary={`Tình trạng: ${
+                    printer.status ? "BẬT" : "TẮT"
+                  }, Địa điểm: ${printer.campus} - ${printer.building} - ${
+                    printer.room
+                  }`}
+                  sx={{
+                    textAlign: "left",
+                    "& .MuiListItemText-primary": {
+                      fontWeight: "bold",
+                      fontSize: "1rem",
+                      color: "primary.main",
+                    },
+                    "& .MuiListItemText-secondary": {
+                      fontSize: "0.6rem",
+                    },
+                  }}
+                />
+                <Box>
+                  <Typography fontSize="0.6rem">
+                    Lượng mực còn lại: {printer.printingInk}%
+                  </Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={printer.printingInk}
+                    sx={{ width: "100%", marginTop: "8px" }}
+                  />
+                </Box>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+          <CircularProgress />
+        </Box>
+      )}
     </Paper>
   );
 };
@@ -288,6 +305,8 @@ const CountWidget = ({ IconComponent, firstText, secondText }) => {
 };
 
 const WeeklyPrintChart = () => {
+  const theme = useTheme();
+
   const days = [
     "Thứ 2",
     "Thứ 3",
@@ -310,20 +329,26 @@ const WeeklyPrintChart = () => {
         flexDirection: "column",
         alignItems: "center",
       }}>
-      <Typography fontSize="1rem" sx={{ my: "16px" }}>
+      <Typography
+        fontSize="1rem"
+        fontWeight="bold"
+        color="primary.dark"
+        sx={{ my: "16px" }}>
         Số lượt in trong tuần
       </Typography>
 
       <BarChart
-        height="180"
+        height={180}
         xAxis={[{ scaleType: "band", data: days }]}
-        series={[{ data: counts }]}
+        series={[{ data: counts, color: theme.palette.primary.main }]}
       />
     </Paper>
   );
 };
 
 const MonthlyPrintChart = () => {
+  const theme = useTheme();
+
   const days = [
     "Tháng 1",
     "Tháng 2",
@@ -353,14 +378,18 @@ const MonthlyPrintChart = () => {
         flexDirection: "column",
         alignItems: "center",
       }}>
-      <Typography fontSize="1rem" sx={{ my: "16px" }}>
-        Số lượt in trong tuần
+      <Typography
+        fontSize="1rem"
+        fontWeight="bold"
+        color="primary.dark"
+        sx={{ my: "16px" }}>
+        Số lượt in trong tháng
       </Typography>
 
       <BarChart
-        height="180"
+        height={180}
         xAxis={[{ scaleType: "band", data: days }]}
-        series={[{ data: counts }]}
+        series={[{ data: counts, color: theme.palette.primary.main }]}
       />
     </Paper>
   );

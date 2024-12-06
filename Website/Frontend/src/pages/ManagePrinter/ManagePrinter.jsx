@@ -21,77 +21,73 @@ const columns = (
   openDeletePopup,
   handleEnableDisablePrinter
 ) => [
-    {
-      field: "id",
-      headerName: "ID",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    { field: "brand", headerName: "Thương hiệu", flex: 1, headerAlign: "center" },
-    { field: "model", headerName: "Mã máy", flex: 1, headerAlign: "center" },
-    {
-      field: "campus",
-      headerName: "Cơ sở",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "building",
-      headerName: "Toà nhà",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "room",
-      headerName: "Phòng",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "action",
-      headerName: "Hành động",
-      width: 160,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box>
-          <Tooltip title="Xoá máy in" arrow>
-            <IconButton
-              color="error"
-              onClick={() => openDeletePopup(params.row)}
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Xem thông tin máy in" arrow>
-            <IconButton
-              color="primary"
-              onClick={() => handlePrinterConfigure(params.row)}
-            >
-              <ArrowOutward />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-    {
-      field: "enableDisable",
-      headerName: "Bật/Tắt",
-      width: 140,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Switch
-          onChange={() => handleEnableDisablePrinter(params.row)}
-          checked={params.row.enableDisable}
-        />
-      ),
-    },
-  ];
+  {
+    field: "id",
+    headerName: "ID",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  { field: "brand", headerName: "Thương hiệu", flex: 1, headerAlign: "center" },
+  { field: "model", headerName: "Mã máy", flex: 1, headerAlign: "center" },
+  {
+    field: "campus",
+    headerName: "Cơ sở",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "building",
+    headerName: "Toà nhà",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "room",
+    headerName: "Phòng",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "action",
+    headerName: "Hành động",
+    width: 160,
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params) => (
+      <Box>
+        <Tooltip title="Xoá máy in" arrow>
+          <IconButton color="error" onClick={() => openDeletePopup(params.row)}>
+            <Delete />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Xem thông tin máy in" arrow>
+          <IconButton
+            color="primary"
+            onClick={() => handlePrinterConfigure(params.row)}>
+            <ArrowOutward />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+  },
+  {
+    field: "enableDisable",
+    headerName: "Bật/Tắt",
+    width: 140,
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params) => (
+      <Switch
+        onChange={() => handleEnableDisablePrinter(params.row)}
+        checked={params.row.enableDisable}
+      />
+    ),
+  },
+];
 
 export default function ManagePrinter() {
   const [rows, setRows] = React.useState([]);
@@ -131,7 +127,7 @@ export default function ManagePrinter() {
   };
 
   const handlePrinterConfigure = (row) => {
-    navigate(`/printerinfo/${row.id}`)
+    navigate(`/printerinfo/${row.id}`);
     console.log("Configuring printer:", row);
   };
 
@@ -210,8 +206,8 @@ export default function ManagePrinter() {
       row.model.toLowerCase().includes(searchText.toLowerCase()) ||
       row.campus.toLowerCase().includes(searchText.toLowerCase()) ||
       row.building.toLowerCase().includes(searchText.toLowerCase()) ||
-      (row.room).toString().toLowerCase().includes(searchText.toLowerCase())
-    );
+      row.room.toString().toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <Container
@@ -219,8 +215,7 @@ export default function ManagePrinter() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-      }}
-    >
+      }}>
       <Paper
         elevation={8}
         sx={{
@@ -232,16 +227,14 @@ export default function ManagePrinter() {
           py: "24px",
           display: "flex",
           flexDirection: "column",
-        }}
-      >
+        }}>
         <Box
           sx={{
             display: "flex",
             width: "100%",
             alignItems: "center",
             marginBottom: 2,
-          }}
-        >
+          }}>
           <TextField
             variant="outlined"
             value={searchText}
@@ -267,8 +260,7 @@ export default function ManagePrinter() {
               height: "80%",
               borderRadius: "12px",
               textTransform: "none",
-            }}
-          >
+            }}>
             Thêm máy in
           </Button>
         </Box>
@@ -280,12 +272,11 @@ export default function ManagePrinter() {
               justifyContent: "center",
               alignItems: "center",
               flexGrow: 1,
-            }}
-          >
+            }}>
             <CircularProgress />
           </Box>
         ) : (
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
             <DataGrid
               rows={filteredRows}
               columns={columns(
@@ -313,8 +304,7 @@ export default function ManagePrinter() {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
-          }}
-        >
+          }}>
           <Box
             sx={{
               display: "flex",
@@ -327,27 +317,21 @@ export default function ManagePrinter() {
               userSelect: "none",
               maxWidth: "400px",
               textAlign: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ color: "#333", fontWeight: "bold" }}
-            >
+            }}>
+            <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold" }}>
               Bạn có chắc chắn xóa máy in không?
             </Typography>
             <Box sx={{ marginTop: 2 }}>
               <Button
                 variant="outlined"
                 sx={{ marginRight: 2 }}
-                onClick={closeDeletePopup}
-              >
+                onClick={closeDeletePopup}>
                 Trở về
               </Button>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleDeletePrinter}
-              >
+                onClick={handleDeletePrinter}>
                 Xác nhận
               </Button>
             </Box>
