@@ -7,7 +7,7 @@ export default function Home() {
   const { userInfo } = useAuth();
   return (
     <>
-    { userInfo.role == 'SPSO' ? <AdminDashboard /> :
+    { userInfo && userInfo.role == 'SPSO' ? <AdminDashboard /> :
     <Container sx={{display: 'flex', height: "80vh", alignItems: 'center', justifyContent: "space-between"}}>
         <Box sx={{color: 'primary.main'}}>
             <Typography variant="h1" sx={{fontWeight: "500"}}>
